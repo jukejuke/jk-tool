@@ -17,7 +17,7 @@ public class TiandituGeocoderTest {
     private MockWebServer mockWebServer;
     private TiandituGeocoder geocoder;
     private ObjectMapper objectMapper = new ObjectMapper();
-    private final String testApiKey = "test_key";
+    private final String testApiKey = "0fa303e5034f50b498e1927038adb21a";
 
     @BeforeEach
     void setUp() throws IOException {
@@ -34,7 +34,6 @@ public class TiandituGeocoderTest {
         geocoder = new TiandituGeocoder.Builder(testApiKey)
                 .httpClient(httpClient)
                 .objectMapper(objectMapper)
-                .baseUrl(baseUrl)
                 .build();
     }
 

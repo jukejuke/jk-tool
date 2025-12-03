@@ -22,7 +22,6 @@ public class TiandituGeocoder {
 
     /**
      * 构造函数
-     * @param apiKey 天地图API密钥
      */
     // 私有构造函数，通过Builder创建实例
     private TiandituGeocoder(Builder builder) {
@@ -38,7 +37,6 @@ public class TiandituGeocoder {
         private final String apiKey;
         private OkHttpClient httpClient;
         private ObjectMapper objectMapper;
-        private String baseUrl = "http://api.tianditu.gov.cn/geocoder";
 
         public Builder(String apiKey) {
             this.apiKey = apiKey;
@@ -51,11 +49,6 @@ public class TiandituGeocoder {
 
         public Builder objectMapper(ObjectMapper objectMapper) {
             this.objectMapper = objectMapper;
-            return this;
-        }
-
-        public Builder baseUrl(String baseUrl) {
-            this.baseUrl = baseUrl;
             return this;
         }
 
