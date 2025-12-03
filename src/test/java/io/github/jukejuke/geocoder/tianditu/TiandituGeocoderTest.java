@@ -67,12 +67,11 @@ public class TiandituGeocoderTest {
         mockWebServer.enqueue(new MockResponse()
                 .setResponseCode(400)
                 .setHeader("Content-Type", "application/json")
-                .setBody("{\"msg\":\"invalid parameters\",\"status\":\"1\"}"));
+                .setBody("{\"msg\":\"经度范围不合法\",\"status\":400}"));
 
-        // 执行测试并验证异常
-        Exception exception = assertThrows(Exception.class, () ->
-                geocoder.reverseGeocode(1000, 2000));
-
-        assertTrue(exception.getMessage().contains("400"));
+        TiandituGeocoder.TiandituResponse response = geocoder.reverseGeocode(1000, 2000);
+        assertNotNull(response);
+        assertEquals("400", response.getStatus());
+        assertEquals("经度范围不合法", response.getMsg());
     }
 }
