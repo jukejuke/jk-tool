@@ -6,7 +6,30 @@
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>jk-tool</name>
-  <url>http://maven.apache.org</url>
+  <description>A utility library for common tasks</description>
+  <url>https://github.com/jukejuke/jk-tool</url>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>yaosh</name>
+      <email>7385697@qq.com</email>
+      <organization></organization>
+      <organizationUrl></organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:https://github.com/jukejuke/jk-tool.git</connection>
+    <developerConnection>scm:git:https://github.com/jukejuke/jk-tool.git</developerConnection>
+    <url>https://github.com/jukejuke/jk-tool</url>
+  </scm>
   <build>
     <plugins>
       <plugin>
@@ -18,6 +41,46 @@
           <target>1.8</target>
           <encoding>UTF-8</encoding>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.2.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.3.1</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -63,4 +126,14 @@
         <scope>test</scope>
     </dependency>
   </dependencies>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
 </project>
