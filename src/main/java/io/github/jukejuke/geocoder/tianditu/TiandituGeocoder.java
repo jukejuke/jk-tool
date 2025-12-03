@@ -1,9 +1,11 @@
 package io.github.jukejuke.geocoder.tianditu;
 
+import com.alibaba.fastjson.JSON;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -17,7 +19,6 @@ import java.util.Map;
 public class TiandituGeocoder {
     private final String apiKey;
     private final OkHttpClient httpClient;
-    private final ObjectMapper objectMapper;
     private final String baseUrl = "http://api.tianditu.gov.cn/geocoder";
 
     /**
@@ -27,7 +28,6 @@ public class TiandituGeocoder {
     private TiandituGeocoder(Builder builder) {
         this.apiKey = builder.apiKey;
         this.httpClient = builder.httpClient != null ? builder.httpClient : new OkHttpClient();
-        this.objectMapper = builder.objectMapper != null ? builder.objectMapper : new ObjectMapper();
     }
 
     /**
@@ -36,7 +36,6 @@ public class TiandituGeocoder {
     public static class Builder {
         private final String apiKey;
         private OkHttpClient httpClient;
-        private ObjectMapper objectMapper;
 
         public Builder(String apiKey) {
             this.apiKey = apiKey;
@@ -44,11 +43,6 @@ public class TiandituGeocoder {
 
         public Builder httpClient(OkHttpClient httpClient) {
             this.httpClient = httpClient;
-            return this;
-        }
-
-        public Builder objectMapper(ObjectMapper objectMapper) {
-            this.objectMapper = objectMapper;
             return this;
         }
 
@@ -72,7 +66,7 @@ public class TiandituGeocoder {
         postStrMap.put("ver", 1);
         
         // 转换为JSON并URL编码
-        String postStrJson = objectMapper.writeValueAsString(postStrMap);
+        String postStrJson = JSON.toJSONString(postStrMap);
         String encodedPostStr = URLEncoder.encode(postStrJson, StandardCharsets.UTF_8.name());
 
         // 构建完整URL
@@ -87,24 +81,51 @@ public class TiandituGeocoder {
         // 执行请求并处理响应
         try (Response response = httpClient.newCall(request).execute()) {
             String responseBody = response.body().string();
-            return objectMapper.readValue(responseBody, TiandituResponse.class);
+            return JSON.parseObject(responseBody, TiandituResponse.class);
         }
     }
 
     /**
      * 天地图API响应结果封装类
      */
+    @Data
     public static class TiandituResponse {
-        private String message;
-        private int code;
-        private Object result;
+        private String msg;
+        private String status;
+        private Result result;
 
-        // Getters and Setters
-        public String getMessage() { return message; }
-        public void setMessage(String message) { this.message = message; }
-        public int getCode() { return code; }
-        public void setCode(int code) { this.code = code; }
-        public Object getResult() { return result; }
-        public void setResult(Object result) { this.result = result; }
+        @Data
+        public static class Result {
+            private String formatted_address;
+            private Location location;
+            private AddressComponent addressComponent;
+        }
+
+        @Data
+        public static class Location {
+            private double lon;
+            private double lat;
+        }
+
+        @Data
+        public static class AddressComponent {
+            private String address;
+            private String town;
+            private String nation;
+            private String city;
+            private String county_code;
+            private String poi_position;
+            private String county;
+            private String city_code;
+            private String address_position;
+            private String poi;
+            private String province_code;
+            private String town_code;
+            private String province;
+            private String road;
+            private int road_distance;
+            private int address_distance;
+            private int poi_distance;
+        }
     }
 }
