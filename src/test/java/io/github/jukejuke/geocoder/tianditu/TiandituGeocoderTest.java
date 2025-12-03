@@ -20,7 +20,7 @@ public class TiandituGeocoderTest {
         mockWebServer.start();
 
         // 创建Geocoder实例
-        geocoder = new TiandituGeocoder.Builder("0fa303e5034f50b498e1927038adb21a")
+        geocoder = new TiandituGeocoder.Builder("123")
                 .httpClient(new OkHttpClient())
                 .build();
     }
