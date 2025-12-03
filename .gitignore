@@ -41,3 +41,6 @@ logs/
 # 其他不需要版本控制的文件
 *.swp
 *~
+/target/classes/
+/target/maven-archiver/
+/target/maven-status/
