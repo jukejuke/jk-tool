@@ -18,7 +18,7 @@ public class TiandituGeocoder {
     private final String apiKey;
     private final OkHttpClient httpClient;
     private final ObjectMapper objectMapper;
-    private final String baseUrl;
+    private final String baseUrl = "http://api.tianditu.gov.cn/geocoder";
 
     /**
      * 构造函数
