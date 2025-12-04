@@ -9,12 +9,6 @@
   <description>jk-tool</description>
   <url>https://github.com/jukejuke/jk-tool</url>
 
-<!--  <licenses>
-    <license>
-      <name>MIT License</name>
-      <url>https://opensource.org/licenses/MIT</url>
-    </license>
-  </licenses>-->
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
