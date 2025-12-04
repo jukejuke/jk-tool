@@ -12,7 +12,7 @@ public class AmapDistrictQueryTest {
     private MockWebServer mockWebServer;
     private AmapDistrictQuery districtQuery;
     private static final String TEST_API_KEY = "";
-    private static final String MOCK_RESPONSE_SUCCESS = "{\"status\":\"1\",\"info\":\"OK\",\"infocode\":\"10000\",\"count\":\"1\",\"suggestion\":{\"keywords\":[],\"cities\":[]},\"districts\":[{\"citycode\":\"010\",\"adcode\":\"110000\",\"name\":\"北京市\",\"center\":\"116.407387,39.904179\",\"level\":\"province\",\"districts\":[{\"citycode\":\"010\",\"adcode\":\"110100\",\"name\":\"北京城区\",\"center\":\"116.405285,39.904989\",\"level\":\"city\",\"districts\":[]}]}]}";
+    private static final String MOCK_RESPONSE_SUCCESS = "{\"status\":\"1\",\"info\":\"OK\",\"infocode\":\"10000\",\"count\":\"1\",\"suggestion\":{\"keywords\":[],\"cities\":[]},\"districts\":[{\"citycode\":\"028\",\"adcode\":\"510100\",\"name\":\"成都市\",\"center\":\"104.066301,30.572961\",\"level\":\"city\",\"districts\":[{\"citycode\":\"028\",\"adcode\":\"510182\",\"name\":\"彭州市\",\"center\":\"103.957706,30.990463\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510185\",\"name\":\"简阳市\",\"center\":\"104.547644,30.410937\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510131\",\"name\":\"蒲江县\",\"center\":\"103.506478,30.197558\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510116\",\"name\":\"双流区\",\"center\":\"103.92342,30.574884\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510105\",\"name\":\"青羊区\",\"center\":\"104.062415,30.674583\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510106\",\"name\":\"金牛区\",\"center\":\"104.052236,30.691359\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510129\",\"name\":\"大邑县\",\"center\":\"103.51226,30.573004\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510115\",\"name\":\"温江区\",\"center\":\"103.856423,30.681956\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510184\",\"name\":\"崇州市\",\"center\":\"103.673025,30.630183\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510104\",\"name\":\"锦江区\",\"center\":\"104.117262,30.598726\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510121\",\"name\":\"金堂县\",\"center\":\"104.411871,30.86203\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510113\",\"name\":\"青白江区\",\"center\":\"104.251342,30.8786\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510183\",\"name\":\"邛崃市\",\"center\":\"103.464176,30.41029\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510118\",\"name\":\"新津区\",\"center\":\"103.810906,30.410404\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510107\",\"name\":\"武侯区\",\"center\":\"104.043246,30.641849\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510181\",\"name\":\"都江堰市\",\"center\":\"103.647193,30.988763\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510114\",\"name\":\"新都区\",\"center\":\"104.158593,30.823568\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510112\",\"name\":\"龙泉驿区\",\"center\":\"104.27536,30.556808\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510108\",\"name\":\"成华区\",\"center\":\"104.101452,30.659966\",\"level\":\"district\",\"districts\":[]},{\"citycode\":\"028\",\"adcode\":\"510117\",\"name\":\"郫都区\",\"center\":\"103.900486,30.795113\",\"level\":\"district\",\"districts\":[]}]}]}";
     private static final String MOCK_RESPONSE_ERROR_INVALID_KEY = "{\"status\":\"0\",\"info\":\"INVALID_USER_KEY\",\"infocode\":\"10001\"}";
 
     @BeforeEach
@@ -45,13 +45,15 @@ public class AmapDistrictQueryTest {
         assertEquals("1", response.getCount());
         assertNotNull(response.getDistricts());
         assertEquals(1, response.getDistricts().size());
-        assertEquals("北京市", response.getDistricts().get(0).getName());
-        assertEquals("010", response.getDistricts().get(0).getCitycode());
-        assertEquals("province", response.getDistricts().get(0).getLevel());
+        assertEquals("成都市", response.getDistricts().get(0).getName());
+        assertEquals("028", response.getDistricts().get(0).getCitycode());
+        assertEquals("city", response.getDistricts().get(0).getLevel());
         assertNotNull(response.getDistricts().get(0).getDistricts());
-        assertEquals(1, response.getDistricts().get(0).getDistricts().size());
-        assertEquals("北京城区", response.getDistricts().get(0).getDistricts().get(0).getName());
-        assertEquals("010", response.getDistricts().get(0).getDistricts().get(0).getCitycode());
+        assertEquals(20, response.getDistricts().get(0).getDistricts().size());
+        assertEquals("彭州市", response.getDistricts().get(0).getDistricts().get(0).getName());
+        assertEquals("028", response.getDistricts().get(0).getDistricts().get(0).getCitycode());
+        assertEquals("简阳市", response.getDistricts().get(0).getDistricts().get(1).getName());
+        assertEquals("武侯区", response.getDistricts().get(0).getDistricts().get(14).getName());
         assertNotNull(response.getSuggestion());
         assertNotNull(response.getSuggestion().getKeywords());
         assertNotNull(response.getSuggestion().getCities());
