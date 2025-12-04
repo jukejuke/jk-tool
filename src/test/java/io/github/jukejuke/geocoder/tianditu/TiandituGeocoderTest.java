@@ -6,7 +6,6 @@ import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.lang.reflect.Field;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TiandituGeocoderTest {
