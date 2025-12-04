@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AmapDistrictQueryTest {
     private MockWebServer mockWebServer;
     private AmapDistrictQuery districtQuery;
-    private static final String TEST_API_KEY = "409404147782583a9fc0e5d95d6e4f8b";
+    private static final String TEST_API_KEY = "";
     private static final String MOCK_RESPONSE_SUCCESS = "{\"status\":\"1\",\"info\":\"OK\",\"infocode\":\"10000\",\"count\":\"1\",\"suggestion\":{\"keywords\":[],\"cities\":[]},\"districts\":[{\"citycode\":\"010\",\"adcode\":\"110000\",\"name\":\"北京市\",\"center\":\"116.407387,39.904179\",\"level\":\"province\",\"districts\":[{\"citycode\":\"010\",\"adcode\":\"110100\",\"name\":\"北京城区\",\"center\":\"116.405285,39.904989\",\"level\":\"city\",\"districts\":[]}]}]}";
     private static final String MOCK_RESPONSE_ERROR_INVALID_KEY = "{\"status\":\"0\",\"info\":\"INVALID_USER_KEY\",\"infocode\":\"10001\"}";
 
