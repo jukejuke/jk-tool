@@ -11,14 +11,14 @@ import java.util.List;
 public class AmapDistrictQuery {
     private final OkHttpClient client = new OkHttpClient();
     private final String apiKey;
-    private String keywords;
+    //private String keywords;
     private Integer subdistrict;
     private String extensions;
     private String output = "json";
 
     private AmapDistrictQuery(Builder builder) {
         this.apiKey = builder.apiKey;
-        this.keywords = builder.keywords;
+        //this.keywords = builder.keywords;
         this.subdistrict = builder.subdistrict;
         this.extensions = builder.extensions;
         this.output = builder.output;
@@ -26,7 +26,7 @@ public class AmapDistrictQuery {
 
     public static class Builder {
         private final String apiKey;
-        private String keywords;
+        //private String keywords;
         private Integer subdistrict;
         private String extensions;
         private String output;
@@ -35,10 +35,10 @@ public class AmapDistrictQuery {
             this.apiKey = apiKey;
         }
 
-        public Builder keywords(String keywords) {
-            this.keywords = keywords;
-            return this;
-        }
+//        public Builder keywords(String keywords) {
+//            this.keywords = keywords;
+//            return this;
+//        }
 
         public Builder subdistrict(Integer subdistrict) {
             this.subdistrict = subdistrict;
@@ -61,7 +61,7 @@ public class AmapDistrictQuery {
     }
 
 
-    public DistrictResponse query() throws IOException {
+    public DistrictResponse query(String keywords) throws IOException {
         StringBuilder urlBuilder = new StringBuilder("https://restapi.amap.com/v3/config/district");
         urlBuilder.append("?key=").append(apiKey);
         if (keywords != null) urlBuilder.append("&keywords=").append(keywords);

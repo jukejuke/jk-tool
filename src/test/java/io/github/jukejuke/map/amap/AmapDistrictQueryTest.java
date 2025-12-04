@@ -20,7 +20,7 @@ public class AmapDistrictQueryTest {
         mockWebServer = new MockWebServer();
         mockWebServer.start();
         districtQuery = new AmapDistrictQuery.Builder(TEST_API_KEY)
-                .keywords("北京市")
+                //.keywords("成都市")
                 .subdistrict(1)
                 .extensions("base")
                 .build();
@@ -37,7 +37,7 @@ public class AmapDistrictQueryTest {
                 .setResponseCode(200)
                 .setBody(MOCK_RESPONSE_SUCCESS));
 
-        AmapDistrictQuery.DistrictResponse response = districtQuery.query();
+        AmapDistrictQuery.DistrictResponse response = districtQuery.query("成都市");
 
         assertNotNull(response);
         assertEquals("1", response.getStatus());
@@ -65,7 +65,7 @@ public class AmapDistrictQueryTest {
                 .setResponseCode(200)
                 .setBody(MOCK_RESPONSE_ERROR_INVALID_KEY));
 
-        AmapDistrictQuery.DistrictResponse response = districtQuery.query();
+        AmapDistrictQuery.DistrictResponse response = districtQuery.query("成都市");
 
         assertNotNull(response);
         assertEquals("0", response.getStatus());
@@ -77,6 +77,6 @@ public class AmapDistrictQueryTest {
     void testQueryNetworkError() throws IOException {
         mockWebServer.shutdown();
 
-        assertThrows(IOException.class, () -> districtQuery.query());
+        assertThrows(IOException.class, () -> districtQuery.query(""));
     }
 }
