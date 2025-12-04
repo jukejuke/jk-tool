@@ -93,6 +93,7 @@
         <version>1.6</version> <!-- 升级到最新版（1.6 已过时） -->
         <configuration>
           <executable>C:\Program Files (x86)\GnuPG\bin\gpg.exe</executable>
+          <!-- 使用完整指纹 -->
           <keyname>E42AA999897FA9F626194E22594EBDE239E5CB95</keyname>
         </configuration>
         <executions>
