@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 /**
  * 高德地图逆地理编码工具类
@@ -115,12 +116,26 @@ public class AmapRegeoCoder {
             private String citycode;
             private String district;
             private String township;
-            private String neighborhood;
-            private String building;
-            private String street;
-            private String streetNumber;
             private String adcode;
             private String township_code;
+            private StreetNumber streetNumber;
+            private List<BusinessArea> businessAreas;
+        }
+
+        @Data
+        public static class StreetNumber {
+            private String number;
+            private String location;
+            private String direction;
+            private String distance;
+            private String street;
+        }
+
+        @Data
+        public static class BusinessArea {
+            private String location;
+            private String name;
+            private String id;
         }
     }
 }
