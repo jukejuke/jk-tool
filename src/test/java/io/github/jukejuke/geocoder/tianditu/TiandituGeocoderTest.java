@@ -1,5 +1,6 @@
 package io.github.jukejuke.geocoder.tianditu;
 
+import io.github.jukejuke.map.tianditu.TiandituGeocoder;
 import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;

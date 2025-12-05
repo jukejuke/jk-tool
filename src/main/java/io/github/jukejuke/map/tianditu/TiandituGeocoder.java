@@ -1,4 +1,4 @@
-package io.github.jukejuke.geocoder.tianditu;
+package io.github.jukejuke.map.tianditu;
 
 import com.alibaba.fastjson.JSON;
 import okhttp3.OkHttpClient;
