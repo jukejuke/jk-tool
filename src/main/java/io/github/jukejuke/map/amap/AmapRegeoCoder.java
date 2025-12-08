@@ -1,6 +1,7 @@
 package io.github.jukejuke.map.amap;
 
-import com.alibaba.fastjson.JSON;
+//import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
