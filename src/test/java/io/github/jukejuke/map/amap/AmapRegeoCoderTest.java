@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import java.io.IOException;
 
 /**
  * 高德地图逆地理编码工具测试类
