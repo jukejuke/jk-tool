@@ -89,7 +89,7 @@ TiandituAdministrativeResponse response = administrative.queryAdministrative("�
 implementation 'io.github.jukejuke:jk-tool:0.0.1'
 ```
 
-### 📥下载jar
+### 下载jar
 
 点击以下链接，下载`jk-tool-X.X.X.jar`即可：
 
