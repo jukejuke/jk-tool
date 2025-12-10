@@ -4,7 +4,7 @@
   <groupId>io.github.jukejuke</groupId>
   <artifactId>jk-tool</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.2</version>
+  <version>0.0.2.snapshot</version>
   <name>jk-tool</name>
   <description>jk-tool</description>
   <url>https://github.com/jukejuke/jk-tool</url>
