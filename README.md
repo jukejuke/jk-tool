@@ -72,6 +72,29 @@ TiandituAdministrativeResponse response = administrative.queryAdministrative("�
 - `src/test/java/io/github/jukejuke/map/tianditu/TiandituGeocoderTest.java`：天地图反地理编码的测试用例。
 - `src/test/java/io/github/jukejuke/map/tianditu/TiandituAdministrativeTest.java`：天地图行政区域查询的测试用例。
 
+## 安装
+### Maven
+在项目的pom.xml的dependencies中加入以下内容:
+
+```xml
+<dependency>
+    <groupId>io.github.jukejuke</groupId>
+    <artifactId>jk-tool</artifactId>
+    <version>0.0.1</version>
+</dependency>
+```
+
+### Gradle
+```
+implementation 'io.github.jukejuke:jk-tool:0.0.1'
+```
+
+### 📥下载jar
+
+点击以下链接，下载`jk-tool-X.X.X.jar`即可：
+
+- [Maven中央库](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.1/)
+
 ## 许可证
 
 本项目遵循 MIT 许可证。有关详细信息，请参阅 [LICENSE](LICENSE) 文件。
