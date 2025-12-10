@@ -20,6 +20,7 @@ public class AmapPoiSearcher {
     private final String apiKey;
     private final OkHttpClient httpClient;
     private final String baseUrl = "https://restapi.amap.com/v5/place/text";
+    private final String aroundSearchUrl = "https://restapi.amap.com/v5/place/around";
 
     /**
      * 私有构造函数，通过Builder创建实例
@@ -79,6 +80,48 @@ public class AmapPoiSearcher {
 
         // 构建完整URL
         String requestUrl = baseUrl + "?" + query.toString();
+
+        // 创建HTTP请求
+        Request request = new Request.Builder()
+                .url(requestUrl)
+                .build();
+
+        // 执行请求并处理响应
+        try (Response response = httpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
+            return JSON.parseObject(responseBody, AmapPoiResponse.class);
+        }
+    }
+
+    /**
+     * 执行周边POI搜索
+     * @param location 中心点坐标，格式为"经度,纬度"
+     * @param radius 搜索半径，单位米
+     * @param types POI类型编码
+     * @return POI搜索响应结果
+     * @throws Exception 可能抛出的异常
+     */
+    public AmapPoiResponse searchAround(String location, int radius, String types) throws Exception {
+        // 构建请求参数
+        Map<String, String> params = new HashMap<>();
+        params.put("location", location);
+        params.put("radius", String.valueOf(radius));
+        params.put("types", types);
+        params.put("key", apiKey);
+
+        // 构建查询字符串
+        StringBuilder query = new StringBuilder();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            if (query.length() > 0) {
+                query.append("&");
+            }
+            query.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8.name()))
+                 .append("=")
+                 .append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.name()));
+        }
+
+        // 构建完整URL
+        String requestUrl = aroundSearchUrl + "?" + query.toString();
 
         // 创建HTTP请求
         Request request = new Request.Builder()

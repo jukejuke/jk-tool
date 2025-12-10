@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class AmapPoiSearcherTest {
-    private static final String API_KEY = "";
+    private static final String API_KEY = "409404147782583a9fc0e5d95d6e4f8b";
     private final OkHttpClient httpClient = new OkHttpClient();
 
     @Test
@@ -36,5 +36,25 @@ public class AmapPoiSearcherTest {
                 .build();
 
         searcher.searchPoi("测试", "141201", "北京市");
+    }
+
+    @Test
+    public void testSearchAround() throws Exception {
+        if (API_KEY.isEmpty()) {
+            System.out.println("请替换API_KEY进行测试");
+            return;
+        }
+
+        AmapPoiSearcher searcher = new AmapPoiSearcher.Builder(API_KEY)
+                .httpClient(httpClient)
+                .build();
+
+        // 北京市中心坐标：116.404269,39.913164，搜索半径1000米，大学类型编码141201
+        AmapPoiSearcher.AmapPoiResponse response = searcher.searchAround("116.404269,39.913164", 1000, "141201");
+
+        assertEquals("1", response.getStatus());
+        assertTrue(Integer.parseInt(response.getCount()) > 0);
+        assertNotNull(response.getPois());
+        assertTrue(response.getPois().length > 0);
     }
 }
