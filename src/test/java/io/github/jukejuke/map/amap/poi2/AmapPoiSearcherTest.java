@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class AmapPoiSearcherTest {
-    private static final String API_KEY = "409404147782583a9fc0e5d95d6e4f8b";
+    private static final String API_KEY = "";
     private final OkHttpClient httpClient = new OkHttpClient();
 
     @Test
