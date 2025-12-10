@@ -57,4 +57,57 @@ public class AmapPoiSearcherTest {
         assertNotNull(response.getPois());
         assertTrue(response.getPois().length > 0);
     }
+
+    @Test
+    public void testSearchPolygon() throws Exception {
+        if (API_KEY.isEmpty()) {
+            System.out.println("请替换API_KEY进行测试");
+            return;
+        }
+
+        AmapPoiSearcher searcher = new AmapPoiSearcher.Builder(API_KEY)
+                .httpClient(httpClient)
+                .build();
+
+        // 多边形坐标点，格式为"经度1,纬度1|经度2,纬度2|...|经度n,纬度n"
+        String polygon = "116.460988,40.006919|116.48231,40.007381|116.47516,39.99713|116.472596,39.985227|116.45669,39.984989|116.460988,40.006919";
+        AmapPoiSearcher.AmapPoiResponse response = searcher.searchPolygon(polygon, "肯德基", "050301");
+
+        assertEquals("1", response.getStatus());
+        assertTrue(Integer.parseInt(response.getCount()) > 0);
+        assertNotNull(response.getPois());
+        assertTrue(response.getPois().length > 0);
+        // 验证至少有一个结果包含关键词"肯德基"
+        boolean hasKfc = false;
+        for (AmapPoiSearcher.AmapPoiResponse.Poi poi : response.getPois()) {
+            if (poi.getName().contains("肯德基")) {
+                hasKfc = true;
+                break;
+            }
+        }
+        assertTrue(hasKfc);
+    }
+
+    @Test
+    public void testSearchById() throws Exception {
+        if (API_KEY.isEmpty()) {
+            System.out.println("请替换API_KEY进行测试");
+            return;
+        }
+
+        AmapPoiSearcher searcher = new AmapPoiSearcher.Builder(API_KEY)
+                .httpClient(httpClient)
+                .build();
+
+        // POI ID列表，多个ID用竖线分隔
+        String ids = "B000A7BM4H|B0FFKEPXS2";
+        AmapPoiSearcher.AmapPoiResponse response = searcher.searchById(ids);
+
+        assertEquals("1", response.getStatus());
+        assertTrue(Integer.parseInt(response.getCount()) > 0);
+        assertNotNull(response.getPois());
+        // 验证返回结果数量与请求ID数量一致
+        String[] idArray = ids.split("\\|");
+        assertEquals(idArray.length, response.getPois().length);
+    }
 }

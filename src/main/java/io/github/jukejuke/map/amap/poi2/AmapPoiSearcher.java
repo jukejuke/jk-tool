@@ -21,6 +21,8 @@ public class AmapPoiSearcher {
     private final OkHttpClient httpClient;
     private final String baseUrl = "https://restapi.amap.com/v5/place/text";
     private final String aroundSearchUrl = "https://restapi.amap.com/v5/place/around";
+    private final String polygonSearchUrl = "https://restapi.amap.com/v5/place/polygon";
+    private final String detailSearchUrl = "https://restapi.amap.com/v5/place/detail";
 
     /**
      * 私有构造函数，通过Builder创建实例
@@ -122,6 +124,86 @@ public class AmapPoiSearcher {
 
         // 构建完整URL
         String requestUrl = aroundSearchUrl + "?" + query.toString();
+
+        // 创建HTTP请求
+        Request request = new Request.Builder()
+                .url(requestUrl)
+                .build();
+
+        // 执行请求并处理响应
+        try (Response response = httpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
+            return JSON.parseObject(responseBody, AmapPoiResponse.class);
+        }
+    }
+
+    /**
+     * 执行多边形区域POI搜索
+     * @param polygon 多边形坐标点，格式为"经度1,纬度1|经度2,纬度2|...|经度n,纬度n"
+     * @param keywords 搜索关键字
+     * @param types POI类型编码
+     * @return POI搜索响应结果
+     * @throws Exception 可能抛出的异常
+     */
+    public AmapPoiResponse searchPolygon(String polygon, String keywords, String types) throws Exception {
+        // 构建请求参数
+        Map<String, String> params = new HashMap<>();
+        params.put("polygon", polygon);
+        params.put("keywords", keywords);
+        params.put("types", types);
+        params.put("key", apiKey);
+
+        // 构建查询字符串
+        StringBuilder query = new StringBuilder();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            if (query.length() > 0) {
+                query.append("&");
+            }
+            query.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8.name()))
+                 .append("=")
+                 .append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.name()));
+        }
+
+        // 构建完整URL
+        String requestUrl = polygonSearchUrl + "?" + query.toString();
+
+        // 创建HTTP请求
+        Request request = new Request.Builder()
+                .url(requestUrl)
+                .build();
+
+        // 执行请求并处理响应
+        try (Response response = httpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
+            return JSON.parseObject(responseBody, AmapPoiResponse.class);
+        }
+    }
+
+    /**
+     * 执行POI ID搜索
+     * @param ids POI ID列表，多个ID用竖线分隔，格式为"id1|id2|...|idn"
+     * @return POI搜索响应结果
+     * @throws Exception 可能抛出的异常
+     */
+    public AmapPoiResponse searchById(String ids) throws Exception {
+        // 构建请求参数
+        Map<String, String> params = new HashMap<>();
+        params.put("id", ids);
+        params.put("key", apiKey);
+
+        // 构建查询字符串
+        StringBuilder query = new StringBuilder();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            if (query.length() > 0) {
+                query.append("&");
+            }
+            query.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8.name()))
+                 .append("=")
+                 .append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.name()));
+        }
+
+        // 构建完整URL
+        String requestUrl = detailSearchUrl + "?" + query.toString();
 
         // 创建HTTP请求
         Request request = new Request.Builder()
