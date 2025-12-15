@@ -1,4 +1,4 @@
-package io.github.jukejuke.util;
+package io.github.jukejuke.tool.date;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
