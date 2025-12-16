@@ -175,11 +175,20 @@
       </plugin>-->
     </plugins>
   </build>
+
+  <properties>
+    <freemarker.version>2.3.32</freemarker.version>
+    <nimbus-jose-jwt.version>9.37</nimbus-jose-jwt.version>
+    <fastjson2.version>2.0.60</fastjson2.version>
+    <okhttp.version>4.12.0</okhttp.version>
+    <lombok.version>1.18.24</lombok.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
-      <version>4.12.0</version>
+      <version>${okhttp.version}</version>
       <scope>compile</scope>
     </dependency>
 <!--    <dependency>
@@ -190,13 +199,13 @@
     <dependency>
       <groupId>com.alibaba.fastjson2</groupId>
       <artifactId>fastjson2</artifactId>
-      <version>2.0.60</version>
+      <version>${fastjson2.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>1.18.24</version>
+        <version>${lombok.version}</version>
         <scope>provided</scope>
     </dependency>
     <dependency>
@@ -227,13 +236,13 @@
     <dependency>
         <groupId>org.freemarker</groupId>
         <artifactId>freemarker</artifactId>
-        <version>2.3.32</version>
+        <version>${freemarker.version}</version>
         <scope>compile</scope>
     </dependency>
     <dependency>
         <groupId>com.nimbusds</groupId>
         <artifactId>nimbus-jose-jwt</artifactId>
-        <version>9.37</version>
+        <version>${nimbus-jose-jwt.version}</version>
         <scope>compile</scope>
     </dependency>
   </dependencies>
