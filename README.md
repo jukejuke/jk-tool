@@ -80,20 +80,20 @@ TiandituAdministrativeResponse response = administrative.queryAdministrative("�
 <dependency>
     <groupId>io.github.jukejuke</groupId>
     <artifactId>jk-tool</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-implementation 'io.github.jukejuke:jk-tool:0.0.1'
+implementation 'io.github.jukejuke:jk-tool:0.0.2'
 ```
 
 ### 下载jar
 
 点击以下链接，下载`jk-tool-X.X.X.jar`即可：
 
-- [Maven中央库](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.1/)
+- [Maven中央库](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.2/)
 
 ## 许可证
 
