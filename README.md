@@ -9,8 +9,11 @@ JK Tool 是一个基于 Java 的工具库，主要用于通过高德地图（Ama
 - **高德地图区域查询**：通过 `AmapDistrictQuery` 类实现，支持根据关键字查询区域信息。
 - **天地图反地理编码**：通过 `TiandituGeocoder` 类实现，支持将经纬度转换为结构化地址信息。
 - **天地图行政区域查询**：通过 `TiandituAdministrative` 类实现，支持查询行政区域信息。
-- **可扩展性**：可轻松扩展以支持其他地理编码服务。
-- **测试用例**：提供针对 Amap 和 Tianditu 的完整测试用例，确保功能的可靠性。
+- **Bean字段过滤**：通过 `BeanFieldFilter` 类实现，支持灵活过滤Java Bean中的字段。
+- **Bean属性操作**：通过 `BeanPropertyUtils` 类实现，提供Bean属性的读取和设置工具。
+- **日期时间处理**：通过 `DateUtils` 类实现，支持日期格式化、转换和计算功能。
+- **Freemarker模板**：通过 `FreemarkerUtils` 类实现，简化模板渲染和数据绑定操作。
+- **JWT令牌处理**：通过 `JwtUtils` 类实现，支持JWT令牌的生成、解析和验证功能。
 
 ## 使用方法
 
@@ -61,18 +64,32 @@ TiandituAdministrativeResponse response = administrative.queryAdministrative("�
 
 ## 项目结构
 
+### 地理编码服务
 - `src/main/java/io/github/jukejuke/map/amap/AmapRegeoCoder.java`：高德地图反地理编码实现。
 - `src/main/java/io/github/jukejuke/map/amap/AmapGeoCoder.java`：高德地图地理编码实现。
 - `src/main/java/io/github/jukejuke/map/amap/AmapDistrictQuery.java`：高德地图区域查询实现。
 - `src/main/java/io/github/jukejuke/map/tianditu/TiandituGeocoder.java`：天地图反地理编码实现。
 - `src/main/java/io/github/jukejuke/map/tianditu/TiandituAdministrative.java`：天地图行政区域查询实现。
+
+### 通用工具类
+- `src/main/java/io/github/jukejuke/tool/bean/BeanFieldFilter.java`：Bean字段过滤工具类。
+- `src/main/java/io/github/jukejuke/tool/bean/BeanPropertyUtils.java`：Bean属性操作工具类。
+- `src/main/java/io/github/jukejuke/tool/date/DateUtils.java`：日期时间处理工具类。
+- `src/main/java/io/github/jukejuke/tool/freemarker/FreemarkerUtils.java`：Freemarker模板引擎工具类。
+- `src/main/java/io/github/jukejuke/tool/jwt/JwtUtils.java`：JWT令牌处理工具类。
+
+### 测试用例
 - `src/test/java/io/github/jukejuke/map/amap/AmapRegeoCoderTest.java`：高德地图反地理编码的测试用例。
 - `src/test/java/io/github/jukejuke/map/amap/AmapGeoCoderTest.java`：高德地图地理编码的测试用例。
 - `src/test/java/io/github/jukejuke/map/amap/AmapDistrictQueryTest.java`：高德地图区域查询的测试用例。
 - `src/test/java/io/github/jukejuke/map/tianditu/TiandituGeocoderTest.java`：天地图反地理编码的测试用例。
 - `src/test/java/io/github/jukejuke/map/tianditu/TiandituAdministrativeTest.java`：天地图行政区域查询的测试用例。
+- `src/test/java/io/github/jukejuke/tool/bean/BeanFieldFilterTest.java`：Bean字段过滤工具类测试用例。
+- `src/test/java/io/github/jukejuke/tool/bean/BeanPropertyUtilsTest.java`：Bean属性操作工具类测试用例。
+- `src/test/java/io/github/jukejuke/tool/freemarker/FreemarkerUtilsTest.java`：Freemarker模板引擎工具类测试用例。
+- `src/test/java/io/github/jukejuke/tool/jwt/JwtUtilsTest.java`：JWT令牌处理工具类测试用例。
+- `src/test/java/io/github/jukejuke/util/DateUtilsTest.java`：日期时间处理工具类测试用例。
 
-## 安装
 ### Maven
 在项目的pom.xml的dependencies中加入以下内容:
 
