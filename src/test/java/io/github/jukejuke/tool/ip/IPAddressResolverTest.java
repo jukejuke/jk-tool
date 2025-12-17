@@ -118,6 +118,82 @@ class IPAddressResolverTest {
     }
 
     /**
+     * 测试解析多个不同的域名
+     */
+    @Test
+    void testResolveMultipleDomains() throws UnknownHostException {
+        String[] domains = {
+            "www.baidu.com",
+            "www.google.com",
+            "www.github.com"
+        };
+
+        for (String domain : domains) {
+            List<String> ipList = resolver.getIpAddresses(domain);
+            assertNotNull(ipList, "域名" + domain + "的IP地址列表不应为null");
+            assertFalse(ipList.isEmpty(), "域名" + domain + "的IP地址列表不应为空");
+        }
+    }
+
+    /**
+     * 测试解析本地域名
+     */
+    @Test
+    void testResolveLocalhost() throws UnknownHostException {
+        // 测试localhost
+        String localhostIp = resolver.getFirstIpAddress("localhost");
+        assertNotNull(localhostIp, "localhost的IP地址不应为null");
+        assertTrue(isValidIpAddress(localhostIp), "localhost的IP地址格式不正确: " + localhostIp);
+
+        // 测试127.0.0.1
+        String loopbackIp = resolver.getFirstIpAddress("127.0.0.1");
+        assertNotNull(loopbackIp, "127.0.0.1的IP地址不应为null");
+        assertTrue(isValidIpAddress(loopbackIp), "127.0.0.1的IP地址格式不正确: " + loopbackIp);
+    }
+
+    /**
+     * 测试解析IPv6地址
+     */
+    @Test
+    void testResolveIPv6Address() throws UnknownHostException {
+        String ipv6Domain = "ipv6.google.com";
+        try {
+            List<String> ipList = resolver.getIpAddresses(ipv6Domain);
+            assertNotNull(ipList, "IPv6域名" + ipv6Domain + "的IP地址列表不应为null");
+            assertFalse(ipList.isEmpty(), "IPv6域名" + ipv6Domain + "的IP地址列表不应为空");
+        } catch (UnknownHostException e) {
+            // 如果网络环境不支持IPv6，跳过此测试
+            System.out.println("IPv6 not supported in current environment, skipping test: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 测试批量解析IP地址的性能（非严格性能测试）
+     */
+    @Test
+    void testBatchResolvePerformance() throws UnknownHostException {
+        String[] domains = {
+            "www.baidu.com",
+            "www.google.com",
+            "www.github.com",
+            "www.microsoft.com",
+            "www.apple.com"
+        };
+
+        long startTime = System.currentTimeMillis();
+        
+        for (String domain : domains) {
+            resolver.getFirstIpAddress(domain);
+        }
+        
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        
+        // 这里只是一个简单的性能测试，不做严格断言
+        System.out.println("批量解析" + domains.length + "个域名耗时: " + totalTime + "ms");
+    }
+
+    /**
      * 验证IP地址格式是否正确
      * @param ipAddress 要验证的IP地址
      * @return 如果IP地址格式正确返回true，否则返回false
