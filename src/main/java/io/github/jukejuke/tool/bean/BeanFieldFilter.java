@@ -8,17 +8,11 @@ import java.util.Set;
 
 /**
  * Bean属性过滤工具类，用于根据排除字段集合筛选对象中的属性
- * <p>
- * 提供反射机制实现的对象属性过滤功能，支持排除指定字段，获取剩余字段的名值对
- * </p>
  */
 public class BeanFieldFilter {
     
     /**
      * 获取对象中除排除字段外的所有字段名和值
-     * <p>
-     * 通过反射机制访问对象的所有声明字段（包括私有字段），排除指定字段后，将剩余字段的名称和值存入Map返回
-     * </p>
      * @param bean 待处理的JavaBean对象，不能为null
      * @param excludeFields 需要排除的字段名集合，可以为null（表示不排除任何字段）
      * @return 包含筛选后字段名和对应值的Map集合
