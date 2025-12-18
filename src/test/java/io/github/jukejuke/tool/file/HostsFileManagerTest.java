@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +39,8 @@ class HostsFileManagerTest {
         Files.write(testHostsFile, initialContent);
         // 创建HostsFileManager实例
         hostsFileManager = new HostsFileManager(testHostsFile.toString());
+        //hostsFileManager = new HostsFileManager("C:\\Users\\Administrator\\桌面\\test\\hosts");
+        //hostsFileManager = new HostsFileManager();
     }
 
     @Test
@@ -257,5 +261,13 @@ class HostsFileManagerTest {
         // 测试不存在的文件
         HostsFileManager nonExistentManager = new HostsFileManager("nonexistent/file/path");
         assertFalse(nonExistentManager.isHostsFileExists());
+    }
+
+    @Test
+    void testCopyHostsFile() throws IOException {
+        //String srcPath = "C:\\Users\\Administrator\\桌面\\test\\hosts";
+        String srcPath = "C:\\Windows\\System32\\drivers\\etc\\hosts";
+        String destPath = "C:\\Windows\\System32\\drivers\\etc\\hosts-123";
+        Files.copy(Paths.get(srcPath), Paths.get(destPath), StandardCopyOption.REPLACE_EXISTING);
     }
 }
