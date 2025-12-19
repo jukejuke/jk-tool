@@ -125,9 +125,13 @@ class ProxyIPAddressResolverTest {
         // 以下示例使用本地代理服务器（如Fiddler、Charles等）
         
 
-        ProxyIPAddressResolver resolver = new ProxyIPAddressResolver("127.0.0.1", 8888);
+        //ProxyIPAddressResolver resolver = new ProxyIPAddressResolver("127.0.0.1", 8888);
+        ProxyIPAddressResolver resolver = new ProxyIPAddressResolver("192.168.0.26", 2222,Proxy.Type.SOCKS);
         try {
-            List<String> ipList = resolver.getIpAddresses("www.baidu.com");
+            String ip = resolver.getFirstIpAddress("www.163.com");
+            System.out.println(ip);
+
+            List<String> ipList = resolver.getIpAddresses("www.163.com");
             assertNotNull(ipList);
             assertFalse(ipList.isEmpty());
         } catch (IOException e) {
