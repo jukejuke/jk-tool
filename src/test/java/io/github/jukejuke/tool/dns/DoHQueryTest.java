@@ -11,7 +11,8 @@ public class DoHQueryTest {
             // 使用Cloudflare的DoH服务
             //String dohHost = "cloudflare-dns.com";
             String dohHost = "dns.alidns.com";
-            String domain = "1-7.eq-workplace.zeiss.com.cn";
+            //String domain = "1-7.eq-workplace.zeiss.com.cn";
+            String domain = "zeissid-cdn.azureedge.net";
             
             System.out.println("Testing DoHQuery for " + domain);
             System.out.println("Using DoH host: " + dohHost);
