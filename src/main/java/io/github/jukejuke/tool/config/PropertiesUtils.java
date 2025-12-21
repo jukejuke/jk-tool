@@ -15,6 +15,7 @@ public class PropertiesUtils {
 
     /**
      * 从类路径保存properties文件
+     * <p>注意：此方法仅适用于开发环境，当应用程序以JAR文件形式运行时，无法修改JAR内部的配置文件</p>
      * @param properties Properties对象
      * @param filePath 类路径下的文件路径，如 "config.properties"
      * @throws IOException 保存文件时发生异常
@@ -27,6 +28,11 @@ public class PropertiesUtils {
         java.net.URL url = PropertiesUtils.class.getClassLoader().getResource(filePath);
         if (url == null) {
             throw new IOException("配置文件不存在: " + filePath);
+        }
+        
+        String protocol = url.getProtocol();
+        if ("jar".equals(protocol)) {
+            throw new IOException("无法修改JAR文件中的配置文件: " + filePath + ", 请使用saveToFileSystem方法保存到文件系统");
         }
         
         try (OutputStream outputStream = new FileOutputStream(url.getPath())) {
