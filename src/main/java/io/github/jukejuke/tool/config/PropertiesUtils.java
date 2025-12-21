@@ -1,16 +1,39 @@
 package io.github.jukejuke.tool.config;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 
 /**
- * Properties配置文件读取工具类
- * 提供从类路径或文件系统读取properties配置文件的功能
+ * Properties配置文件读写工具类
+ * 提供从类路径或文件系统读取、修改和保存properties配置文件的功能
  */
 public class PropertiesUtils {
 
+    /**
+     * 从类路径保存properties文件
+     * @param properties Properties对象
+     * @param filePath 类路径下的文件路径，如 "config.properties"
+     * @throws IOException 保存文件时发生异常
+     */
+    public static void saveToClassPath(Properties properties, String filePath) throws IOException {
+        if (properties == null) {
+            throw new IllegalArgumentException("Properties对象不能为空");
+        }
+        
+        java.net.URL url = PropertiesUtils.class.getClassLoader().getResource(filePath);
+        if (url == null) {
+            throw new IOException("配置文件不存在: " + filePath);
+        }
+        
+        try (OutputStream outputStream = new FileOutputStream(url.getPath())) {
+            properties.store(outputStream, null);
+        }
+    }
+    
     /**
      * 从类路径加载properties文件
      * @param filePath 类路径下的文件路径，如 "config.properties"
@@ -177,5 +200,21 @@ public class PropertiesUtils {
      */
     public static Double getDouble(Properties properties, String key) {
         return getDouble(properties, key, null);
+    }
+    
+    /**
+     * 从文件系统保存properties文件
+     * @param properties Properties对象
+     * @param filePath 文件系统的绝对路径，如 "D:/config.properties"
+     * @throws IOException 保存文件时发生异常
+     */
+    public static void saveToFileSystem(Properties properties, String filePath) throws IOException {
+        if (properties == null) {
+            throw new IllegalArgumentException("Properties对象不能为空");
+        }
+        
+        try (OutputStream outputStream = new FileOutputStream(filePath)) {
+            properties.store(outputStream, null);
+        }
     }
 }
