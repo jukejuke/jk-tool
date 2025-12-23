@@ -11,7 +11,7 @@ import java.util.List;
 public class ProxyDnsResolver {
 
     /**
-     * 使用dnsjava通过代理进行DNS查询
+     * 使用dnsjava通过代理进行DNS查询 （验证代理，目前未调通），通过dns tcp去解析域名
      * socks代理
      */
     public static List<String> resolveViaDnsJava(String domain, String dnsIp,String proxyHost, int proxyPort) throws Exception {
