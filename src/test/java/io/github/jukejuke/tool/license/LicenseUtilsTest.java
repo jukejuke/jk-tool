@@ -1,9 +1,11 @@
 package io.github.jukejuke.tool.license;
 
 import com.nimbusds.jose.JOSEException;
+import io.github.jukejuke.tool.date.DateUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +13,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LicenseUtilsTest {
-    private static final String SECRET_KEY = "this-is-a-very-secure-secret-key-for-license-validation-1234567890";
+    private static final String SECRET_KEY = "60fda43b-e076-11f0-acef-00163f006512";
     private LicenseUtils licenseUtils;
 
     @BeforeEach
@@ -134,7 +136,9 @@ class LicenseUtilsTest {
     @Test
     void testGenerateSimpleLicense() throws Exception {
         // 生成简单授权码
-        String licenseCode = licenseUtils.generateSimpleLicense("SimpleProduct", "SimpleUser", new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000));
+        Date expirationDate  = DateUtils.toDate(DateUtils.addHours(DateUtils.now(), 24*30));
+        String licenseCode = licenseUtils.generateSimpleLicense("test", "SimpleUser", expirationDate);
+        System.out.println(licenseCode);
         assertNotNull(licenseCode);
         assertFalse(licenseCode.isEmpty());
 
@@ -145,7 +149,7 @@ class LicenseUtilsTest {
         // 解析授权码
         LicenseInfo licenseInfo = licenseUtils.parseLicense(licenseCode);
         assertNotNull(licenseInfo);
-        assertEquals("SimpleProduct", licenseInfo.getProductName());
+        assertEquals("test", licenseInfo.getProductName());
         assertEquals("SimpleUser", licenseInfo.getLicensee());
         assertNotNull(licenseInfo.getExpirationDate());
     }
