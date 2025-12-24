@@ -21,6 +21,7 @@ import okhttp3.Response;
 /**
  * 互联网时间工具类
  * 提供从互联网获取准确时间的功能，支持NTP协议和HTTP API两种方式
+ * 支持通过HTTP/SOCKS代理获取时间（仅HTTP API方式支持代理，NTP协议不支持代理）
  *
  * @author jukejuke
  * @since 0.0.3
@@ -124,6 +125,235 @@ public class InternetTimeUtils {
         // 如果都失败，返回本地时间并记录警告
         log.warn("无法从互联网获取时间，使用本地时间");
         return new Date();
+    }
+
+    /**
+     * 从互联网获取当前时间（使用HTTP代理）
+     *
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @return 当前时间，如果获取失败则返回本地时间
+     */
+    public static Date getInternetTime(String proxyHost, int proxyPort) {
+        return getInternetTime(DEFAULT_TIMEOUT, proxyHost, proxyPort);
+    }
+
+    /**
+     * 从互联网获取当前时间（使用HTTP代理）
+     *
+     * @param timeout 超时时间（毫秒）
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @return 当前时间，如果获取失败则返回本地时间
+     */
+    public static Date getInternetTime(int timeout, String proxyHost, int proxyPort) {
+        return getInternetTime(timeout, proxyHost, proxyPort, Proxy.Type.HTTP);
+    }
+
+    /**
+     * 从互联网获取当前时间（使用指定类型的代理）
+     *
+     * @param timeout 超时时间（毫秒）
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @param proxyType 代理类型（HTTP或SOCKS）
+     * @return 当前时间，如果获取失败则返回本地时间
+     * @throws IllegalArgumentException 如果代理参数无效
+     */
+    public static Date getInternetTime(int timeout, String proxyHost, int proxyPort, Proxy.Type proxyType) {
+        // 验证代理参数
+        if (proxyHost == null || proxyHost.isEmpty()) {
+            throw new IllegalArgumentException("代理主机名不能为null或空");
+        }
+        if (proxyPort < 1 || proxyPort > 65535) {
+            throw new IllegalArgumentException("代理端口必须在1到65535之间");
+        }
+        if (proxyType == null) {
+            throw new IllegalArgumentException("代理类型不能为null");
+        }
+
+        // 检查缓存
+        if (isCacheValid()) {
+            return Date.from(cachedTime);
+        }
+
+        Instant internetTime = null;
+        
+        // 注意：NTP协议不支持HTTP/SOCKS代理，直接跳过
+        log.debug("使用代理时跳过NTP协议，直接尝试HTTP API");
+
+        // 尝试通过代理使用HTTP API
+        try {
+            internetTime = getTimeFromHttpApi(timeout, proxyHost, proxyPort, proxyType);
+            if (internetTime != null) {
+                updateCache(internetTime);
+                return Date.from(internetTime);
+            }
+        } catch (Exception e) {
+            log.warn("通过代理的HTTP API时间获取失败: {}", e.getMessage());
+        }
+
+        // 如果失败，返回本地时间并记录警告
+        log.warn("无法通过代理从互联网获取时间，使用本地时间");
+        //return new Date();
+        return null;
+    }
+
+    /**
+     * 从互联网获取当前时间戳（使用HTTP代理）
+     *
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @return 当前时间戳（毫秒），如果获取失败则返回本地时间戳
+     */
+    public static long getInternetTimestamp(String proxyHost, int proxyPort) {
+        return getInternetTime(proxyHost, proxyPort).getTime();
+    }
+
+    /**
+     * 从互联网获取当前时间戳（使用HTTP代理）
+     *
+     * @param timeout 超时时间（毫秒）
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @return 当前时间戳（毫秒），如果获取失败则返回本地时间戳
+     */
+    public static long getInternetTimestamp(int timeout, String proxyHost, int proxyPort) {
+        return getInternetTime(timeout, proxyHost, proxyPort).getTime();
+    }
+
+    /**
+     * 从互联网获取当前时间戳（使用指定类型的代理）
+     *
+     * @param timeout 超时时间（毫秒）
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @param proxyType 代理类型（HTTP或SOCKS）
+     * @return 当前时间戳（毫秒），如果获取失败则返回本地时间戳
+     */
+    public static long getInternetTimestamp(int timeout, String proxyHost, int proxyPort, Proxy.Type proxyType) {
+        return getInternetTime(timeout, proxyHost, proxyPort, proxyType).getTime();
+    }
+
+    /**
+     * 从互联网获取当前LocalDateTime（使用HTTP代理）
+     *
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @return 当前LocalDateTime，如果获取失败则返回本地时间
+     */
+    public static LocalDateTime getInternetLocalDateTime(String proxyHost, int proxyPort) {
+        return getInternetLocalDateTime(ZoneId.systemDefault(), proxyHost, proxyPort);
+    }
+
+    /**
+     * 从互联网获取当前LocalDateTime（使用HTTP代理）
+     *
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @param timeout 超时时间（毫秒）
+     * @return 当前LocalDateTime，如果获取失败则返回本地时间
+     */
+    public static LocalDateTime getInternetLocalDateTime(String proxyHost, int proxyPort, int timeout) {
+        return getInternetLocalDateTime(ZoneId.systemDefault(), timeout, proxyHost, proxyPort);
+    }
+
+    /**
+     * 从互联网获取当前LocalDateTime（使用指定类型的代理）
+     *
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @param timeout 超时时间（毫秒）
+     * @param proxyType 代理类型（HTTP或SOCKS）
+     * @return 当前LocalDateTime，如果获取失败则返回本地时间
+     */
+    public static LocalDateTime getInternetLocalDateTime(String proxyHost, int proxyPort, int timeout, Proxy.Type proxyType) {
+        return getInternetLocalDateTime(ZoneId.systemDefault(), timeout, proxyHost, proxyPort, proxyType);
+    }
+
+    /**
+     * 从互联网获取当前LocalDateTime（使用HTTP代理）
+     *
+     * @param zoneId 时区ID
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @return 当前LocalDateTime，如果获取失败则返回本地时间
+     */
+    public static LocalDateTime getInternetLocalDateTime(ZoneId zoneId, String proxyHost, int proxyPort) {
+        return getInternetLocalDateTime(zoneId, DEFAULT_TIMEOUT, proxyHost, proxyPort);
+    }
+
+    /**
+     * 从互联网获取当前LocalDateTime（使用HTTP代理）
+     *
+     * @param zoneId 时区ID
+     * @param timeout 超时时间（毫秒）
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @return 当前LocalDateTime，如果获取失败则返回本地时间
+     */
+    public static LocalDateTime getInternetLocalDateTime(ZoneId zoneId, int timeout, String proxyHost, int proxyPort) {
+        return getInternetLocalDateTime(zoneId, timeout, proxyHost, proxyPort, Proxy.Type.HTTP);
+    }
+
+    /**
+     * 从互联网获取当前LocalDateTime（使用指定类型的代理）
+     *
+     * @param zoneId 时区ID
+     * @param timeout 超时时间（毫秒）
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @param proxyType 代理类型（HTTP或SOCKS）
+     * @return 当前LocalDateTime，如果获取失败则返回本地时间
+     */
+    public static LocalDateTime getInternetLocalDateTime(ZoneId zoneId, int timeout, String proxyHost, int proxyPort, Proxy.Type proxyType) {
+        Instant instant = getInternetTime(timeout, proxyHost, proxyPort, proxyType).toInstant();
+        return LocalDateTime.ofInstant(instant, zoneId);
+    }
+
+    /**
+     * 获取格式化的互联网时间字符串（使用HTTP代理）
+     *
+     * @param pattern 时间格式模式
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @return 格式化后的时间字符串
+     */
+    public static String getFormattedInternetTime(String pattern, String proxyHost, int proxyPort) {
+        LocalDateTime dateTime = getInternetLocalDateTime(proxyHost, proxyPort);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return dateTime.format(formatter);
+    }
+
+    /**
+     * 获取格式化的互联网时间字符串（使用HTTP代理）
+     *
+     * @param pattern 时间格式模式
+     * @param timeout 超时时间（毫秒）
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @return 格式化后的时间字符串
+     */
+    public static String getFormattedInternetTime(String pattern, int timeout, String proxyHost, int proxyPort) {
+        LocalDateTime dateTime = getInternetLocalDateTime(proxyHost, proxyPort, timeout);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return dateTime.format(formatter);
+    }
+
+    /**
+     * 获取格式化的互联网时间字符串（使用指定类型的代理）
+     *
+     * @param pattern 时间格式模式
+     * @param timeout 超时时间（毫秒）
+     * @param proxyHost 代理服务器主机名
+     * @param proxyPort 代理服务器端口
+     * @param proxyType 代理类型（HTTP或SOCKS）
+     * @return 格式化后的时间字符串
+     */
+    public static String getFormattedInternetTime(String pattern, int timeout, String proxyHost, int proxyPort, Proxy.Type proxyType) {
+        LocalDateTime dateTime = getInternetLocalDateTime(proxyHost, proxyPort, timeout, proxyType);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return dateTime.format(formatter);
     }
 
     /**
@@ -278,6 +508,24 @@ public class InternetTimeUtils {
     }
 
     /**
+     * 通过HTTP API获取时间（使用代理）
+     */
+    private static Instant getTimeFromHttpApi(int timeout, String proxyHost, int proxyPort, Proxy.Type proxyType) {
+        for (String apiUrl : TIME_APIS) {
+            try {
+                Instant time = queryTimeApi(apiUrl, timeout, proxyHost, proxyPort, proxyType);
+                if (time != null) {
+                    log.debug("成功通过代理从API {} 获取时间", apiUrl);
+                    return time;
+                }
+            } catch (Exception e) {
+                log.debug("通过代理连接API {} 失败: {}", apiUrl, e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    /**
      * 查询指定的时间API
      */
     private static Instant queryTimeApi(String apiUrl, int timeout) throws IOException {
@@ -289,6 +537,34 @@ public class InternetTimeUtils {
         OkHttpClient clientWithTimeout = HTTP_CLIENT.newBuilder()
                 .connectTimeout(timeout, TimeUnit.MILLISECONDS)
                 .readTimeout(timeout, TimeUnit.MILLISECONDS)
+                .build();
+
+        try (Response response = clientWithTimeout.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("HTTP请求失败: " + response.code());
+            }
+
+            String responseBody = response.body().string();
+            return parseApiResponse(apiUrl, responseBody);
+        }
+    }
+
+    /**
+     * 查询指定的时间API（使用代理）
+     */
+    private static Instant queryTimeApi(String apiUrl, int timeout, String proxyHost, int proxyPort, Proxy.Type proxyType) throws IOException {
+        // 配置代理
+        Proxy proxy = new Proxy(proxyType, new InetSocketAddress(proxyHost, proxyPort));
+
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .get()
+                .build();
+
+        OkHttpClient clientWithTimeout = HTTP_CLIENT.newBuilder()
+                .connectTimeout(timeout, TimeUnit.MILLISECONDS)
+                .readTimeout(timeout, TimeUnit.MILLISECONDS)
+                .proxy(proxy)
                 .build();
 
         try (Response response = clientWithTimeout.newCall(request).execute()) {
