@@ -13,7 +13,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LicenseUtilsTest {
-    private static final String SECRET_KEY = "60fda43b-e076-11f0-acef-00163f006512";
+    private static final String SECRET_KEY = "60fda43b";
     private LicenseUtils licenseUtils;
 
     @BeforeEach
