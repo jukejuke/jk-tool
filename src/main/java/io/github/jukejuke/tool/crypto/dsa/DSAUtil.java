@@ -6,6 +6,14 @@ package io.github.jukejuke.tool.crypto.dsa;
 import java.security.*;
 import java.util.Base64;
 
+import io.github.jukejuke.tool.log.LogUtil;
+
+/**
+ * DSA工具类，提供DSA密钥对生成、签名和验证功能
+ * DSA： 专门为数字签名而设计，不能用于加密。
+ * 密钥特点：公钥和私钥角色固定，不可互换
+ * 性能：签名生成慢，验证快
+ */
 public class DSAUtil {
 
     /*

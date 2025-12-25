@@ -8,7 +8,16 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import javax.crypto.Cipher;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
+/**
+ * RSA工具类，提供RSA密钥对生成、加密解密和签名验证功能
+ * RSA： 既能用于加密/解密，也能用于数字签名。
+ * 密钥特点： 公钥和私钥可互换使用
+ * 性能： 签名生成快，验证慢
+ */
 public class RSAUtil {
     
     /**
@@ -134,5 +143,55 @@ public class RSAUtil {
      */
     public static String exportPrivateKey(PrivateKey privateKey) {
         return Base64.getEncoder().encodeToString(privateKey.getEncoded());
+    }
+
+    /**
+     * 导出公钥到文件（Base64编码）
+     * @param publicKey 公钥对象
+     * @param filePath 文件路径
+     * @throws Exception 导出过程中发生错误时抛出
+     */
+    public static void exportPublicKeyToFile(PublicKey publicKey, String filePath) throws Exception {
+        String publicKeyStr = exportPublicKey(publicKey);
+        Files.write(Paths.get(filePath), publicKeyStr.getBytes(StandardCharsets.UTF_8));
+
+        System.out.println("密钥已导出到文件:");
+        System.out.println("公钥: " + filePath);
+    }
+
+    /**
+     * 导出私钥到文件（Base64编码）
+     * @param privateKey 私钥对象
+     * @param filePath 文件路径
+     * @throws Exception 导出过程中发生错误时抛出
+     */
+    public static void exportPrivateKeyToFile(PrivateKey privateKey, String filePath) throws Exception {
+        String privateKeyStr = exportPrivateKey(privateKey);
+        Files.write(Paths.get(filePath), privateKeyStr.getBytes(StandardCharsets.UTF_8));
+
+        System.out.println("密钥已导出到文件:");
+        System.out.println("私钥: " + filePath);
+    }
+
+    /**
+     * 从文件导入公钥（Base64编码）
+     * @param filePath 文件路径
+     * @return 公钥对象
+     * @throws Exception 导入过程中发生错误时抛出
+     */
+    public static PublicKey importPublicKeyFromFile(String filePath) throws Exception {
+        String publicKeyStr = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
+        return importPublicKey(publicKeyStr);
+    }
+
+    /**
+     * 从文件导入私钥（Base64编码）
+     * @param filePath 文件路径
+     * @return 私钥对象
+     * @throws Exception 导入过程中发生错误时抛出
+     */
+    public static PrivateKey importPrivateKeyFromFile(String filePath) throws Exception {
+        String privateKeyStr = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
+        return importPrivateKey(privateKeyStr);
     }
 }

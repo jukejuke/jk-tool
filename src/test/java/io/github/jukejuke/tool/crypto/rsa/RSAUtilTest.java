@@ -5,10 +5,13 @@ package io.github.jukejuke.tool.crypto.rsa;
 
 import io.github.jukejuke.tool.log.LogUtil;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import static org.junit.jupiter.api.Assertions.*;
+import java.nio.file.Path;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.nio.file.Files;
 
 public class RSAUtilTest {
 
@@ -96,5 +99,62 @@ public class RSAUtilTest {
     void importInvalidKey_ThrowsException() {
         assertThrows(Exception.class, () -> RSAUtil.importPublicKey("invalid_public_key"), "导入无效公钥应抛出异常");
         assertThrows(Exception.class, () -> RSAUtil.importPrivateKey("invalid_private_key"), "导入无效私钥应抛出异常");
+    }
+
+    @TempDir
+    Path tempDir;
+
+    @Test
+    void exportAndImportPublicKeyFromFile_Success() throws Exception {
+        KeyPair keyPair = RSAUtil.generateKeyPair();
+        PublicKey originalPublicKey = keyPair.getPublic();
+
+        Path publicKeyPath = tempDir.resolve("public_key_test.pem");
+        RSAUtil.exportPublicKeyToFile(originalPublicKey, publicKeyPath.toString());
+
+        assertTrue(Files.exists(publicKeyPath), "公钥文件未创建");
+        assertTrue(Files.size(publicKeyPath) > 0, "公钥文件内容为空");
+
+        PublicKey importedPublicKey = RSAUtil.importPublicKeyFromFile(publicKeyPath.toString());
+        assertNotNull(importedPublicKey, "导入的公钥为空");
+        assertEquals(originalPublicKey, importedPublicKey, "导入的公钥与原始公钥不一致");
+
+        String encryptedData = RSAUtil.encryptByPublicKey(TEST_DATA, importedPublicKey);
+        String decryptedData = RSAUtil.decryptByPrivateKey(encryptedData, keyPair.getPrivate());
+        assertEquals(TEST_DATA, decryptedData, "使用导入的公钥加密失败");
+    }
+
+    @Test
+    void exportAndImportPrivateKeyFromFile_Success() throws Exception {
+        KeyPair keyPair = RSAUtil.generateKeyPair();
+        PrivateKey originalPrivateKey = keyPair.getPrivate();
+
+        Path privateKeyPath = tempDir.resolve("private_key_test.pem");
+        RSAUtil.exportPrivateKeyToFile(originalPrivateKey, privateKeyPath.toString());
+
+        assertTrue(Files.exists(privateKeyPath), "私钥文件未创建");
+        assertTrue(Files.size(privateKeyPath) > 0, "私钥文件内容为空");
+
+        PrivateKey importedPrivateKey = RSAUtil.importPrivateKeyFromFile(privateKeyPath.toString());
+        assertNotNull(importedPrivateKey, "导入的私钥为空");
+        assertEquals(originalPrivateKey, importedPrivateKey, "导入的私钥与原始私钥不一致");
+
+        String encryptedData = RSAUtil.encryptByPublicKey(TEST_DATA, keyPair.getPublic());
+        String decryptedData = RSAUtil.decryptByPrivateKey(encryptedData, importedPrivateKey);
+        assertEquals(TEST_DATA, decryptedData, "使用导入的私钥解密失败");
+    }
+
+    @Test
+    void importPublicKeyFromNonExistentFile_ThrowsException() {
+        Path nonExistentPath = tempDir.resolve("non_existent_public_key.pem");
+        assertThrows(Exception.class, () -> RSAUtil.importPublicKeyFromFile(nonExistentPath.toString()), "导入不存在文件应抛出异常");
+    }
+
+    @Test
+    void importPrivateKeyFromInvalidFile_ThrowsException() throws Exception {
+        Path invalidKeyPath = tempDir.resolve("invalid_private_key.pem");
+        Files.write(invalidKeyPath, "invalid_key_content".getBytes());
+
+        assertThrows(Exception.class, () -> RSAUtil.importPrivateKeyFromFile(invalidKeyPath.toString()), "导入无效格式文件应抛出异常");
     }
 }
