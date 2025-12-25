@@ -1,5 +1,6 @@
 package io.github.jukejuke.tool.crypto;
 
+import io.github.jukejuke.tool.log.LogUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,21 +47,22 @@ public class SecureUtilTest {
 
     @Test
     void testMd5() throws Exception {
-        // 已知MD5测试值："testData123456"的MD5哈希为"1189FB7F0FE0380B601966DCA119ECF6"
+        // 已知MD5测试值："testData123456"的MD5哈希为"1189fb7f0fe0380b601966dca119ecf6"
         String result = SecureUtil.md5(TEST_DATA);
-        assertEquals("1189FB7F0FE0380B601966DCA119ECF6", result);
+        assertEquals("1189fb7f0fe0380b601966dca119ecf6", result);
     }
 
     @Test
     void testSha1() throws Exception {
-        // 已知SHA-1测试值："testData123456"的SHA-1哈希为"c8059e2ec7419f590e79d7f1b774bfe6c76b83183"
+        // 已知SHA-1测试值："testData123456"的SHA-1哈希为"288f50fa6f1487e9aef99e25bf4d92c3b369c3af"
         String result = SecureUtil.sha1(TEST_DATA);
-        assertEquals("c8059e2ec7419f590e79d7f1b774bfe6c76b83183", result);
+        assertEquals("288f50fa6f1487e9aef99e25bf4d92c3b369c3af", result);
     }
 
     @Test
     void testHmacMd5() throws Exception {
         String result = SecureUtil.hmacMd5(TEST_DATA, TEST_KEY);
+        LogUtil.info(result);
         assertNotNull(result);
         assertFalse(result.isEmpty());
     }
@@ -68,6 +70,7 @@ public class SecureUtilTest {
     @Test
     void testHmacSha1() throws Exception {
         String result = SecureUtil.hmacSha1(TEST_DATA, TEST_KEY);
+        LogUtil.info(result);
         assertNotNull(result);
         assertFalse(result.isEmpty());
     }

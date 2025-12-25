@@ -69,7 +69,7 @@ public class SecureUtil {
     }
 
     /**
-     * MD5哈希算法
+     * MD5哈希算法 (摘要算法)
      * @param data 待哈希的数据
      * @return 哈希结果的十六进制字符串
      * @throws Exception 当哈希过程中发生错误时抛出
@@ -82,7 +82,7 @@ public class SecureUtil {
     }
 
     /**
-     * SHA-1哈希算法
+     * SHA-1哈希算法 (摘要算法)
      * @param data 待哈希的数据
      * @return 哈希结果的十六进制字符串
      * @throws Exception 当哈希过程中发生错误时抛出
@@ -94,7 +94,7 @@ public class SecureUtil {
     }
 
     /**
-     * 通用HMAC方法
+     * 通用HMAC方法 (摘要算法)
      * @param data 待处理的数据
      * @param key 密钥字符串
      * @param algorithm HMAC算法名称(如HmacMD5, HmacSHA1)
@@ -110,7 +110,7 @@ public class SecureUtil {
     }
 
     /**
-     * HMAC-MD5算法
+     * HMAC-MD5算法 (摘要算法)
      * @param data 待处理的数据
      * @param key 密钥字符串
      * @return HMAC-MD5结果的Base64编码字符串
@@ -121,7 +121,7 @@ public class SecureUtil {
     }
 
     /**
-     * HMAC-SHA1算法
+     * HMAC-SHA1算法 (摘要算法)
      * @param data 待处理的数据
      * @param key 密钥字符串
      * @return HMAC-SHA1结果的Base64编码字符串
