@@ -132,7 +132,7 @@ public class SecureUtil {
     }
 
     /**
-     * RSA加密/解密方法
+     * RSA加密/解密方法 (非对称加密)
      * @param data 待处理的数据
      * @param key RSA公钥或私钥
      * @param mode 加密模式:Cipher.ENCRYPT_MODE 或 Cipher.DECRYPT_MODE
@@ -156,7 +156,7 @@ public class SecureUtil {
     }
 
     /**
-     * DSA数字签名
+     * DSA数字签名 (非对称加密)
      * @param data 待签名的数据
      * @param privateKey DSA私钥
      * @return 签名结果的Base64编码字符串
