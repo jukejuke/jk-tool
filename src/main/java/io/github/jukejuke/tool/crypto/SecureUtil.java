@@ -12,6 +12,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.*;
 import java.util.Base64;
 import java.util.UUID;
+import java.nio.charset.StandardCharsets;
 
 public class SecureUtil {
 
@@ -75,7 +76,8 @@ public class SecureUtil {
      */
     public static String md5(String data) throws Exception {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
-        byte[] result = md5.digest(data.getBytes());
+        // 显式指定UTF-8编码，确保跨平台一致性
+        byte[] result = md5.digest(data.getBytes(StandardCharsets.UTF_8));
         return bytesToHex(result);
     }
 

@@ -46,9 +46,9 @@ public class SecureUtilTest {
 
     @Test
     void testMd5() throws Exception {
-        // 已知MD5测试值："testData123456"的MD5哈希为"e10adc3949ba59abbe56e057f20f883e"
+        // 已知MD5测试值："testData123456"的MD5哈希为"1189FB7F0FE0380B601966DCA119ECF6"
         String result = SecureUtil.md5(TEST_DATA);
-        assertEquals("e10adc3949ba59abbe56e057f20f883e", result);
+        assertEquals("1189FB7F0FE0380B601966DCA119ECF6", result);
     }
 
     @Test
