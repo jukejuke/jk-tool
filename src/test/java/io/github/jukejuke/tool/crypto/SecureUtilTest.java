@@ -81,7 +81,9 @@ public class SecureUtilTest {
         PrivateKey privateKey = rsaKeyPair.getPrivate();
 
         String encrypted = SecureUtil.rsa(TEST_DATA, publicKey, Cipher.ENCRYPT_MODE);
+        LogUtil.info(encrypted);
         String decrypted = SecureUtil.rsa(encrypted, privateKey, Cipher.DECRYPT_MODE);
+        LogUtil.info(decrypted);
         assertEquals(TEST_DATA, decrypted);
     }
 

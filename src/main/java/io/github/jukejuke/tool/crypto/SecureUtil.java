@@ -142,8 +142,17 @@ public class SecureUtil {
     public static String rsa(String data, Key key, int mode) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(mode, key);
-        byte[] result = cipher.doFinal(data.getBytes());
-        return Base64.getEncoder().encodeToString(result);
+        byte[] result;
+        if (mode == Cipher.ENCRYPT_MODE) {
+            // 加密：明文→加密→Base64编码
+            result = cipher.doFinal(data.getBytes());
+            return Base64.getEncoder().encodeToString(result);
+        } else {
+            // 解密：Base64解码→解密→明文
+            byte[] decodedData = Base64.getDecoder().decode(data);
+            result = cipher.doFinal(decodedData);
+            return new String(result);
+        }
     }
 
     /**
