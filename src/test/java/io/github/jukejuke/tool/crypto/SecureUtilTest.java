@@ -30,7 +30,9 @@ public class SecureUtilTest {
 
     @Test
     void testAesEncryptionDecryption() throws Exception {
+        // 加密
         String encrypted = SecureUtil.aes(TEST_DATA, aesKey.getEncoded(), Cipher.ENCRYPT_MODE);
+        // 解密
         String decrypted = SecureUtil.aes(encrypted, aesKey.getEncoded(), Cipher.DECRYPT_MODE);
         assertEquals(TEST_DATA, decrypted);
     }
