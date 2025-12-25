@@ -16,7 +16,7 @@ import java.util.UUID;
 public class SecureUtil {
 
     /**
-     * AES加密/解密方法
+     * AES加密/解密方法 (对称加密)
      * @param data 待处理的数据
      * @param key 密钥字节数组
      * @param mode 加密模式:Cipher.ENCRYPT_MODE 或 Cipher.DECRYPT_MODE
@@ -42,7 +42,7 @@ public class SecureUtil {
     }
 
     /**
-     * DES加密/解密方法
+     * DES加密/解密方法 (对称加密)
      * @param data 待处理的数据
      * @param key 密钥字节数组
      * @param mode 加密模式:Cipher.ENCRYPT_MODE 或 Cipher.DECRYPT_MODE
