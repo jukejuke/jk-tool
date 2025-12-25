@@ -209,7 +209,7 @@ public class SecureUtil {
      * @throws Exception 当签名过程中发生错误时抛出
      */
     public static String generateSignature(String data, PrivateKey privateKey, String algorithm) throws Exception {
-        Signature signature = Signature.getInstance("SHA256withDSA");
+        Signature signature = Signature.getInstance(algorithm);
         signature.initSign(privateKey);
         signature.update(data.getBytes());
         byte[] result = signature.sign();

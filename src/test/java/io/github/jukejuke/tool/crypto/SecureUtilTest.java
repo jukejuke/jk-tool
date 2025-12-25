@@ -103,6 +103,7 @@ public class SecureUtilTest {
     @Test
     void testSimpleUUID() {
         String uuid = SecureUtil.simpleUUID();
+        LogUtil.info(uuid);
         assertNotNull(uuid);
         assertEquals(32, uuid.length()); // UUID去掉连字符后长度为32
         assertTrue(uuid.matches("^[0-9a-fA-F]{32}$"));
