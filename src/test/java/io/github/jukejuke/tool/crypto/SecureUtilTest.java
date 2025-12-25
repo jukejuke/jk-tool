@@ -93,6 +93,7 @@ public class SecureUtilTest {
         PublicKey publicKey = dsaKeyPair.getPublic();
 
         String signature = SecureUtil.dsa(TEST_DATA, privateKey);
+        LogUtil.info(signature);
         // 这里需要实现DSA签名验证逻辑，假设SecureUtil有verifyDsa方法
         // 由于原类中没有验证方法，此测试仅验证签名生成不抛出异常
         assertNotNull(signature);
