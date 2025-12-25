@@ -51,10 +51,20 @@ public class SecureUtil {
      */
     public static String des(String data, byte[] key, int mode) throws Exception {
         SecretKeySpec secretKeySpec = new SecretKeySpec(key, "DES");
-        Cipher cipher = Cipher.getInstance("DES");
+        // 使用带填充的DES算法模式，确保数据块大小正确
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
         cipher.init(mode, secretKeySpec);
-        byte[] result = cipher.doFinal(data.getBytes());
-        return Base64.getEncoder().encodeToString(result);
+        byte[] result;
+        if (mode == Cipher.ENCRYPT_MODE) {
+            // 加密：明文→加密→Base64编码
+            result = cipher.doFinal(data.getBytes());
+            return Base64.getEncoder().encodeToString(result);
+        } else {
+            // 解密：Base64解码→解密→明文
+            byte[] decodedData = Base64.getDecoder().decode(data);
+            result = cipher.doFinal(decodedData);
+            return new String(result);
+        }
     }
 
     /**
