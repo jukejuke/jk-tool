@@ -190,4 +190,95 @@ public class HttpUtilTest {
                    "应该返回错误信息或空结果");
         System.out.println("错误处理测试通过: " + result);
     }
+    
+    // ==================== 自定义字符集测试 ====================
+    
+    @Test
+    @DisplayName("GET 请求 - 自定义 UTF-8 字符集测试")
+    void testGetWithUTF8Charset() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("wd", "测试");
+        params.put("city", "北京");
+        
+        String result = HttpUtil.get("https://www.baidu.com/s", params, "UTF-8");
+        
+        assertNotNull(result, "响应结果不应为空");
+        assertFalse(result.isEmpty(), "响应结果不应为空字符串");
+        System.out.println("GET UTF-8 字符集测试通过，响应长度: " + result.length());
+    }
+    
+    @Test
+    @DisplayName("GET 请求 - GBK 字符集测试")
+    void testGetWithGBKCharset() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("wd", "测试");
+        params.put("city", "北京");
+        
+        String result = HttpUtil.get("https://www.baidu.com/s", params, "GBK");
+        
+        assertNotNull(result, "响应结果不应为空");
+        assertFalse(result.isEmpty(), "响应结果不应为空字符串");
+        System.out.println("GET GBK 字符集测试通过，响应长度: " + result.length());
+    }
+    
+    @Test
+    @DisplayName("GET 请求 - ISO-8859-1 字符集测试")
+    void testGetWithISO88591Charset() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("wd", "test");
+        params.put("query", "hello");
+        
+        String result = HttpUtil.get("https://www.baidu.com/s", params, "ISO-8859-1");
+        
+        assertNotNull(result, "响应结果不应为空");
+        assertFalse(result.isEmpty(), "响应结果不应为空字符串");
+        System.out.println("GET ISO-8859-1 字符集测试通过，响应长度: " + result.length());
+    }
+    
+    @Test
+    @DisplayName("GET 请求 - GB2312 字符集测试")
+    void testGetWithGB2312Charset() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("wd", "测试");
+        params.put("city", "上海");
+        
+        String result = HttpUtil.get("https://www.baidu.com/s", params, "GB2312");
+        
+        assertNotNull(result, "响应结果不应为空");
+        assertFalse(result.isEmpty(), "响应结果不应为空字符串");
+        System.out.println("GET GB2312 字符集测试通过，响应长度: " + result.length());
+    }
+    
+    @Test
+    @DisplayName("GET 请求 - 空参数 + 自定义字符集测试")
+    void testGetEmptyParamsWithCharset() {
+        Map<String, Object> params = new HashMap<>();
+        
+        String result = HttpUtil.get("https://www.baidu.com", params, "UTF-8");
+        
+        assertNotNull(result, "响应结果不应为空");
+        assertFalse(result.isEmpty(), "响应结果不应为空字符串");
+        System.out.println("GET 空参数 + 自定义字符集测试通过");
+    }
+    
+    @Test
+    @DisplayName("GET 请求 - null 参数 + 自定义字符集测试")
+    void testGetNullParamsWithCharset() {
+        String result = HttpUtil.get("https://www.baidu.com", null, "UTF-8");
+        
+        assertNotNull(result, "响应结果不应为空");
+        assertFalse(result.isEmpty(), "响应结果不应为空字符串");
+        System.out.println("GET null 参数 + 自定义字符集测试通过");
+    }
+    
+    @Test
+    @DisplayName("GET 请求 - 无参数 + 自定义字符集测试")
+    void testGetNoParamsWithCharset() {
+        // 调用无参数方法验证默认行为
+        String result1 = HttpUtil.get("https://www.baidu.com");
+        
+        assertNotNull(result1, "响应结果不应为空");
+        assertFalse(result1.isEmpty(), "响应结果不应为空字符串");
+        System.out.println("GET 无参数方法测试通过，响应长度: " + result1.length());
+    }
 }

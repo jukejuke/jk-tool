@@ -33,6 +33,18 @@ public class HttpUtil {
      * @return 响应内容
      */
     public static String get(String url, Map<String, Object> params) {
+        return get(url, params, StandardCharsets.UTF_8.name());
+    }
+    
+    /**
+     * 发送 GET 请求（带参数，自定义字符集）
+     * 
+     * @param url 请求地址
+     * @param params 参数 map，会自动拼接到 URL 后面
+     * @param charset 字符集名称，如 UTF-8、GBK、ISO-8859-1 等
+     * @return 响应内容
+     */
+    public static String get(String url, Map<String, Object> params, String charset) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         StringBuilder result = new StringBuilder();
@@ -46,9 +58,9 @@ public class HttpUtil {
                     if (!first) {
                         paramBuilder.append("&");
                     }
-                    paramBuilder.append(URLEncoder.encode(param.getKey(), StandardCharsets.UTF_8.toString()))
+                    paramBuilder.append(URLEncoder.encode(param.getKey(), charset))
                                .append("=")
-                               .append(URLEncoder.encode(String.valueOf(param.getValue()), StandardCharsets.UTF_8.toString()));
+                               .append(URLEncoder.encode(String.valueOf(param.getValue()), charset));
                     first = false;
                 }
                 url += "?" + paramBuilder.toString();
@@ -65,14 +77,14 @@ public class HttpUtil {
             // 读取响应
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), charset));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     result.append(line);
                 }
             } else {
                 // 读取错误流
-                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8));
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), charset));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     result.append(line);
@@ -237,3 +249,4 @@ public class HttpUtil {
         return result.toString();
     }
 }
+
