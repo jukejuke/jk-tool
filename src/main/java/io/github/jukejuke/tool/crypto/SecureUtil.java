@@ -1,7 +1,4 @@
-/**
- * 安全工具类，提供各种加密、解密、哈希和签名算法的实现
- * 支持对称加密(AES,DES)、摘要算法(MD5,SHA-1)、HMAC、非对称加密(RSA)和数字签名(DSA)
- */
+
 package io.github.jukejuke.tool.crypto;
 
 import javax.crypto.Cipher;
@@ -14,6 +11,11 @@ import java.util.Base64;
 import java.util.UUID;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * 安全工具类，提供各种加密、解密、哈希和签名算法的实现
+ * 支持对称加密(AES,DES)、摘要算法(MD5,SHA-1)、HMAC、非对称加密(RSA)和数字签名(DSA)
+ */
+@Deprecated
 public class SecureUtil {
 
     /**

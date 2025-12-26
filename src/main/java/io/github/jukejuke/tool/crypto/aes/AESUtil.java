@@ -1,8 +1,3 @@
-/**
- * AES工具类，提供AES加密/解密、密钥生成和文件加解密功能
- * 支持多种加密模式：GCM（推荐）、ECB、CBC
- * AES：对称加密算法，加密解密使用相同密钥
- */
 package io.github.jukejuke.tool.crypto.aes;
 
 import javax.crypto.Cipher;
