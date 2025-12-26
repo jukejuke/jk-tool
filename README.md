@@ -4,16 +4,43 @@ JK Tool 是一个基于 Java 的工具库，主要用于通过高德地图（Ama
 
 ## 功能特点
 
+### 地理编码服务
 - **高德地图反地理编码**：通过 `AmapRegeoCoder` 类实现，支持将经纬度转换为结构化地址信息。
 - **高德地图地理编码**：通过 `AmapGeoCoder` 类实现，支持将地址信息转换为经纬度。
 - **高德地图区域查询**：通过 `AmapDistrictQuery` 类实现，支持根据关键字查询区域信息。
 - **天地图反地理编码**：通过 `TiandituGeocoder` 类实现，支持将经纬度转换为结构化地址信息。
 - **天地图行政区域查询**：通过 `TiandituAdministrative` 类实现，支持查询行政区域信息。
+
+### 通用工具类
+- **HTTP请求工具**：通过 `HttpUtil` 类实现，支持GET、POST、POST JSON等常用HTTP请求方法。
+- **字符串处理**：通过 `StringUtils` 类实现，提供字符串判空、分割、连接、替换、格式化等常用操作。
+- **文件操作**：通过 `FileUtils` 类实现，支持文件的创建、读取、写入、删除以及目录的创建和遍历等操作。
+- **配置文件处理**：通过 `PropertiesUtils` 类实现，支持从类路径或文件系统读取、修改和保存properties配置文件。
 - **Bean字段过滤**：通过 `BeanFieldFilter` 类实现，支持灵活过滤Java Bean中的字段。
 - **Bean属性操作**：通过 `BeanPropertyUtils` 类实现，提供Bean属性的读取和设置工具。
 - **日期时间处理**：通过 `DateUtils` 类实现，支持日期格式化、转换和计算功能。
+- **网络时间同步**：通过 `InternetTimeUtils` 类实现，支持从互联网时间服务器获取标准时间。
 - **Freemarker模板**：通过 `FreemarkerUtils` 类实现，简化模板渲染和数据绑定操作。
 - **JWT令牌处理**：通过 `JwtUtils` 类实现，支持JWT令牌的生成、解析和验证功能。
+
+### 加密解密工具
+- **安全工具类**：通过 `SecureUtil` 类实现，提供AES/DES对称加密、MD5/SHA哈希算法、HMAC消息认证码、UUID生成等安全相关功能。
+- **AES加解密**：通过 `AESUtil` 类实现，提供AES对称加密算法的完整实现，支持多种模式和填充方式。
+- **RSA加解密**：通过 `RSAUtil` 类实现，提供RSA非对称加密算法的密钥生成、加密、解密、签名和验证功能。
+- **DSA数字签名**：通过 `DSAUtil` 和 `DSAKeyExportImport` 类实现，提供DSA数字签名算法的密钥生成、签名和验证功能。
+- **摘要算法**：通过 `DigestUtil` 类实现，支持MD5、SHA-1、SHA-256、SHA-512等常用摘要算法。
+
+### 系统工具类
+- **Hosts文件管理**：通过 `HostsFileManager` 类实现，支持Hosts文件的读取、编辑和备份功能。
+- **DNS解析工具**：通过 `DnsResolver`、`ProxyDnsResolver`、`DoHQuery`、`DoHWithHttpProxy` 类实现，支持DNS查询和DNS over HTTPS功能。
+- **IP地址处理**：通过 `IPAddressResolver`、`ProxyIPAddressResolver` 类实现，支持IP地址解析和代理IP识别。
+- **进程管理**：通过 `WindowExeProcessManager` 类实现，支持Windows系统下的进程启动、查询和管理。
+- **日志工具**：通过 `LogUtil` 类实现，提供简洁的日志记录功能。
+
+### 许可证管理
+- **硬件信息获取**：通过 `HardwareUtils` 类实现，支持获取计算机硬件标识信息。
+- **许可证生成**：通过 `LicenseUtils` 类实现，支持生成基于硬件信息的软件许可证。
+- **许可证验证**：通过 `LicenseInfo` 类实现，支持验证和解析许可证信息。
 
 ## 使用方法
 
