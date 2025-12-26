@@ -1,6 +1,6 @@
 package io.github.jukejuke.tool.crypto;
 
-import org.junit.jupiter.api.BeforeEach;
+import io.github.jukejuke.tool.crypto.digest.DigestUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
