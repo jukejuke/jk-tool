@@ -15,11 +15,12 @@ public class CoordinateConverterTest {
     @DisplayName("测试WGS-84转GCJ-02转换")
     public void testWgs84ToGcj02() {
         // 北京天安门坐标
-        CoordinateConverter.Point wgs84Point = new CoordinateConverter.Point(116.481499, 39.990475);
+        CoordinateConverter.Point wgs84Point = new CoordinateConverter.Point(104.220860,31.004800);
         CoordinateConverter.Point gcj02Point = CoordinateConverter.wgs84ToGcj02(wgs84Point);
         
         System.out.println("WGS-84原始坐标: " + wgs84Point);
         System.out.println("GCJ-02转换坐标: " + gcj02Point);
+        System.out.println("经度: " + gcj02Point.getLongitude()+","+gcj02Point.getLatitude());
         
         assertNotNull(gcj02Point);
         assertTrue(gcj02Point.getLongitude() > wgs84Point.getLongitude(), "经度应该增加");
@@ -30,11 +31,12 @@ public class CoordinateConverterTest {
     @DisplayName("测试GCJ-02转WGS-84转换")
     public void testGcj02ToWgs84() {
         // GCJ-02坐标（北京地区）
-        CoordinateConverter.Point gcj02Point = new CoordinateConverter.Point(116.487586, 39.991754);
+        CoordinateConverter.Point gcj02Point = new CoordinateConverter.Point(104.249339,30.998391);
         CoordinateConverter.Point wgs84Point = CoordinateConverter.gcj02ToWgs84(gcj02Point);
         
         System.out.println("GCJ-02原始坐标: " + gcj02Point);
         System.out.println("WGS-84转换坐标: " + wgs84Point);
+        System.out.println("经度: " + wgs84Point.getLongitude()+","+wgs84Point.getLatitude());
         
         assertNotNull(wgs84Point);
         assertTrue(wgs84Point.getLongitude() < gcj02Point.getLongitude(), "经度应该减少");
@@ -44,11 +46,12 @@ public class CoordinateConverterTest {
     @Test
     @DisplayName("测试GCJ-02转BD-09转换")
     public void testGcj02ToBd09() {
-        CoordinateConverter.Point gcj02Point = new CoordinateConverter.Point(116.404269, 39.913385);
+        CoordinateConverter.Point gcj02Point = new CoordinateConverter.Point(104.246950,31.000680);
         CoordinateConverter.Point bd09Point = CoordinateConverter.gcj02ToBd09(gcj02Point);
         
         System.out.println("GCJ-02原始坐标: " + gcj02Point);
         System.out.println("BD-09转换坐标: " + bd09Point);
+        System.out.println("经度: " + bd09Point.getLongitude()+","+bd09Point.getLatitude());
         
         assertNotNull(bd09Point);
         assertTrue(bd09Point.getLongitude() > gcj02Point.getLongitude(), "经度应该增加");
