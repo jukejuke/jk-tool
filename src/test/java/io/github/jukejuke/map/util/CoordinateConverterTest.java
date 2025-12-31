@@ -72,11 +72,12 @@ public class CoordinateConverterTest {
     @Test
     @DisplayName("测试WGS-84转BD-09转换")
     public void testWgs84ToBd09() {
-        CoordinateConverter.Point wgs84Point = new CoordinateConverter.Point(116.397428, 39.90923);
+        CoordinateConverter.Point wgs84Point = new CoordinateConverter.Point(104.220510,31.003720);
         CoordinateConverter.Point bd09Point = CoordinateConverter.wgs84ToBd09(wgs84Point);
         
         System.out.println("WGS-84原始坐标: " + wgs84Point);
         System.out.println("BD-09转换坐标: " + bd09Point);
+        System.out.println("经度: " + bd09Point.getLongitude()+","+bd09Point.getLatitude());
         
         assertNotNull(bd09Point);
     }
@@ -84,11 +85,12 @@ public class CoordinateConverterTest {
     @Test
     @DisplayName("测试BD-09转WGS-84转换")
     public void testBd09ToWgs84() {
-        CoordinateConverter.Point bd09Point = new CoordinateConverter.Point(116.410758, 39.918036);
+        CoordinateConverter.Point bd09Point = new CoordinateConverter.Point(104.25586907500686,31.004316962283667);
         CoordinateConverter.Point wgs84Point = CoordinateConverter.bd09ToWgs84(bd09Point);
         
         System.out.println("BD-09原始坐标: " + bd09Point);
         System.out.println("WGS-84转换坐标: " + wgs84Point);
+        System.out.println("经度: " + wgs84Point.getLongitude()+","+bd09Point.getLatitude());
         
         assertNotNull(wgs84Point);
     }
