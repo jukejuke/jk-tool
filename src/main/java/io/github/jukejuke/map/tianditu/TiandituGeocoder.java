@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 天地图逆地理编码工具类
- * 封装天地图API的逆地理编码查询功能
+ * 天地图地理编码工具类
+ * 封装天地图API的正向地理编码（地址转坐标）和逆地理编码查询功能
  * 使用{@link Builder}类创建实例以支持灵活配置
  */
 public class TiandituGeocoder {
@@ -23,9 +23,8 @@ public class TiandituGeocoder {
     private final String baseUrl = "http://api.tianditu.gov.cn/geocoder";
 
     /**
-     * 构造函数
+     * 私有构造函数，通过Builder创建实例
      */
-    // 私有构造函数，通过Builder创建实例
     private TiandituGeocoder(Builder builder) {
         this.apiKey = builder.apiKey;
         this.httpClient = builder.httpClient != null ? builder.httpClient : new OkHttpClient();
@@ -53,7 +52,37 @@ public class TiandituGeocoder {
     }
 
     /**
-     * 执行逆地理编码查询
+     * 执行正向地理编码（地址转坐标）
+     * @param keyWord 地址关键词
+     * @return 地理编码响应结果
+     * @throws Exception 可能抛出的异常
+     */
+    public GeocodeResponse geocode(String keyWord) throws Exception {
+        // 构建请求参数
+        Map<String, Object> dsMap = new HashMap<>();
+        dsMap.put("keyWord", keyWord);
+        
+        // 转换为JSON并URL编码
+        String dsJson = JSON.toJSONString(dsMap);
+        String encodedDs = URLEncoder.encode(dsJson, StandardCharsets.UTF_8.name());
+
+        // 构建完整URL
+        String requestUrl = String.format("%s?ds=%s&tk=%s", this.baseUrl, encodedDs, apiKey);
+
+        // 创建HTTP请求
+        Request request = new Request.Builder()
+                .url(requestUrl)
+                .build();
+
+        // 执行请求并处理响应
+        try (Response response = httpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
+            return JSON.parseObject(responseBody, GeocodeResponse.class);
+        }
+    }
+
+    /**
+     * 执行逆地理编码查询（通过经纬度获取地址）
      * @param longitude 经度
      * @param latitude 纬度
      * @return 地理编码响应结果
@@ -87,7 +116,27 @@ public class TiandituGeocoder {
     }
 
     /**
-     * 天地图API响应结果封装类
+     * 天地图正向地理编码API响应结果封装类
+     */
+    @Data
+    public static class GeocodeResponse {
+        private String msg;
+        private Location location;
+        private String searchVersion;
+        private String status;
+
+        @Data
+        public static class Location {
+            private int score;
+            private String level;
+            private String lon;
+            private String lat;
+            private String keyWord;
+        }
+    }
+
+    /**
+     * 天地图逆地理编码API响应结果封装类
      */
     @Data
     public static class TiandituResponse {

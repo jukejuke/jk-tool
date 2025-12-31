@@ -31,6 +31,86 @@ public class TiandituGeocoderTest {
     }
 
     /**
+     * 测试正向地理编码功能
+     * @throws Exception
+     */
+    @Test
+    void geocode_ShouldParseResponseCorrectly() throws Exception {
+        // 准备模拟响应数据 - 根据用户提供的API返回格式
+        String mockJsonResponse = "{\"msg\": \"ok\", \"location\": {\"score\": 100, \"level\": \"门址\", \"lon\": \"116.290158\", \"lat\": \"39.894696\", \"keyWord\": \"北京市海淀区莲花池西路28号\"}, \"searchVersion\": \"6.4.9V\", \"status\": \"0\"}";
+
+        // 配置模拟响应
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setHeader("Content-Type", "application/json")
+                .setBody(mockJsonResponse));
+
+        // 执行测试方法
+        TiandituGeocoder.GeocodeResponse response = geocoder.geocode("北京市海淀区莲花池西路28号");
+
+        // 验证响应结果
+        assertNotNull(response);
+        assertEquals("ok", response.getMsg());
+        assertEquals("0", response.getStatus());
+        assertNotNull(response.getLocation());
+        assertEquals("116.290158", response.getLocation().getLon());
+        assertEquals("39.894696", response.getLocation().getLat());
+        assertEquals("北京市海淀区莲花池西路28号", response.getLocation().getKeyWord());
+        assertEquals("门址", response.getLocation().getLevel());
+        assertEquals(100, response.getLocation().getScore());
+        assertEquals("6.4.9V", response.getSearchVersion());
+    }
+
+    /**
+     * 测试正向地理编码的另一个成功案例
+     * @throws Exception
+     */
+    @Test
+    void geocode_WithDifferentAddress_ShouldParseCorrectly() throws Exception {
+        // 准备另一个模拟响应数据
+        String mockJsonResponse = "{\"msg\": \"ok\", \"location\": {\"score\": 95, \"level\": \"道路\", \"lon\": \"116.397128\", \"lat\": \"39.916527\", \"keyWord\": \"北京市朝阳区建国门外大街\"}, \"searchVersion\": \"6.4.9V\", \"status\": \"0\"}";
+
+        // 配置模拟响应
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setHeader("Content-Type", "application/json")
+                .setBody(mockJsonResponse));
+
+        // 执行测试方法
+        TiandituGeocoder.GeocodeResponse response = geocoder.geocode("北京市朝阳区建国门外大街");
+
+        // 验证响应结果
+        assertNotNull(response);
+        assertEquals("ok", response.getMsg());
+        assertEquals("0", response.getStatus());
+        assertNotNull(response.getLocation());
+        assertEquals("116.397128", response.getLocation().getLon());
+        assertEquals("39.916527", response.getLocation().getLat());
+        assertEquals("北京市朝阳区建国门外大街", response.getLocation().getKeyWord());
+        assertEquals("道路", response.getLocation().getLevel());
+        assertEquals(95, response.getLocation().getScore());
+    }
+
+    /**
+     * 测试正向地理编码的错误响应
+     * @throws Exception
+     */
+    @Test
+    void geocode_WithInvalidAddress_ShouldHandleError() throws Exception {
+        // 配置错误响应
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setHeader("Content-Type", "application/json")
+                .setBody("{\"msg\": \"请求参数非法长度或不合规\", \"status\": \"308011\"}"));
+
+        TiandituGeocoder.GeocodeResponse response = geocoder.geocode("不存在的地址xyz123456");
+        assertNotNull(response);
+        assertEquals("308011", response.getStatus());
+        assertEquals("请求参数非法长度或不合规", response.getMsg());
+    }
+
+    /**
+     * 测试逆地理编码功能
      * @throws Exception
      */
     @Test
