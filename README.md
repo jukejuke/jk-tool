@@ -178,18 +178,6 @@ public void batchConvertCoordinates(List<CoordinateConverter.Point> wgs84Points)
 - `src/main/java/io/github/jukejuke/tool/freemarker/FreemarkerUtils.java`：Freemarker模板引擎工具类。
 - `src/main/java/io/github/jukejuke/tool/jwt/JwtUtils.java`：JWT令牌处理工具类。
 
-### 测试用例
-- `src/test/java/io/github/jukejuke/map/amap/AmapRegeoCoderTest.java`：高德地图反地理编码的测试用例。
-- `src/test/java/io/github/jukejuke/map/amap/AmapGeoCoderTest.java`：高德地图地理编码的测试用例。
-- `src/test/java/io/github/jukejuke/map/amap/AmapDistrictQueryTest.java`：高德地图区域查询的测试用例。
-- `src/test/java/io/github/jukejuke/map/tianditu/TiandituGeocoderTest.java`：天地图反地理编码的测试用例。
-- `src/test/java/io/github/jukejuke/map/tianditu/TiandituAdministrativeTest.java`：天地图行政区域查询的测试用例。
-- `src/test/java/io/github/jukejuke/tool/bean/BeanFieldFilterTest.java`：Bean字段过滤工具类测试用例。
-- `src/test/java/io/github/jukejuke/tool/bean/BeanPropertyUtilsTest.java`：Bean属性操作工具类测试用例。
-- `src/test/java/io/github/jukejuke/tool/freemarker/FreemarkerUtilsTest.java`：Freemarker模板引擎工具类测试用例。
-- `src/test/java/io/github/jukejuke/tool/jwt/JwtUtilsTest.java`：JWT令牌处理工具类测试用例。
-- `src/test/java/io/github/jukejuke/util/DateUtilsTest.java`：日期时间处理工具类测试用例。
-
 ### Maven
 在项目的pom.xml的dependencies中加入以下内容:
 
