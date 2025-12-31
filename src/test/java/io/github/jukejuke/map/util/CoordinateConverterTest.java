@@ -46,7 +46,7 @@ public class CoordinateConverterTest {
     @Test
     @DisplayName("测试GCJ-02转BD-09转换")
     public void testGcj02ToBd09() {
-        CoordinateConverter.Point gcj02Point = new CoordinateConverter.Point(104.246950,31.000680);
+        CoordinateConverter.Point gcj02Point = new CoordinateConverter.Point(104.244406,30.931214);
         CoordinateConverter.Point bd09Point = CoordinateConverter.gcj02ToBd09(gcj02Point);
         
         System.out.println("GCJ-02原始坐标: " + gcj02Point);
@@ -61,11 +61,12 @@ public class CoordinateConverterTest {
     @Test
     @DisplayName("测试BD-09转GCJ-02转换")
     public void testBd09ToGcj02() {
-        CoordinateConverter.Point bd09Point = new CoordinateConverter.Point(116.410758, 39.918036);
+        CoordinateConverter.Point bd09Point = new CoordinateConverter.Point(104.26,30.99);
         CoordinateConverter.Point gcj02Point = CoordinateConverter.bd09ToGcj02(bd09Point);
         
         System.out.println("BD-09原始坐标: " + bd09Point);
         System.out.println("GCJ-02转换坐标: " + gcj02Point);
+        System.out.println("经度: " + gcj02Point.getLongitude()+","+gcj02Point.getLatitude());
         
         assertNotNull(gcj02Point);
         assertTrue(gcj02Point.getLongitude() < bd09Point.getLongitude(), "经度应该减少");
