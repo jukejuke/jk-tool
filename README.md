@@ -8,8 +8,18 @@ JK Tool 是一个基于 Java 的工具库，主要用于通过高德地图（Ama
 - **高德地图反地理编码**：通过 `AmapRegeoCoder` 类实现，支持将经纬度转换为结构化地址信息。
 - **高德地图地理编码**：通过 `AmapGeoCoder` 类实现，支持将地址信息转换为经纬度。
 - **高德地图区域查询**：通过 `AmapDistrictQuery` 类实现，支持根据关键字查询区域信息。
+- **高德地图坐标转换**：通过 `AmapCoordinateConverter` 类实现，支持通过API进行坐标转换。
 - **天地图反地理编码**：通过 `TiandituGeocoder` 类实现，支持将经纬度转换为结构化地址信息。
 - **天地图行政区域查询**：通过 `TiandituAdministrative` 类实现，支持查询行政区域信息。
+
+### 坐标转换工具
+ - **本地坐标转换**：通过 `CoordinateConverter` 类实现，支持WGS-84、GCJ-02、BD-09坐标系之间的本地转换。
+  - **WGS-84转GCJ-02**：将GPS原始坐标转换为火星坐标系，支持高精度转换算法。
+  - **GCJ-02转WGS-84**：将火星坐标还原为GPS原始坐标，适用于精确定位需求。
+  - **GCJ-02转BD-02**：将火星坐标（高德/腾讯地图）坐标转换为百度坐标系。
+  - **BD-09转GCJ-02**：将百度坐标系转换为火星坐标系。
+  - **WGS-84转BD-09**：将GPS坐标直接转换为百度坐标系。
+  - **BD-09转WGS-84**：将百度坐标直接还原为GPS坐标。
 
 ### 通用工具类
 - **HTTP请求工具**：通过 `HttpUtil` 类实现，支持GET、POST、POST JSON等常用HTTP请求方法。
@@ -85,6 +95,64 @@ TiandituAdministrative administrative = new TiandituAdministrative.Builder("your
 TiandituAdministrativeResponse response = administrative.queryAdministrative("北京市");
 ```
 
+### 本地坐标转换
+
+#### 使用CoordinateConverter类
+
+```java
+// 创建坐标点
+CoordinateConverter.Point wgs84Point = new CoordinateConverter.Point(116.397428, 39.90923); // 北京天安门
+
+// WGS-84转GCJ-02
+CoordinateConverter.Point gcj02Point = CoordinateConverter.wgs84ToGcj02(wgs84Point);
+System.out.println("GCJ-02坐标: " + gcj02Point);
+
+// GCJ-02转BD-09
+CoordinateConverter.Point bd09Point = CoordinateConverter.gcj02ToBd09(gcj02Point);
+System.out.println("BD-09坐标: " + bd09Point);
+
+// BD-09转GCJ-02
+CoordinateConverter.Point backToGcj02 = CoordinateConverter.bd09ToGcj02(bd09Point);
+System.out.println("转回GCJ-02: " + backToGcj02);
+
+// GCJ-02转WGS-84
+CoordinateConverter.Point backToWgs84 = CoordinateConverter.gcj02ToWgs84(backToGcj02);
+System.out.println("转回WGS-84: " + backToWgs84);
+```
+
+#### 常见城市坐标转换示例
+
+```java
+// 北京
+CoordinateConverter.Point beijing = new CoordinateConverter.Point(116.397428, 39.90923);
+CoordinateConverter.Point beijingGcj02 = CoordinateConverter.wgs84ToGcj02(beijing);
+CoordinateConverter.Point beijingBd09 = CoordinateConverter.gcj02ToBd09(beijingGcj02);
+
+// 上海
+CoordinateConverter.Point shanghai = new CoordinateConverter.Point(121.4737, 31.2304);
+CoordinateConverter.Point shanghaiGcj02 = CoordinateConverter.wgs84ToGcj02(shanghai);
+CoordinateConverter.Point shanghaiBd09 = CoordinateConverter.gcj02ToBd09(shanghaiGcj02);
+
+// 广州
+CoordinateConverter.Point guangzhou = new CoordinateConverter.Point(113.2644, 23.1291);
+CoordinateConverter.Point guangzhouGcj02 = CoordinateConverter.wgs84ToGcj02(guangzhou);
+CoordinateConverter.Point guangzhouBd09 = CoordinateConverter.gcj02ToBd09(guangzhouGcj02);
+```
+
+#### 批量转换处理
+
+```java
+public void batchConvertCoordinates(List<CoordinateConverter.Point> wgs84Points) {
+    for (CoordinateConverter.Point wgs84 : wgs84Points) {
+        CoordinateConverter.Point gcj02 = CoordinateConverter.wgs84ToGcj02(wgs84);
+        CoordinateConverter.Point bd09 = CoordinateConverter.gcj02ToBd09(gcj02);
+        
+        System.out.printf("原始WGS-84: %s -> GCJ-02: %s -> BD-09: %s%n", 
+                          wgs84, gcj02, bd09);
+    }
+}
+```
+
 ### 解析响应数据
 
 根据返回的 `AmapResponse`、`AmapGeoResponse`、`DistrictResponse`、`TiandituResponse` 或 `TiandituAdministrativeResponse` 对象，您可以轻松获取结构化地址或区域信息。
@@ -95,8 +163,13 @@ TiandituAdministrativeResponse response = administrative.queryAdministrative("�
 - `src/main/java/io/github/jukejuke/map/amap/AmapRegeoCoder.java`：高德地图反地理编码实现。
 - `src/main/java/io/github/jukejuke/map/amap/AmapGeoCoder.java`：高德地图地理编码实现。
 - `src/main/java/io/github/jukejuke/map/amap/AmapDistrictQuery.java`：高德地图区域查询实现。
+- `src/main/java/io/github/jukejuke/map/amap/AmapCoordinateConverter.java`：高德地图API坐标转换实现。
 - `src/main/java/io/github/jukejuke/map/tianditu/TiandituGeocoder.java`：天地图反地理编码实现。
 - `src/main/java/io/github/jukejuke/map/tianditu/TiandituAdministrative.java`：天地图行政区域查询实现。
+
+### 坐标转换工具
+- `src/main/java/io/github/jukejuke/map/util/CoordinateConverter.java`：本地坐标转换工具类，支持WGS-84、GCJ-02、BD-09坐标系转换。
+- `src/test/java/io/github/jukejuke/map/util/CoordinateConverterTest.java`：坐标转换工具类的完整测试用例。
 
 ### 通用工具类
 - `src/main/java/io/github/jukejuke/tool/bean/BeanFieldFilter.java`：Bean字段过滤工具类。
