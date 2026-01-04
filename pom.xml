@@ -179,7 +179,8 @@
   </build>
 
   <properties>
-    <freemarker.version>2.3.32</freemarker.version>
+    <freemarker.version>2.3.34</freemarker.version>
+    <!--<freemarker.version>2.3.32</freemarker.version>-->
     <nimbus-jose-jwt.version>10.6</nimbus-jose-jwt.version>
    <!-- <nimbus-jose-jwt.version>9.37</nimbus-jose-jwt.version>-->
     <fastjson2.version>2.0.60</fastjson2.version>
