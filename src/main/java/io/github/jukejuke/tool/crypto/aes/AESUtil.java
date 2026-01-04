@@ -87,7 +87,7 @@ public class AESUtil {
     /**
      * 使用GCM模式解密字符串
      * @param encryptedData 加密后的Base64编码字符串
-     * @param AES密钥
+     * @param key AES密钥
      * @return 解密后的明文
      * @throws Exception 解密过程中发生错误时抛出
      */
