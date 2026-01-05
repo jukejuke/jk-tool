@@ -5,21 +5,21 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
-public class WindowExeProcessManager implements ProcessManager {
+public class LinuxExeProcessManager implements ProcessManager {
     private String processName;
     private String executablePath;
     private String[] args;
     private String charsetName;
 
-    public WindowExeProcessManager(String executablePath, String processName) {
+    public LinuxExeProcessManager(String executablePath, String processName) {
         this(executablePath, processName, new String[0]);
     }
 
-    public WindowExeProcessManager(String executablePath, String processName, String[] args) {
-        this(executablePath, processName, args, "GBK");
+    public LinuxExeProcessManager(String executablePath, String processName, String[] args) {
+        this(executablePath, processName, args, "UTF-8");
     }
 
-    public WindowExeProcessManager(String executablePath, String processName, String[] args, String charsetName) {
+    public LinuxExeProcessManager(String executablePath, String processName, String[] args, String charsetName) {
         this.executablePath = executablePath;
         this.processName = processName;
         this.args = args;
@@ -27,12 +27,14 @@ public class WindowExeProcessManager implements ProcessManager {
     }
 
     public synchronized boolean start() throws IOException {
-        Process process = Runtime.getRuntime().exec(executablePath + " " + String.join(" ", args));
+        ProcessBuilder processBuilder = new ProcessBuilder(buildCommand());
+        Process process = processBuilder.start();
+        
         // 等待进程启动完成（可选，根据实际情况调整超时时间）
         try {
             boolean completed = process.waitFor(10, TimeUnit.SECONDS);
-            if (!completed) {
-                System.out.println("进程启动超时: " + processName);
+            if (completed) {
+                System.out.println("进程启动后立即退出: " + processName);
                 return false;
             }
         } catch (InterruptedException e) {
@@ -44,20 +46,26 @@ public class WindowExeProcessManager implements ProcessManager {
     }
 
     public synchronized boolean stop() throws IOException {
-        // 再执行 taskkill
         try {
-            // 方法1：通过进程名直接终止（会终止所有同名进程）
-            Process process = Runtime.getRuntime().exec("taskkill /F /IM " + processName);
-
+            // 查找进程ID
+            String pid = findPid(processName);
+            if (pid == null) {
+                System.out.println("未找到进程: " + processName);
+                return false;
+            }
+            
+            // 执行 kill 命令终止进程
+            Process process = Runtime.getRuntime().exec("kill -9 " + pid);
+            
             // 读取命令执行结果（可选，用于调试）
             try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream(), "GBK"))) {
+                    new InputStreamReader(process.getInputStream(), charsetName))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     System.out.println(line);
                 }
             }
-
+            
             int exitCode = process.waitFor();
             if (exitCode == 0) {
                 System.out.println("成功终止进程: " + processName);
@@ -66,7 +74,7 @@ public class WindowExeProcessManager implements ProcessManager {
                 System.out.println("终止进程失败，退出码: " + exitCode);
                 return false;
             }
-
+            
         } catch (IOException | InterruptedException e) {
             System.err.println("终止进程时发生错误: " + e.getMessage());
             e.printStackTrace();
@@ -80,18 +88,23 @@ public class WindowExeProcessManager implements ProcessManager {
     }
 
     public synchronized boolean isRunning() throws IOException {
-        String cmd = "tasklist /FI \"IMAGENAME eq " + processName + "\"";
-        Process process = Runtime.getRuntime().exec(cmd);
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "GBK"))) {
+        return findPid(processName) != null;
+    }
+    
+    private String findPid(String processName) throws IOException {
+        Process process = Runtime.getRuntime().exec("ps aux");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), charsetName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
                 if (line.contains(processName)) {
-                    return true;
+                    String[] parts = line.split("\\s+");
+                    if (parts.length >= 2) {
+                        return parts[1];
+                    }
                 }
             }
         }
-        return false;
+        return null;
     }
 
     private String[] buildCommand() {
