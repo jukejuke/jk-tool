@@ -9,7 +9,7 @@ JK Tool 是一个基于 Java 的工具库，主要用于通过高德地图（Ama
 - **高德地图地理编码**：通过 `AmapGeoCoder` 类实现，支持将地址信息转换为经纬度。
 - **高德地图区域查询**：通过 `AmapDistrictQuery` 类实现，支持根据关键字查询区域信息。
 - **高德地图坐标转换**：通过 `AmapCoordinateConverter` 类实现，支持通过API进行坐标转换。
-- **天地图反地理编码**：通过 `TiandituGeocoder` 类实现，支持将经纬度转换为结构化地址信息。
+- **天地图反地理编码**：通过 `TiandituGeocoder` 类实现，支持将经纬度转换为结构化地址信息、将地址信息转换为经纬度。
 - **天地图行政区域查询**：通过 `TiandituAdministrative` 类实现，支持查询行政区域信息。
 
 ### 坐标转换工具
