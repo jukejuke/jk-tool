@@ -52,6 +52,14 @@ JK Tool 是一个基于 Java 的工具库，主要用于通过高德地图（Ama
 - **许可证生成**：通过 `LicenseUtils` 类实现，支持生成基于硬件信息的软件许可证。
 - **许可证验证**：通过 `LicenseInfo` 类实现，支持验证和解析许可证信息。
 
+### API响应封装
+- **统一响应结果**：通过 `ApiResponse<T>` 类实现，提供统一的API响应格式，包含状态码、消息和数据。
+- **响应状态码**：通过 `ApiCode` 枚举类实现，定义了HTTP标准状态码和业务自定义状态码。
+- **分页响应封装**：通过 `PageResponse<T>` 类实现，封装分页查询结果，包含总记录数、每页记录数、当前页码、总页数和数据列表。
+- **便捷静态方法**：提供 `success()`、`fail()` 等静态方法，简化API响应的创建。
+- **泛型支持**：支持泛型数据类型，适用于各种API返回数据场景。
+- **支持分页查询**：集成分页功能，便于处理大量数据的分页查询结果。
+
 ## 使用方法
 
 ### 添加依赖
@@ -170,6 +178,11 @@ public void batchConvertCoordinates(List<CoordinateConverter.Point> wgs84Points)
 ### 坐标转换工具
 - `src/main/java/io/github/jukejuke/map/util/CoordinateConverter.java`：本地坐标转换工具类，支持WGS-84、GCJ-02、BD-09坐标系转换。
 - `src/test/java/io/github/jukejuke/map/util/CoordinateConverterTest.java`：坐标转换工具类的完整测试用例。
+
+### API响应封装
+- `src/main/java/io/github/jukejuke/api/ApiResponse.java`：统一的API响应结果封装类。
+- `src/main/java/io/github/jukejuke/api/ApiCode.java`：API响应状态码枚举类。
+- `src/main/java/io/github/jukejuke/api/PageResponse.java`：分页响应结果封装类。
 
 ### 通用工具类
 - `src/main/java/io/github/jukejuke/tool/bean/BeanFieldFilter.java`：Bean字段过滤工具类。
