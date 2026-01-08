@@ -215,7 +215,7 @@ implementation 'io.github.jukejuke:jk-tool:0.0.2'
 
 ## 许可证
 
-本项目遵循 MIT 许可证。有关详细信息，请参阅 [LICENSE](LICENSE) 文件。
+本项目遵循 Apache 2.0 许可证。有关详细信息，请参阅 [LICENSE](LICENSE) 文件。
 
 ## 贡献
 
