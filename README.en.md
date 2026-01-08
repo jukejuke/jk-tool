@@ -213,6 +213,10 @@ Click the link below to download `jk-tool-X.X.X.jar`:
 
 - [Maven Central Repository](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.2/)
 
+## JDK Version
+
+- **JDK 11 or higher**
+
 ## License
 
 This project is licensed under the Apache 2.0 License. For details, see the [LICENSE](LICENSE) file.
