@@ -24,7 +24,6 @@ import okhttp3.Response;
  * 支持通过HTTP/SOCKS代理获取时间（仅HTTP API方式支持代理，NTP协议不支持代理）
  *
  * @author jukejuke
- * @since 0.0.3
  */
 @Slf4j
 public class InternetTimeUtils {
