@@ -2,10 +2,6 @@
 
 JK Tool 是一个基于 Java 的工具库，主要用于通过高德地图（Amap）和天地图（Tianditu）的地理编码和反地理编码服务，将地址信息与经纬度之间进行转换。该项目适用于需要集成地理编码服务的 Java 应用程序。
 
-## JDK 版本
-
-- **JDK 11 或更高版本**
-
 ## 功能特点
 
 ### 地理编码服务
@@ -216,6 +212,10 @@ implementation 'io.github.jukejuke:jk-tool:0.0.2'
 点击以下链接，下载`jk-tool-X.X.X.jar`即可：
 
 - [Maven中央库](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.2/)
+
+## JDK 版本
+
+- **JDK 11 或更高版本**
 
 ## 许可证
 
