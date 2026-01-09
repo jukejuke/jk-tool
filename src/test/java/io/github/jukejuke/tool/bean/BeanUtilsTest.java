@@ -1,5 +1,6 @@
 package io.github.jukejuke.tool.bean;
 
+import com.alibaba.fastjson2.JSON;
 import io.github.jukejuke.tool.date.DateUtil;
 import org.junit.Test;
 
@@ -94,7 +95,10 @@ public class BeanUtilsTest {
         
         // Bean转Map
         Map<String, Object> map = BeanUtils.beanToMap(bean);
-        
+
+        System.out.println(JSON.toJSONString(bean));
+        System.out.println(JSON.toJSONString(map));
+
         // 验证转换结果
         assertNotNull(map);
         assertEquals(4, map.size());
