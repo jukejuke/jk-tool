@@ -7,12 +7,14 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * HTTP 工具类 - 封装常用 HTTP 请求静态方法
  * 
  * @author jukejuke
  */
+@Slf4j
 public class HttpUtil {
     
     /**
@@ -92,6 +94,7 @@ public class HttpUtil {
             }
             
         } catch (Exception e) {
+            log.error("HTTP GET request failed for URL: {}", url, e);
             result.setLength(0);
             result.append("HTTP Error: ").append(e.getMessage());
         } finally {
@@ -100,7 +103,7 @@ public class HttpUtil {
                 if (reader != null) reader.close();
                 if (connection != null) connection.disconnect();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error closing resources for GET request: {}", url, e);
             }
         }
         
@@ -169,6 +172,7 @@ public class HttpUtil {
             }
             
         } catch (Exception e) {
+            log.error("HTTP POST request failed for URL: {}", url, e);
             result.setLength(0);
             result.append("HTTP Error: ").append(e.getMessage());
         } finally {
@@ -178,7 +182,7 @@ public class HttpUtil {
                 if (reader != null) reader.close();
                 if (connection != null) connection.disconnect();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error closing resources for POST request: {}", url, e);
             }
         }
         
@@ -234,6 +238,7 @@ public class HttpUtil {
             }
             
         } catch (Exception e) {
+            log.error("HTTP POST JSON request failed for URL: {}", url, e);
             result.setLength(0);
             result.append("HTTP Error: ").append(e.getMessage());
         } finally {
@@ -242,7 +247,7 @@ public class HttpUtil {
                 if (reader != null) reader.close();
                 if (connection != null) connection.disconnect();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error closing resources for POST JSON request: {}", url, e);
             }
         }
         

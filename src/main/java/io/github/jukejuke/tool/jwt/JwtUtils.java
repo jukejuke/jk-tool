@@ -5,11 +5,13 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+@Slf4j
 public class JwtUtils {
     private final JWSSigner signer;
     private final JWSVerifier verifier;
@@ -76,9 +78,14 @@ public class JwtUtils {
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
             // 验证签名和过期时间
-            return signedJWT.verify(verifier) && 
+            boolean isValid = signedJWT.verify(verifier) && 
                    new Date().before(signedJWT.getJWTClaimsSet().getExpirationTime());
+            if (!isValid) {
+                log.warn("JWT token validation failed");
+            }
+            return isValid;
         } catch (Exception e) {
+            log.error("Error occurred while validating JWT token: {}", e.getMessage(), e);
             return false;
         }
     }
@@ -91,11 +98,19 @@ public class JwtUtils {
      * @throws Exception 解析异常
      */
     public Object getClaim(String token, String claimName) throws Exception {
-        SignedJWT signedJWT = SignedJWT.parse(token);
-        if (!signedJWT.verify(verifier)) {
-            throw new SecurityException("Invalid JWT signature");
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            if (!signedJWT.verify(verifier)) {
+                log.warn("Invalid JWT signature for token: {}", token);
+                throw new SecurityException("Invalid JWT signature");
+            }
+            return signedJWT.getJWTClaimsSet().getClaim(claimName);
+        } catch (SecurityException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error("Error occurred while getting claim '{}' from JWT token: {}", claimName, e.getMessage(), e);
+            throw e;
         }
-        return signedJWT.getJWTClaimsSet().getClaim(claimName);
     }
 
     /**
@@ -105,10 +120,18 @@ public class JwtUtils {
      * @throws Exception 解析异常
      */
     public Date getExpirationTime(String token) throws Exception {
-        SignedJWT signedJWT = SignedJWT.parse(token);
-        if (!signedJWT.verify(verifier)) {
-            throw new SecurityException("Invalid JWT signature");
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            if (!signedJWT.verify(verifier)) {
+                log.warn("Invalid JWT signature for token: {}", token);
+                throw new SecurityException("Invalid JWT signature");
+            }
+            return signedJWT.getJWTClaimsSet().getExpirationTime();
+        } catch (SecurityException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error("Error occurred while getting expiration time from JWT token: {}", e.getMessage(), e);
+            throw e;
         }
-        return signedJWT.getJWTClaimsSet().getExpirationTime();
     }
 }
