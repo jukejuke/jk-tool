@@ -9,6 +9,7 @@ JK Tool is a Java-based utility library primarily designed to convert between ad
 - **Amap Geocoding**: Implemented via the `AmapGeoCoder` class, supporting conversion of address information into coordinates.
 - **Amap District Query**: Implemented via the `AmapDistrictQuery` class, supporting area information query based on keywords.
 - **Amap Coordinate Conversion**: Implemented via the `AmapCoordinateConverter` class, supporting coordinate conversion through API.
+- **Amap POI Search**: Implemented via the `AmapPoiSearcher` class, supporting search for points of interest based on keywords, categories, regions, etc.
 - **Tianditu Reverse Geocoding**: Implemented via the `TiandituGeocoder` class, supporting conversion of coordinates into structured address information and address information into coordinates.
 - **Tianditu Administrative Area Query**: Implemented via the `TiandituAdministrative` class, supporting administrative area information query.
 
@@ -22,16 +23,22 @@ JK Tool is a Java-based utility library primarily designed to convert between ad
   - **BD-09 to WGS-84**: Directly restore Baidu coordinates to GPS coordinates.
 
 ### General Utility Classes
+- **Annotation Tool**: Implemented via the `AnnotationUtils` class, providing annotation-related utility methods.
+- **Bean Conversion Tool**: Implemented via the `BeanConvertUtils` class, supporting conversion between Beans.
+- **Bean Property Operations**: Implemented via the `BeanPropertyUtils` and `BeanUtils` classes, providing tools for reading and setting Bean properties.
 - **HTTP Request Tool**: Implemented via the `HttpUtil` class, supporting common HTTP request methods such as GET, POST, and POST JSON.
 - **String Processing**: Implemented via the `StringUtils` class, providing common operations like string null check, splitting, joining, replacement, and formatting.
 - **File Operations**: Implemented via the `FileUtils` class, supporting file creation, reading, writing, deletion, and directory creation and traversal operations.
+- **Download Tool**: Implemented via the `DownloadUtil` and `SimpleDownloadUtil` classes, supporting file download functionality.
 - **Configuration File Processing**: Implemented via the `PropertiesUtils` class, supporting reading, modifying, and saving properties configuration files from classpath or file system.
 - **Bean Field Filtering**: Implemented via the `BeanFieldFilter` class, supporting flexible filtering of fields in Java Beans.
-- **Bean Property Operations**: Implemented via the `BeanPropertyUtils` class, providing tools for reading and setting Bean properties.
-- **Date and Time Processing**: Implemented via the `DateUtils` class, supporting date formatting, conversion, and calculation functions.
+- **Date and Time Processing**: Implemented via the `DateUtils` and `DateUtil` classes, supporting date formatting, conversion, and calculation functions.
 - **Internet Time Synchronization**: Implemented via the `InternetTimeUtils` class, supporting obtaining standard time from internet time servers.
 - **Freemarker Templates**: Implemented via the `FreemarkerUtils` class, simplifying template rendering and data binding operations.
 - **JWT Token Processing**: Implemented via the `JwtUtils` class, supporting JWT token generation, parsing, and verification functions.
+- **Mail Tool**: Implemented via the `MailUtils`, `MailReaderUtils`, and `MailDeleterUtils` classes, supporting email sending, reading, and deletion functions.
+- **Redis Tool**: Implemented via `Redis` related classes, providing Redis database operation utility methods.
+- **Image Processing**: Implemented via `Image` related classes, providing image processing utility methods.
 
 ### Qiniu Cloud Object Storage Tools
 - **Qiniu Cloud Utility Class**: Implemented via the `QiniuUtils` class, providing complete operations for Qiniu Cloud Object Storage, including file upload, download, deletion, renaming, copying, moving, and other functions.
@@ -52,7 +59,7 @@ JK Tool is a Java-based utility library primarily designed to convert between ad
 - **Hosts File Management**: Implemented via the `HostsFileManager` class, supporting Hosts file reading, editing, and backup functions.
 - **DNS Resolution Tools**: Implemented via the `DnsResolver`, `ProxyDnsResolver`, `DoHQuery`, and `DoHWithHttpProxy` classes, supporting DNS query and DNS over HTTPS functions.
 - **IP Address Processing**: Implemented via the `IPAddressResolver` and `ProxyIPAddressResolver` classes, supporting IP address resolution and proxy IP identification.
-- **Process Management**: Implemented via the `WindowExeProcessManager` class, supporting process startup, query, and management under Windows systems.
+- **Process Management**: Implemented via the `ProcessManager`, `ProcessManagerFactory`, `WindowExeProcessManager`, and `LinuxExeProcessManager` classes, supporting cross-platform process startup, query, and management functions.
 - **Logging Tools**: Implemented via the `LogUtil` class, providing concise logging functionality.
 
 ### License Management
@@ -180,6 +187,7 @@ You can easily obtain structured address or area information from the returned `
 - `src/main/java/io/github/jukejuke/map/amap/AmapGeoCoder.java`: Implementation of Amap geocoding.
 - `src/main/java/io/github/jukejuke/map/amap/AmapDistrictQuery.java`: Implementation of Amap district query.
 - `src/main/java/io/github/jukejuke/map/amap/AmapCoordinateConverter.java`: Implementation of Amap API coordinate conversion.
+- `src/main/java/io/github/jukejuke/map/amap/poi2/AmapPoiSearcher.java`: Implementation of Amap POI search.
 - `src/main/java/io/github/jukejuke/map/tianditu/TiandituGeocoder.java`: Implementation of Tianditu reverse geocoding.
 - `src/main/java/io/github/jukejuke/map/tianditu/TiandituAdministrative.java`: Implementation of Tianditu administrative area query.
 
@@ -211,20 +219,20 @@ Add the following to your project's pom.xml dependencies:
 <dependency>
     <groupId>io.github.jukejuke</groupId>
     <artifactId>jk-tool</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.4.snapshot</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-implementation 'io.github.jukejuke:jk-tool:0.0.2'
+implementation 'io.github.jukejuke:jk-tool:0.0.4.snapshot'
 ```
 
 ### Download JAR
 
 Click the link below to download `jk-tool-X.X.X.jar`:
 
-- [Maven Central Repository](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.2/)
+- [Maven Central Repository](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.4.snapshot/)
 
 ## JDK Version
 

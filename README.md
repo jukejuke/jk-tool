@@ -29,12 +29,14 @@ JK Tool 是一个基于 Java 的工具库，主要用于通过高德地图（Ama
 - **HTTP请求工具**：通过 `HttpUtil` 类实现，支持GET、POST、POST JSON等常用HTTP请求方法。
 - **字符串处理**：通过 `StringUtils` 类实现，提供字符串判空、分割、连接、替换、格式化等常用操作。
 - **文件操作**：通过 `FileUtils` 类实现，支持文件的创建、读取、写入、删除以及目录的创建和遍历等操作。
+- **下载工具**：通过 `DownloadUtil` 和 `SimpleDownloadUtil` 类实现，支持文件下载功能。
 - **配置文件处理**：通过 `PropertiesUtils` 类实现，支持从类路径或文件系统读取、修改和保存properties配置文件。
 - **Bean字段过滤**：通过 `BeanFieldFilter` 类实现，支持灵活过滤Java Bean中的字段。
 - **日期时间处理**：通过 `DateUtils` 和 `DateUtil` 类实现，支持日期格式化、转换和计算功能。
 - **网络时间同步**：通过 `InternetTimeUtils` 类实现，支持从互联网时间服务器获取标准时间。
 - **Freemarker模板**：通过 `FreemarkerUtils` 类实现，简化模板渲染和数据绑定操作。
 - **JWT令牌处理**：通过 `JwtUtils` 类实现，支持JWT令牌的生成、解析和验证功能。
+- **邮件工具**：通过 `MailUtils`、`MailReaderUtils` 和 `MailDeleterUtils` 类实现，支持邮件发送、读取和删除功能。
 - **Redis工具**：通过 `Redis` 相关类实现，提供Redis数据库操作的工具方法。
 - **图片处理**：通过 `Image` 相关类实现，提供图片处理的工具方法。
 
@@ -185,6 +187,7 @@ public void batchConvertCoordinates(List<CoordinateConverter.Point> wgs84Points)
 - `src/main/java/io/github/jukejuke/map/amap/AmapGeoCoder.java`：高德地图地理编码实现。
 - `src/main/java/io/github/jukejuke/map/amap/AmapDistrictQuery.java`：高德地图区域查询实现。
 - `src/main/java/io/github/jukejuke/map/amap/AmapCoordinateConverter.java`：高德地图API坐标转换实现。
+- `src/main/java/io/github/jukejuke/map/amap/poi2/AmapPoiSearcher.java`：高德地图POI搜索实现。
 - `src/main/java/io/github/jukejuke/map/tianditu/TiandituGeocoder.java`：天地图反地理编码实现。
 - `src/main/java/io/github/jukejuke/map/tianditu/TiandituAdministrative.java`：天地图行政区域查询实现。
 
@@ -216,20 +219,20 @@ public void batchConvertCoordinates(List<CoordinateConverter.Point> wgs84Points)
 <dependency>
     <groupId>io.github.jukejuke</groupId>
     <artifactId>jk-tool</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.4.snapshot</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-implementation 'io.github.jukejuke:jk-tool:0.0.2'
+implementation 'io.github.jukejuke:jk-tool:0.0.4.snapshot'
 ```
 
 ### 下载jar
 
 点击以下链接，下载`jk-tool-X.X.X.jar`即可：
 
-- [Maven中央库](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.2/)
+- [Maven中央库](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.4.snapshot/)
 
 ## JDK 版本
 
