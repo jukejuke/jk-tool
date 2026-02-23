@@ -38,6 +38,14 @@ JK Tool 是一个基于 Java 的工具库，主要用于通过高德地图（Ama
 - **Redis工具**：通过 `Redis` 相关类实现，提供Redis数据库操作的工具方法。
 - **图片处理**：通过 `Image` 相关类实现，提供图片处理的工具方法。
 
+### 七牛云对象存储工具
+- **七牛云工具类**：通过 `QiniuUtils` 类实现，提供七牛云对象存储的完整操作，支持文件上传、下载、删除、重命名、复制、移动等功能。
+- **配置管理**：通过 `QiniuConfig` 类实现，支持七牛云配置信息的管理，包括Access Key、Secret Key、存储空间、域名、区域等配置。
+- **多种上传方式**：支持从本地文件、字节数组、输入流三种方式上传文件。
+- **访问链接生成**：支持生成公开访问链接和带签名的私有访问链接。
+- **断点续传**：支持大文件断点续传功能。
+- **区域配置**：支持配置不同的存储区域，包括华东、华北、华南、北美、亚太等。
+
 ### 加密解密工具
 - **安全工具类**：通过 `SecureUtil` 类实现，提供AES/DES对称加密、MD5/SHA哈希算法、HMAC消息认证码、UUID生成等安全相关功能。
 - **AES加解密**：通过 `AESUtil` 类实现，提供AES对称加密算法的完整实现，支持多种模式和填充方式。
@@ -195,6 +203,11 @@ public void batchConvertCoordinates(List<CoordinateConverter.Point> wgs84Points)
 - `src/main/java/io/github/jukejuke/tool/date/DateUtils.java`：日期时间处理工具类。
 - `src/main/java/io/github/jukejuke/tool/freemarker/FreemarkerUtils.java`：Freemarker模板引擎工具类。
 - `src/main/java/io/github/jukejuke/tool/jwt/JwtUtils.java`：JWT令牌处理工具类。
+
+### 七牛云对象存储工具
+- `src/main/java/io/github/jukejuke/qiniu/QiniuUtils.java`：七牛云对象存储工具类，提供文件上传、下载、删除、重命名、复制、移动等功能。
+- `src/main/java/io/github/jukejuke/qiniu/QiniuConfig.java`：七牛云配置类，用于存储七牛云对象存储的配置信息。
+- `src/main/java/io/github/jukejuke/qiniu/QiniuUtilsExample.java`：七牛云工具类使用示例。
 
 ### Maven
 在项目的pom.xml的dependencies中加入以下内容:

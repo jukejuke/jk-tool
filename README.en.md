@@ -33,6 +33,14 @@ JK Tool is a Java-based utility library primarily designed to convert between ad
 - **Freemarker Templates**: Implemented via the `FreemarkerUtils` class, simplifying template rendering and data binding operations.
 - **JWT Token Processing**: Implemented via the `JwtUtils` class, supporting JWT token generation, parsing, and verification functions.
 
+### Qiniu Cloud Object Storage Tools
+- **Qiniu Cloud Utility Class**: Implemented via the `QiniuUtils` class, providing complete operations for Qiniu Cloud Object Storage, including file upload, download, deletion, renaming, copying, moving, and other functions.
+- **Configuration Management**: Implemented via the `QiniuConfig` class, supporting management of Qiniu Cloud configuration information, including Access Key, Secret Key, storage bucket, domain name, region, etc.
+- **Multiple Upload Methods**: Supporting three upload methods: from local files, byte arrays, and input streams.
+- **Access Link Generation**: Supporting generation of public access links and signed private access links.
+- **Resumable Upload**: Supporting resumable upload for large files.
+- **Region Configuration**: Supporting configuration of different storage regions, including East China, North China, South China, North America, Asia-Pacific, etc.
+
 ### Encryption and Decryption Tools
 - **Security Utility Class**: Implemented via the `SecureUtil` class, providing AES/DES symmetric encryption, MD5/SHA hash algorithms, HMAC message authentication codes, UUID generation, and other security-related functions.
 - **AES Encryption and Decryption**: Implemented via the `AESUtil` class, providing complete implementation of AES symmetric encryption algorithm, supporting multiple modes and padding methods.
@@ -190,6 +198,11 @@ You can easily obtain structured address or area information from the returned `
 - `src/main/java/io/github/jukejuke/tool/date/DateUtils.java`: Date and time processing utility class.
 - `src/main/java/io/github/jukejuke/tool/freemarker/FreemarkerUtils.java`: Freemarker template engine utility class.
 - `src/main/java/io/github/jukejuke/tool/jwt/JwtUtils.java`: JWT token processing utility class.
+
+### Qiniu Cloud Object Storage Tools
+- `src/main/java/io/github/jukejuke/qiniu/QiniuUtils.java`: Qiniu Cloud Object Storage utility class, providing file upload, download, deletion, renaming, copying, moving and other functions.
+- `src/main/java/io/github/jukejuke/qiniu/QiniuConfig.java`: Qiniu Cloud configuration class, used to store configuration information for Qiniu Cloud Object Storage.
+- `src/main/java/io/github/jukejuke/qiniu/QiniuUtilsExample.java`: Qiniu Cloud utility class usage example.
 
 ### Maven
 Add the following to your project's pom.xml dependencies:
