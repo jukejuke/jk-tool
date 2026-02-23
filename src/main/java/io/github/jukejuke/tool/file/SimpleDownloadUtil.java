@@ -131,4 +131,76 @@ public class SimpleDownloadUtil {
             return System.currentTimeMillis() + ".tmp";
         }
     }
+
+    /**
+     * 下载文件为byte数组
+     * @param urlStr 文件URL地址
+     * @return 下载的文件内容作为byte数组，如果下载失败返回null
+     */
+    public static byte[] downloadAsByteArray(String urlStr) {
+        HttpURLConnection connection = null;
+        InputStream inputStream = null;
+        ByteArrayOutputStream outputStream = null;
+
+        try {
+            // 创建URL对象
+            URL url = new URL(urlStr);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(30000);
+            connection.setReadTimeout(60000);
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+
+            // 获取响应码
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                System.err.println("HTTP request failed with response code: " + responseCode);
+                return null;
+            }
+
+            // 获取输入流
+            inputStream = connection.getInputStream();
+            
+            // 创建字节数组输出流
+            outputStream = new ByteArrayOutputStream();
+
+            // 缓冲区大小
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            long totalBytesRead = 0;
+            long contentLength = connection.getContentLengthLong();
+
+            // 读取数据并写入字节数组
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+                totalBytesRead += bytesRead;
+                
+                // 打印下载进度（可选）
+                if (contentLength > 0) {
+                    int progress = (int) ((totalBytesRead * 100) / contentLength);
+                    if (progress % 10 == 0) {
+                        System.out.println("Download progress: " + progress + "%");
+                    }
+                }
+            }
+
+            byte[] result = outputStream.toByteArray();
+            System.out.println("File downloaded successfully as byte array. Size: " + result.length + " bytes");
+            return result;
+
+        } catch (Exception e) {
+            System.err.println("Failed to download file as byte array from URL: " + urlStr);
+            e.printStackTrace();
+            return null;
+        } finally {
+            // 关闭资源
+            try {
+                if (outputStream != null) outputStream.close();
+                if (inputStream != null) inputStream.close();
+                if (connection != null) connection.disconnect();
+            } catch (IOException e) {
+                System.err.println("Error closing resources during download");
+                e.printStackTrace();
+            }
+        }
+    }
 }
