@@ -37,8 +37,7 @@ JK Tool is a Java-based utility library primarily designed to convert between ad
 - **Freemarker Templates**: Implemented via the `FreemarkerUtils` class, simplifying template rendering and data binding operations.
 - **JWT Token Processing**: Implemented via the `JwtUtils` class, supporting JWT token generation, parsing, and verification functions.
 - **Mail Tool**: Implemented via the `MailUtils`, `MailReaderUtils`, and `MailDeleterUtils` classes, supporting email sending, reading, and deletion functions.
-- **Redis Tool**: Implemented via `Redis` related classes, providing Redis database operation utility methods.
-- **Image Processing**: Implemented via `Image` related classes, providing image processing utility methods.
+
 
 ### Qiniu Cloud Object Storage Tools
 - **Qiniu Cloud Utility Class**: Implemented via the `QiniuUtils` class, providing complete operations for Qiniu Cloud Object Storage, including file upload, download, deletion, renaming, copying, moving, and other functions.
@@ -219,20 +218,20 @@ Add the following to your project's pom.xml dependencies:
 <dependency>
     <groupId>io.github.jukejuke</groupId>
     <artifactId>jk-tool</artifactId>
-    <version>0.0.4.snapshot</version>
+    <version>0.0.4</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-implementation 'io.github.jukejuke:jk-tool:0.0.4.snapshot'
+implementation 'io.github.jukejuke:jk-tool:0.0.4'
 ```
 
 ### Download JAR
 
 Click the link below to download `jk-tool-X.X.X.jar`:
 
-- [Maven Central Repository](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.4.snapshot/)
+- [Maven Central Repository](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.4/)
 
 ## JDK Version
 

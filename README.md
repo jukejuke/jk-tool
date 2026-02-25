@@ -37,8 +37,7 @@ JK Tool 是一个基于 Java 的工具库，主要用于通过高德地图（Ama
 - **Freemarker模板**：通过 `FreemarkerUtils` 类实现，简化模板渲染和数据绑定操作。
 - **JWT令牌处理**：通过 `JwtUtils` 类实现，支持JWT令牌的生成、解析和验证功能。
 - **邮件工具**：通过 `MailUtils`、`MailReaderUtils` 和 `MailDeleterUtils` 类实现，支持邮件发送、读取和删除功能。
-- **Redis工具**：通过 `Redis` 相关类实现，提供Redis数据库操作的工具方法。
-- **图片处理**：通过 `Image` 相关类实现，提供图片处理的工具方法。
+
 
 ### 七牛云对象存储工具
 - **七牛云工具类**：通过 `QiniuUtils` 类实现，提供七牛云对象存储的完整操作，支持文件上传、下载、删除、重命名、复制、移动等功能。
@@ -219,20 +218,20 @@ public void batchConvertCoordinates(List<CoordinateConverter.Point> wgs84Points)
 <dependency>
     <groupId>io.github.jukejuke</groupId>
     <artifactId>jk-tool</artifactId>
-    <version>0.0.4.snapshot</version>
+    <version>0.0.4</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-implementation 'io.github.jukejuke:jk-tool:0.0.4.snapshot'
+implementation 'io.github.jukejuke:jk-tool:0.0.4'
 ```
 
 ### 下载jar
 
 点击以下链接，下载`jk-tool-X.X.X.jar`即可：
 
-- [Maven中央库](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.4.snapshot/)
+- [Maven中央库](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.4/)
 
 ## JDK 版本
 
