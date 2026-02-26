@@ -32,6 +32,31 @@
     <developerConnection>scm:git:https://github.com/jukejuke/jk-tool.git</developerConnection>
     <url>https://github.com/jukejuke/jk-tool</url>
   </scm>
+
+  <properties>
+    <freemarker.version>2.3.34</freemarker.version>
+    <!--<freemarker.version>2.3.32</freemarker.version>-->
+    <nimbus-jose-jwt.version>10.6</nimbus-jose-jwt.version>
+   <!-- <nimbus-jose-jwt.version>9.37</nimbus-jose-jwt.version>-->
+    <fastjson2.version>2.0.60</fastjson2.version>
+    <okhttp.version>4.12.0</okhttp.version>
+    <lombok.version>1.18.42</lombok.version>
+    <!--<lombok.version>1.18.24</lombok.version>-->
+    <dnsjava.version>3.6.3</dnsjava.version>
+    <javax.mail.version>1.6.2</javax.mail.version>
+    <slf4j.version>1.7.36</slf4j.version>
+    <qiniu.version>7.15.0</qiniu.version>
+    <junit.version>5.9.2</junit.version>
+    <mockito.version>4.11.0</mockito.version>
+    <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+    <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
+    <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
+    <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+    <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+
   <build>
     <plugins>
       <!--   central发布插件    -->
@@ -177,29 +202,6 @@
       </plugin>-->
     </plugins>
   </build>
-
-  <properties>
-    <freemarker.version>2.3.34</freemarker.version>
-    <!--<freemarker.version>2.3.32</freemarker.version>-->
-    <nimbus-jose-jwt.version>10.6</nimbus-jose-jwt.version>
-   <!-- <nimbus-jose-jwt.version>9.37</nimbus-jose-jwt.version>-->
-    <fastjson2.version>2.0.60</fastjson2.version>
-    <okhttp.version>4.12.0</okhttp.version>
-    <lombok.version>1.18.42</lombok.version>
-    <!--<lombok.version>1.18.24</lombok.version>-->
-    <dnsjava.version>3.6.3</dnsjava.version>
-    <javax.mail.version>1.6.2</javax.mail.version>
-    <slf4j.version>1.7.36</slf4j.version>
-    <qiniu.version>7.15.0</qiniu.version>
-    <junit.version>5.9.2</junit.version>
-    <mockito.version>4.11.0</mockito.version>
-    <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-    <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
-    <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
-    <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-    <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 
   <dependencies>
     <dependency>
