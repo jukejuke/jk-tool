@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * UrlUtils 测试类
  * 测试 URL 编码和解码功能
  */
-class UrlUtilsTest {
+public class UrlUtilsTest {
 
     /**
      * 测试 URL 编码（默认 UTF-8 编码）
