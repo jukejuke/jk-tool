@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -15,9 +17,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class DateIdTool {
 
     /**
-     * 日期趋势递增ID计数器
+     * 日期趋势递增ID计数器映射，key为前缀，value为对应的计数器
      */
-    private static final AtomicLong counter = new AtomicLong(0);
+    private static final Map<String, AtomicLong> counterMap = new ConcurrentHashMap<>();
 
     /**
      * 上次生成日期趋势ID的日期（格式：yyyyMMdd）
@@ -30,48 +32,59 @@ public class DateIdTool {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     /**
+     * 获取指定前缀的计数器
+     * @param prefix 前缀
+     * @return 计数器
+     */
+    private static AtomicLong getCounter(String prefix) {
+        return counterMap.computeIfAbsent(prefix, k -> new AtomicLong(0));
+    }
+
+    /**
      * 生成日期趋势递增ID
-     * 格式：yyyyMMdd+6位递增数字
+     * 格式：yyyyMMdd+8位递增数字
      * @return 日期趋势递增ID
      */
     public static synchronized String generateId() {
+        // 使用空字符串作为默认前缀
+        return generateIdWithPrefix("");
+    }
+
+    /**
+     * 生成带前缀的日期趋势递增ID
+     * 格式：prefix+yyyyMMdd+8位递增数字
+     * @param prefix 前缀
+     * @return 带前缀的日期趋势递增ID
+     */
+    public static synchronized String generateIdWithPrefix(String prefix) {
+        if (prefix == null) {
+            prefix = "";
+        }
+        
         String currentDate = LocalDate.now().format(DATE_FORMATTER);
         
-        // 如果日期变化，重置计数器
+        // 如果日期变化，重置所有前缀的计数器
         if (!currentDate.equals(lastDate)) {
             lastDate = currentDate;
-            counter.set(0);
-            log.info("日期变更，重置ID计数器: {}", currentDate);
+            counterMap.clear();
+            log.info("日期变更，重置所有ID计数器: {}", currentDate);
         }
+        
+        // 获取当前前缀的计数器
+        AtomicLong counter = getCounter(prefix);
         
         // 生成8位递增数字，不足前面补0
         long count = counter.incrementAndGet();
         String countStr = String.format("%08d", count);
         
-        String id = currentDate + countStr;
-        log.debug("生成日期趋势ID: {}", id);
-        return id;
-    }
-
-    /**
-     * 生成带前缀的日期趋势递增ID
-     * 格式：prefix+yyyyMMdd+6位递增数字
-     * @param prefix 前缀
-     * @return 带前缀的日期趋势递增ID
-     */
-    public static synchronized String generateIdWithPrefix(String prefix) {
-        if (prefix == null || prefix.isEmpty()) {
-            throw new IllegalArgumentException("前缀不能为空");
-        }
-        
-        String id = prefix + generateId();
+        String id = prefix + currentDate + countStr;
         log.debug("生成带前缀日期趋势ID: {}", id);
         return id;
     }
 
     /**
      * 生成带业务类型的日期趋势递增ID
-     * 格式：业务类型+yyyyMMdd+6位递增数字
+     * 格式：业务类型+yyyyMMdd+8位递增数字
      * @param businessType 业务类型
      * @return 带业务类型的日期趋势递增ID
      */
@@ -91,8 +104,8 @@ public class DateIdTool {
      * 重置计数器（仅用于测试）
      */
     static void resetCounter() {
-        counter.set(0);
+        counterMap.clear();
         lastDate = "";
-        log.info("重置ID计数器");
+        log.info("重置所有ID计数器");
     }
 }

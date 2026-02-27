@@ -101,6 +101,47 @@ class DateIdToolTest {
     }
 
     @Test
+    void testDifferentPrefixesHaveSeparateCounters() {
+        // 生成不同前缀的ID
+        String prefix1 = "USER_";
+        String prefix2 = "ORDER_";
+        
+        String id1 = DateIdTool.generateIdWithPrefix(prefix1);
+        String id2 = DateIdTool.generateIdWithPrefix(prefix2);
+        String id3 = DateIdTool.generateIdWithPrefix(prefix1);
+        String id4 = DateIdTool.generateIdWithPrefix(prefix2);
+        
+        assertNotNull(id1);
+        assertNotNull(id2);
+        assertNotNull(id3);
+        assertNotNull(id4);
+        
+        // 检查前缀
+        assertTrue(id1.startsWith(prefix1));
+        assertTrue(id2.startsWith(prefix2));
+        assertTrue(id3.startsWith(prefix1));
+        assertTrue(id4.startsWith(prefix2));
+        
+        // 检查不同前缀的计数器是否独立
+        // 提取数字部分
+        String num1 = id1.substring(prefix1.length() + 8); // 前缀长度 + 8位日期
+        String num2 = id2.substring(prefix2.length() + 8);
+        String num3 = id3.substring(prefix1.length() + 8);
+        String num4 = id4.substring(prefix2.length() + 8);
+        
+        // 验证每个前缀的计数器都是从1开始递增
+        assertEquals("00000001", num1);
+        assertEquals("00000001", num2);
+        assertEquals("00000002", num3);
+        assertEquals("00000002", num4);
+        
+        System.out.println("前缀1 ID 1: " + id1);
+        System.out.println("前缀2 ID 1: " + id2);
+        System.out.println("前缀1 ID 2: " + id3);
+        System.out.println("前缀2 ID 2: " + id4);
+    }
+
+    @Test
     void testGetCurrentDate() {
         String currentDate = DateIdTool.getCurrentDate();
         assertNotNull(currentDate);
