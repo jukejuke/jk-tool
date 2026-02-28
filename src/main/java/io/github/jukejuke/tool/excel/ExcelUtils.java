@@ -8,9 +8,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * Excel 导出工具类
@@ -556,6 +558,211 @@ public class ExcelUtils {
      */
     private static void setCellValue(Cell cell, Object value) {
         setCellValue(cell, value, "");
+    }
+
+    /**
+     * Excel导出（流式方式）：通过Supplier接口流式获取数据并导出为Excel
+     * @param filePath 文件路径
+     * @param dataSupplier 数据供应者，返回null表示数据结束
+     * @param <T> 数据类型
+     * @throws Exception 导出过程中发生的异常
+     */
+    public static <T> void exportWithStream(String filePath, Supplier<T> dataSupplier) throws Exception {
+        if (filePath == null || filePath.isEmpty()) {
+            throw new IllegalArgumentException("文件路径不能为空");
+        }
+        if (dataSupplier == null) {
+            throw new IllegalArgumentException("数据供应者不能为空");
+        }
+
+        // 创建流式工作簿，设置内存中保留的行数为100
+        SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+        OutputStream outputStream = null;
+
+        try {
+            // 创建工作表
+            Sheet sheet = workbook.createSheet("Sheet1");
+
+            // 标记是否为第一次获取数据
+            boolean firstData = true;
+            // 字段信息列表
+            List<FieldInfo> fieldInfos = null;
+            // 行索引
+            int rowIndex = 0;
+
+            // 循环获取数据直到返回null
+            while (true) {
+                T data = dataSupplier.get();
+                if (data == null) {
+                    break;
+                }
+
+                // 第一次获取数据时，解析字段信息并创建表头
+                if (firstData) {
+                    fieldInfos = getFieldInfos(data.getClass());
+                    // 创建表头行
+                    Row headerRow = sheet.createRow(rowIndex++);
+                    // 填充表头
+                    for (int i = 0; i < fieldInfos.size(); i++) {
+                        FieldInfo fieldInfo = fieldInfos.get(i);
+                        Cell cell = headerRow.createCell(i);
+                        cell.setCellValue(fieldInfo.getColumnName());
+                        // 设置表头样式
+                        cell.setCellStyle(createHeaderCellStyle(workbook));
+                        // 设置列宽
+                        if (fieldInfo.getWidth() > 0) {
+                            sheet.setColumnWidth(i, fieldInfo.getWidth() * 256);
+                        }
+                    }
+                    firstData = false;
+                }
+
+                // 创建数据行
+                Row dataRow = sheet.createRow(rowIndex++);
+                // 填充数据
+                for (int i = 0; i < fieldInfos.size(); i++) {
+                    FieldInfo fieldInfo = fieldInfos.get(i);
+                    Cell cell = dataRow.createCell(i);
+                    Object value = getFieldValue(data, fieldInfo.getFieldName());
+                    // 处理默认值
+                    if (value == null) {
+                        value = fieldInfo.getDefaultValue();
+                    }
+                    // 设置单元格值
+                    setCellValue(cell, value, fieldInfo.getFormat(), fieldInfo.getAlignment().getPoiAlignment());
+                }
+            }
+
+            // 自动调整列宽（仅对未设置宽度的列）
+            if (fieldInfos != null) {
+                for (int i = 0; i < fieldInfos.size(); i++) {
+                    if (fieldInfos.get(i).getWidth() <= 0) {
+                        sheet.autoSizeColumn(i);
+                    }
+                }
+            }
+
+            // 写入文件
+            outputStream = new FileOutputStream(filePath);
+            workbook.write(outputStream);
+            log.info("Excel 流式导出成功，导出文件路径：{}", filePath);
+        } catch (Exception e) {
+            log.error("Excel 流式导出失败", e);
+            throw e;
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+                if (workbook != null) {
+                    // 清理临时文件
+                    workbook.dispose();
+                    workbook.close();
+                }
+            } catch (IOException e) {
+                log.error("关闭资源失败", e);
+            }
+        }
+    }
+
+    /**
+     * Excel导出（流式方式）：通过Supplier接口流式获取数据并导出为Excel
+     * @param outputStream 输出流
+     * @param dataSupplier 数据供应者，返回null表示数据结束
+     * @param <T> 数据类型
+     * @throws Exception 导出过程中发生的异常
+     */
+    public static <T> void exportWithStream(OutputStream outputStream, Supplier<T> dataSupplier) throws Exception {
+        if (outputStream == null) {
+            throw new IllegalArgumentException("输出流不能为空");
+        }
+        if (dataSupplier == null) {
+            throw new IllegalArgumentException("数据供应者不能为空");
+        }
+
+        // 创建流式工作簿，设置内存中保留的行数为100
+        SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+
+        try {
+            // 创建工作表
+            Sheet sheet = workbook.createSheet("Sheet1");
+
+            // 标记是否为第一次获取数据
+            boolean firstData = true;
+            // 字段信息列表
+            List<FieldInfo> fieldInfos = null;
+            // 行索引
+            int rowIndex = 0;
+
+            // 循环获取数据直到返回null
+            while (true) {
+                T data = dataSupplier.get();
+                if (data == null) {
+                    break;
+                }
+
+                // 第一次获取数据时，解析字段信息并创建表头
+                if (firstData) {
+                    fieldInfos = getFieldInfos(data.getClass());
+                    // 创建表头行
+                    Row headerRow = sheet.createRow(rowIndex++);
+                    // 填充表头
+                    for (int i = 0; i < fieldInfos.size(); i++) {
+                        FieldInfo fieldInfo = fieldInfos.get(i);
+                        Cell cell = headerRow.createCell(i);
+                        cell.setCellValue(fieldInfo.getColumnName());
+                        // 设置表头样式
+                        cell.setCellStyle(createHeaderCellStyle(workbook));
+                        // 设置列宽
+                        if (fieldInfo.getWidth() > 0) {
+                            sheet.setColumnWidth(i, fieldInfo.getWidth() * 256);
+                        }
+                    }
+                    firstData = false;
+                }
+
+                // 创建数据行
+                Row dataRow = sheet.createRow(rowIndex++);
+                // 填充数据
+                for (int i = 0; i < fieldInfos.size(); i++) {
+                    FieldInfo fieldInfo = fieldInfos.get(i);
+                    Cell cell = dataRow.createCell(i);
+                    Object value = getFieldValue(data, fieldInfo.getFieldName());
+                    // 处理默认值
+                    if (value == null) {
+                        value = fieldInfo.getDefaultValue();
+                    }
+                    // 设置单元格值
+                    setCellValue(cell, value, fieldInfo.getFormat(), fieldInfo.getAlignment().getPoiAlignment());
+                }
+            }
+
+            // 自动调整列宽（仅对未设置宽度的列）
+            if (fieldInfos != null) {
+                for (int i = 0; i < fieldInfos.size(); i++) {
+                    if (fieldInfos.get(i).getWidth() <= 0) {
+                        sheet.autoSizeColumn(i);
+                    }
+                }
+            }
+
+            // 写入输出流
+            workbook.write(outputStream);
+            log.info("Excel 流式导出成功");
+        } catch (Exception e) {
+            log.error("Excel 流式导出失败", e);
+            throw e;
+        } finally {
+            try {
+                if (workbook != null) {
+                    // 清理临时文件
+                    workbook.dispose();
+                    workbook.close();
+                }
+            } catch (IOException e) {
+                log.error("关闭工作簿失败", e);
+            }
+        }
     }
 
     /**
