@@ -46,6 +46,7 @@
     <javax.mail.version>1.6.2</javax.mail.version>
     <slf4j.version>1.7.36</slf4j.version>
     <qiniu.version>7.15.0</qiniu.version>
+    <poi.version>5.2.5</poi.version>
     <junit.version>5.9.2</junit.version>
     <mockito.version>4.11.0</mockito.version>
     <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
@@ -212,13 +213,13 @@
     <dependency>
         <groupId>org.apache.poi</groupId>
         <artifactId>poi</artifactId>
-        <version>5.2.5</version>
+        <version>${poi.version}</version>
         <scope>compile</scope>
     </dependency>
     <dependency>
         <groupId>org.apache.poi</groupId>
         <artifactId>poi-ooxml</artifactId>
-        <version>5.2.5</version>
+        <version>${poi.version}</version>
         <scope>compile</scope>
     </dependency>
     <dependency>
