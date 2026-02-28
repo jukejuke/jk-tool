@@ -140,6 +140,43 @@ public class ExcelUtilsTest {
     }
 
     /**
+     * 测试导出到本地文件
+     */
+    @Test
+    public void testExportToLocalFile() throws Exception {
+        // 创建测试数据
+        List<UserWithAnnotation> userList = new ArrayList<>();
+        userList.add(new UserWithAnnotation(1, "张三", 25, "男", new java.util.Date()));
+        userList.add(new UserWithAnnotation(2, "李四", 30, "女", new java.util.Date()));
+        userList.add(new UserWithAnnotation(3, "王五", 35, null, new java.util.Date())); // 测试默认值
+
+        // 创建本地文件路径
+        String fileName = "test_excel_export.xlsx";
+        java.io.File file = new java.io.File(fileName);
+
+        // 导出到本地文件
+        try (java.io.FileOutputStream fileOutputStream = new java.io.FileOutputStream(file)) {
+            ExcelUtils.exportWithAnnotation(userList, "用户信息", fileOutputStream);
+            // 验证文件是否存在
+            assertTrue("导出文件不存在", file.exists());
+            // 验证文件大小是否大于0
+            assertTrue("导出文件大小为0", file.length() > 0);
+            System.out.println("Excel 导出到本地文件成功，文件路径：" + file.getAbsolutePath() + "，文件大小：" + file.length() + " 字节");
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Excel 导出到本地文件失败：" + e.getMessage());
+        } finally {
+            // 清理测试文件
+            if (file.exists()) {
+//                boolean deleted = file.delete();
+//                if (deleted) {
+//                    System.out.println("测试文件已清理");
+//                }
+            }
+        }
+    }
+
+    /**
      * 测试用户实体类
      */
     static class User {
