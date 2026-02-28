@@ -37,6 +37,13 @@ JK Tool 是一个基于 Java 的工具库，主要用于通过高德地图（Ama
 - **Freemarker模板**：通过 `FreemarkerUtils` 类实现，简化模板渲染和数据绑定操作。
 - **JWT令牌处理**：通过 `JwtUtils` 类实现，支持JWT令牌的生成、解析和验证功能。
 - **邮件工具**：通过 `MailUtils`、`MailReaderUtils` 和 `MailDeleterUtils` 类实现，支持邮件发送、读取和删除功能。
+- **Excel工具**：通过 `ExcelUtils` 类实现，支持Excel文件的导出和导入功能，包括：
+  - **基本导出**：支持将数据列表导出为Excel文件，可自定义表头。
+  - **注解配置导出**：支持通过注解配置Excel列名、顺序、格式、宽度等属性。
+  - **流式导出**：支持处理大型数据集，避免内存溢出。
+  - **流式数据获取导出**：通过Supplier接口流式获取数据并导出。
+  - **导入功能**：支持从Excel文件导入数据到对象列表。
+  - **流式导入**：通过Consumer接口流式处理Excel数据。
 
 
 ### 七牛云对象存储工具
@@ -203,6 +210,9 @@ public void batchConvertCoordinates(List<CoordinateConverter.Point> wgs84Points)
 - `src/main/java/io/github/jukejuke/tool/bean/BeanFieldFilter.java`：Bean字段过滤工具类。
 - `src/main/java/io/github/jukejuke/tool/bean/BeanPropertyUtils.java`：Bean属性操作工具类。
 - `src/main/java/io/github/jukejuke/tool/date/DateUtils.java`：日期时间处理工具类。
+- `src/main/java/io/github/jukejuke/tool/excel/ExcelUtils.java`：Excel文件导出和导入工具类，支持基本导出、注解配置导出、流式导出、流式数据获取导出、导入功能和流式导入。
+- `src/main/java/io/github/jukejuke/tool/excel/ExcelColumn.java`：Excel列配置注解类，用于配置Excel列的名称、顺序、格式、宽度等属性。
+- `src/main/java/io/github/jukejuke/tool/excel/ExcelAlignment.java`：Excel对齐方式枚举类，用于配置Excel单元格的对齐方式。
 - `src/main/java/io/github/jukejuke/tool/freemarker/FreemarkerUtils.java`：Freemarker模板引擎工具类。
 - `src/main/java/io/github/jukejuke/tool/jwt/JwtUtils.java`：JWT令牌处理工具类。
 

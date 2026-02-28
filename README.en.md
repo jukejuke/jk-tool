@@ -37,6 +37,13 @@ JK Tool is a Java-based utility library primarily designed to convert between ad
 - **Freemarker Templates**: Implemented via the `FreemarkerUtils` class, simplifying template rendering and data binding operations.
 - **JWT Token Processing**: Implemented via the `JwtUtils` class, supporting JWT token generation, parsing, and verification functions.
 - **Mail Tool**: Implemented via the `MailUtils`, `MailReaderUtils`, and `MailDeleterUtils` classes, supporting email sending, reading, and deletion functions.
+- **Excel Tool**: Implemented via the `ExcelUtils` class, supporting Excel file export and import functions, including:
+  - **Basic Export**: Supports exporting data lists to Excel files with custom headers.
+  - **Annotation-based Export**: Supports configuring Excel column names, order, format, width, etc. via annotations.
+  - **Streaming Export**: Supports processing large datasets to avoid memory overflow.
+  - **Streaming Data Acquisition Export**: Acquires data streaming through Supplier interface and exports.
+  - **Import Functionality**: Supports importing data from Excel files to object lists.
+  - **Streaming Import**: Processes Excel data streaming through Consumer interface.
 
 
 ### Qiniu Cloud Object Storage Tools
@@ -203,6 +210,9 @@ You can easily obtain structured address or area information from the returned `
 - `src/main/java/io/github/jukejuke/tool/bean/BeanFieldFilter.java`: Bean field filtering utility class.
 - `src/main/java/io/github/jukejuke/tool/bean/BeanPropertyUtils.java`: Bean property operation utility class.
 - `src/main/java/io/github/jukejuke/tool/date/DateUtils.java`: Date and time processing utility class.
+- `src/main/java/io/github/jukejuke/tool/excel/ExcelUtils.java`: Excel file export and import utility class, supporting basic export, annotation-based export, streaming export, streaming data acquisition export, import functionality, and streaming import.
+- `src/main/java/io/github/jukejuke/tool/excel/ExcelColumn.java`: Excel column configuration annotation class, used to configure Excel column names, order, format, width, etc.
+- `src/main/java/io/github/jukejuke/tool/excel/ExcelAlignment.java`: Excel alignment enumeration class, used to configure Excel cell alignment.
 - `src/main/java/io/github/jukejuke/tool/freemarker/FreemarkerUtils.java`: Freemarker template engine utility class.
 - `src/main/java/io/github/jukejuke/tool/jwt/JwtUtils.java`: JWT token processing utility class.
 
