@@ -168,10 +168,10 @@ public class ExcelUtilsTest {
         } finally {
             // 清理测试文件
             if (file.exists()) {
-//                boolean deleted = file.delete();
-//                if (deleted) {
-//                    System.out.println("测试文件已清理");
-//                }
+                boolean deleted = file.delete();
+                if (deleted) {
+                    System.out.println("测试文件已清理");
+                }
             }
         }
     }
@@ -259,10 +259,10 @@ public class ExcelUtilsTest {
         } finally {
             // 清理测试文件
             if (file.exists()) {
-//                boolean deleted = file.delete();
-//                if (deleted) {
-//                    System.out.println("测试文件已清理");
-//                }
+                boolean deleted = file.delete();
+                if (deleted) {
+                    System.out.println("测试文件已清理");
+                }
             }
         }
     }
