@@ -2,9 +2,11 @@ package io.github.jukejuke.tool.excel;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -174,6 +176,235 @@ public class ExcelUtils {
             } catch (IOException e) {
                 log.error("关闭工作簿失败", e);
             }
+        }
+    }
+
+    /**
+     * 流式导出列表数据到 Excel 文件（使用注解配置）
+     * 适用于处理大型数据集，避免内存溢出
+     * @param dataList 数据列表
+     * @param sheetName 工作表名称
+     * @param outputStream 输出流
+     * @param <T> 数据类型
+     * @throws Exception 导出过程中发生的异常
+     */
+    public static <T> void exportWithAnnotationStreaming(List<T> dataList, String sheetName, OutputStream outputStream) throws Exception {
+        if (dataList == null || dataList.isEmpty()) {
+            throw new IllegalArgumentException("数据列表不能为空");
+        }
+        if (outputStream == null) {
+            throw new IllegalArgumentException("输出流不能为空");
+        }
+
+        // 创建流式工作簿，设置内存中保留的行数为100
+        SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+        try {
+            // 创建工作表
+            Sheet sheet = workbook.createSheet(sheetName);
+
+            // 获取并排序字段信息
+            List<FieldInfo> fieldInfos = getFieldInfos(dataList.get(0).getClass());
+
+            // 创建表头行
+            Row headerRow = sheet.createRow(0);
+
+            // 填充表头
+            for (int i = 0; i < fieldInfos.size(); i++) {
+                FieldInfo fieldInfo = fieldInfos.get(i);
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(fieldInfo.getColumnName());
+                // 设置表头样式
+                cell.setCellStyle(createHeaderCellStyle(workbook));
+                // 设置列宽
+                if (fieldInfo.getWidth() > 0) {
+                    sheet.setColumnWidth(i, fieldInfo.getWidth() * 256);
+                }
+            }
+
+            // 填充数据
+            int rowIndex = 1;
+            for (T data : dataList) {
+                Row dataRow = sheet.createRow(rowIndex);
+                
+                for (int i = 0; i < fieldInfos.size(); i++) {
+                    FieldInfo fieldInfo = fieldInfos.get(i);
+                    Cell cell = dataRow.createCell(i);
+                    Object value = getFieldValue(data, fieldInfo.getFieldName());
+                    // 处理默认值
+                    if (value == null) {
+                        value = fieldInfo.getDefaultValue();
+                    }
+                    // 设置单元格值
+                    setCellValue(cell, value, fieldInfo.getFormat(), fieldInfo.getAlignment().getPoiAlignment());
+                }
+                rowIndex++;
+            }
+
+            // 自动调整列宽（仅对未设置宽度的列）
+            for (int i = 0; i < fieldInfos.size(); i++) {
+                if (fieldInfos.get(i).getWidth() <= 0) {
+                    sheet.autoSizeColumn(i);
+                }
+            }
+
+            // 写入输出流
+            workbook.write(outputStream);
+            log.info("Excel 流式导出成功，导出数据条数：{}", dataList.size());
+        } catch (Exception e) {
+            log.error("Excel 流式导出失败", e);
+            throw e;
+        } finally {
+            try {
+                if (workbook != null) {
+                    // 清理临时文件
+                    workbook.dispose();
+                    workbook.close();
+                }
+            } catch (IOException e) {
+                log.error("关闭工作簿失败", e);
+            }
+        }
+    }
+
+    /**
+     * 从 Excel 文件导入数据到对象列表
+     * @param inputStream 输入流
+     * @param clazz 目标对象类型
+     * @param <T> 数据类型
+     * @return 对象列表
+     * @throws Exception 导入过程中发生的异常
+     */
+    public static <T> List<T> importFromExcel(InputStream inputStream, Class<T> clazz) throws Exception {
+        if (inputStream == null) {
+            throw new IllegalArgumentException("输入流不能为空");
+        }
+        if (clazz == null) {
+            throw new IllegalArgumentException("目标对象类型不能为空");
+        }
+
+        List<T> resultList = new ArrayList<>();
+        Workbook workbook = null;
+
+        try {
+            // 创建工作簿
+            workbook = WorkbookFactory.create(inputStream);
+            // 获取第一个工作表
+            Sheet sheet = workbook.getSheetAt(0);
+
+            // 获取并排序字段信息
+            List<FieldInfo> fieldInfos = getFieldInfos(clazz);
+            // 创建字段名到字段信息的映射
+            Map<String, FieldInfo> fieldInfoMap = new HashMap<>();
+            for (FieldInfo fieldInfo : fieldInfos) {
+                fieldInfoMap.put(fieldInfo.getColumnName(), fieldInfo);
+            }
+
+            // 获取表头行
+            Row headerRow = sheet.getRow(0);
+            if (headerRow == null) {
+                throw new Exception("Excel 文件中没有表头");
+            }
+
+            // 创建表头列名到列索引的映射
+            Map<String, Integer> headerMap = new HashMap<>();
+            for (int i = 0; i < headerRow.getLastCellNum(); i++) {
+                Cell cell = headerRow.getCell(i);
+                if (cell != null) {
+                    String headerName = cell.getStringCellValue();
+                    headerMap.put(headerName, i);
+                }
+            }
+
+            // 遍历数据行
+            for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+                Row row = sheet.getRow(rowIndex);
+                if (row == null) {
+                    continue;
+                }
+
+                // 创建对象实例
+                T instance = clazz.getDeclaredConstructor().newInstance();
+
+                // 填充字段值
+                for (FieldInfo fieldInfo : fieldInfos) {
+                    String columnName = fieldInfo.getColumnName();
+                    Integer columnIndex = headerMap.get(columnName);
+                    if (columnIndex != null) {
+                        Cell cell = row.getCell(columnIndex);
+                        if (cell != null) {
+                            Field field = clazz.getDeclaredField(fieldInfo.getFieldName());
+                            field.setAccessible(true);
+                            
+                            // 根据字段类型设置值
+                            Object value = getCellValue(cell, field.getType(), fieldInfo.getFormat());
+                            if (value != null) {
+                                field.set(instance, value);
+                            }
+                        }
+                    }
+                }
+
+                resultList.add(instance);
+            }
+
+            log.info("Excel 导入成功，导入数据条数：{}", resultList.size());
+            return resultList;
+        } catch (Exception e) {
+            log.error("Excel 导入失败", e);
+            throw e;
+        } finally {
+            try {
+                if (workbook != null) {
+                    workbook.close();
+                }
+            } catch (IOException e) {
+                log.error("关闭工作簿失败", e);
+            }
+        }
+    }
+
+    /**
+     * 获取单元格值
+     * @param cell 单元格
+     * @param fieldType 字段类型
+     * @param format 格式
+     * @return 单元格值
+     * @throws Exception 转换过程中发生的异常
+     */
+    private static Object getCellValue(Cell cell, Class<?> fieldType, String format) throws Exception {
+        CellType cellType = cell.getCellType();
+
+        switch (cellType) {
+            case STRING:
+                return cell.getStringCellValue();
+            case NUMERIC:
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    return cell.getDateCellValue();
+                } else if (fieldType == Integer.class || fieldType == int.class) {
+                    return (int) cell.getNumericCellValue();
+                } else if (fieldType == Long.class || fieldType == long.class) {
+                    return (long) cell.getNumericCellValue();
+                } else if (fieldType == Double.class || fieldType == double.class) {
+                    return cell.getNumericCellValue();
+                } else if (fieldType == Float.class || fieldType == float.class) {
+                    return (float) cell.getNumericCellValue();
+                } else {
+                    return cell.getStringCellValue();
+                }
+            case BOOLEAN:
+                return cell.getBooleanCellValue();
+            case BLANK:
+                return null;
+            case ERROR:
+                return null;
+            case FORMULA:
+                try {
+                    return cell.getNumericCellValue();
+                } catch (Exception e) {
+                    return cell.getStringCellValue();
+                }
+            default:
+                return null;
         }
     }
 

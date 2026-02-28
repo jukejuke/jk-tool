@@ -177,6 +177,85 @@ public class ExcelUtilsTest {
     }
 
     /**
+     * 测试流式导出功能
+     */
+    @Test
+    public void testExportWithAnnotationStreaming() throws Exception {
+        // 创建测试数据
+        List<UserWithAnnotation> userList = new ArrayList<>();
+        // 添加1000条数据，测试流式导出的性能
+        for (int i = 1; i <= 1000; i++) {
+            userList.add(new UserWithAnnotation(i, "用户" + i, 20 + i % 30, i % 2 == 0 ? "男" : "女", new java.util.Date()));
+        }
+
+        // 创建本地文件路径（使用时间戳避免文件冲突）
+        String fileName = "test_excel_streaming_export_" + System.currentTimeMillis() + ".xlsx";
+        java.io.File file = new java.io.File(fileName);
+
+        // 流式导出到本地文件
+        try (java.io.FileOutputStream fileOutputStream = new java.io.FileOutputStream(file)) {
+            long startTime = System.currentTimeMillis();
+            ExcelUtils.exportWithAnnotationStreaming(userList, "用户信息", fileOutputStream);
+            long endTime = System.currentTimeMillis();
+            // 验证文件是否存在
+            assertTrue("导出文件不存在", file.exists());
+            // 验证文件大小是否大于0
+            assertTrue("导出文件大小为0", file.length() > 0);
+            System.out.println("Excel 流式导出成功，导出数据条数：" + userList.size() + "，耗时：" + (endTime - startTime) + "ms，文件大小：" + file.length() + " 字节");
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Excel 流式导出失败：" + e.getMessage());
+        } finally {
+            // 清理测试文件
+            if (file.exists()) {
+//                boolean deleted = file.delete();
+//                if (deleted) {
+//                    System.out.println("测试文件已清理");
+//                }
+            }
+        }
+    }
+
+    /**
+     * 测试导入功能
+     */
+    @Test
+    public void testImportFromExcel() throws Exception {
+        // 创建测试数据
+        List<UserWithAnnotation> userList = new ArrayList<>();
+        userList.add(new UserWithAnnotation(1, "张三", 25, "男", new java.util.Date()));
+        userList.add(new UserWithAnnotation(2, "李四", 30, "女", new java.util.Date()));
+        userList.add(new UserWithAnnotation(3, "王五", 35, "男", new java.util.Date()));
+
+        // 先导出到文件
+        String fileName = "test_excel_import_" + System.currentTimeMillis() + ".xlsx";
+        java.io.File file = new java.io.File(fileName);
+
+        try (java.io.FileOutputStream fileOutputStream = new java.io.FileOutputStream(file)) {
+            ExcelUtils.exportWithAnnotation(userList, "用户信息", fileOutputStream);
+        }
+
+        // 再从文件导入
+        try (java.io.FileInputStream fileInputStream = new java.io.FileInputStream(file)) {
+            List<UserWithAnnotation> importedList = ExcelUtils.importFromExcel(fileInputStream, UserWithAnnotation.class);
+            // 验证导入的数据条数
+            assertEquals("导入的数据条数与导出的不一致", userList.size(), importedList.size());
+            System.out.println("Excel 导入成功，导入数据条数：" + importedList.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Excel 导入失败：" + e.getMessage());
+        } finally {
+            // 清理测试文件
+            if (file.exists()) {
+                boolean deleted = file.delete();
+                if (deleted) {
+                    System.out.println("测试文件已清理");
+                }
+            }
+        }
+    }
+
+    /**
      * 测试用户实体类
      */
     static class User {
@@ -243,6 +322,9 @@ public class ExcelUtilsTest {
         
         @ExcelColumn(name = "注册时间", order = 5, width = 20, format = "yyyy-MM-dd HH:mm:ss", alignment = ExcelAlignment.CENTER)
         private java.util.Date registerTime;
+
+        public UserWithAnnotation() {
+        }
 
         public UserWithAnnotation(int id, String name, int age, String gender, java.util.Date registerTime) {
             this.id = id;
