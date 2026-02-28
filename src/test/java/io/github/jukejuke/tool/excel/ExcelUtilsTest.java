@@ -268,6 +268,57 @@ public class ExcelUtilsTest {
     }
 
     /**
+     * 测试通过Supplier接口流式获取数据并导出到输出流的功能
+     */
+    @Test
+    public void testExportWithStreamToOutputStream() throws Exception {
+        // 创建本地文件路径（使用时间戳避免文件冲突）
+        String fileName = "test_excel_stream_outputstream_" + System.currentTimeMillis() + ".xlsx";
+        java.io.File file = new java.io.File(fileName);
+
+        // 模拟数据计数器
+        final int[] counter = {0};
+        final int totalCount = 50;
+
+        // 流式导出到本地文件
+        try (java.io.FileOutputStream fileOutputStream = new java.io.FileOutputStream(file)) {
+            long startTime = System.currentTimeMillis();
+            ExcelUtils.exportWithStream(fileOutputStream, () -> {
+                // 模拟流式获取数据，当计数器达到总条数时返回null
+                if (counter[0] >= totalCount) {
+                    return null;
+                }
+                // 创建并返回数据对象
+                UserWithAnnotation user = new UserWithAnnotation(
+                        ++counter[0],
+                        "用户" + counter[0],
+                        20 + counter[0] % 30,
+                        counter[0] % 2 == 0 ? "男" : "女",
+                        new java.util.Date()
+                );
+                return user;
+            });
+            long endTime = System.currentTimeMillis();
+            // 验证文件是否存在
+            assertTrue("导出文件不存在", file.exists());
+            // 验证文件大小是否大于0
+            assertTrue("导出文件大小为0", file.length() > 0);
+            System.out.println("Excel 流式获取数据导出到输出流成功，导出数据条数：" + totalCount + "，耗时：" + (endTime - startTime) + "ms，文件大小：" + file.length() + " 字节");
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Excel 流式获取数据导出到输出流失败：" + e.getMessage());
+        } finally {
+            // 清理测试文件
+            if (file.exists()) {
+                boolean deleted = file.delete();
+                if (deleted) {
+                    System.out.println("测试文件已清理");
+                }
+            }
+        }
+    }
+
+    /**
      * 测试导入功能
      */
     @Test
