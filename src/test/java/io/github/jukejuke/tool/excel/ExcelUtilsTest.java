@@ -150,8 +150,8 @@ public class ExcelUtilsTest {
         userList.add(new UserWithAnnotation(2, "李四", 30, "女", new java.util.Date()));
         userList.add(new UserWithAnnotation(3, "王五", 35, null, new java.util.Date())); // 测试默认值
 
-        // 创建本地文件路径
-        String fileName = "test_excel_export.xlsx";
+        // 创建本地文件路径（使用时间戳避免文件冲突）
+        String fileName = "test_excel_export_" + System.currentTimeMillis() + ".xlsx";
         java.io.File file = new java.io.File(fileName);
 
         // 导出到本地文件

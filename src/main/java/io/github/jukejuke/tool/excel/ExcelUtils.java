@@ -213,8 +213,8 @@ public class ExcelUtils {
      */
     private static CellStyle createHeaderCellStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
-        // 设置背景色
-        style.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+        // 设置背景色（使用更美观的蓝色）
+        style.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         // 设置边框
         style.setBorderTop(BorderStyle.THIN);
@@ -225,9 +225,28 @@ public class ExcelUtils {
         Font font = workbook.createFont();
         font.setBold(true);
         font.setFontHeightInPoints((short) 12);
+        font.setColor(IndexedColors.WHITE.getIndex()); // 白色字体
         style.setFont(font);
         // 设置对齐方式
         style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        return style;
+    }
+
+    /**
+     * 创建数据单元格样式
+     * @param workbook 工作簿
+     * @return 数据单元格样式
+     */
+    private static CellStyle createDataCellStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+        // 设置边框
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        // 设置对齐方式
+        style.setAlignment(HorizontalAlignment.LEFT);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         return style;
     }
@@ -262,6 +281,10 @@ public class ExcelUtils {
      * @param format 格式
      */
     private static void setCellValue(Cell cell, Object value, String format) {
+        Workbook workbook = cell.getSheet().getWorkbook();
+        // 创建基础数据样式
+        CellStyle style = createDataCellStyle(workbook);
+        
         if (value == null) {
             cell.setCellValue("");
         } else if (value instanceof String) {
@@ -269,11 +292,8 @@ public class ExcelUtils {
         } else if (value instanceof Number) {
             if (!format.isEmpty()) {
                 // 设置数字格式
-                Workbook workbook = cell.getSheet().getWorkbook();
-                CellStyle style = workbook.createCellStyle();
                 DataFormat dataFormat = workbook.createDataFormat();
                 style.setDataFormat(dataFormat.getFormat(format));
-                cell.setCellStyle(style);
             }
             cell.setCellValue(((Number) value).doubleValue());
         } else if (value instanceof Boolean) {
@@ -281,16 +301,16 @@ public class ExcelUtils {
         } else if (value instanceof java.util.Date) {
             if (!format.isEmpty()) {
                 // 设置日期格式
-                Workbook workbook = cell.getSheet().getWorkbook();
-                CellStyle style = workbook.createCellStyle();
                 DataFormat dataFormat = workbook.createDataFormat();
                 style.setDataFormat(dataFormat.getFormat(format));
-                cell.setCellStyle(style);
             }
             cell.setCellValue((java.util.Date) value);
         } else {
             cell.setCellValue(value.toString());
         }
+        
+        // 应用样式
+        cell.setCellStyle(style);
     }
 
     /**
