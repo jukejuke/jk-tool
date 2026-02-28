@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.function.Consumer;
 
 /**
  * Excel 导出工具类
@@ -353,6 +354,100 @@ public class ExcelUtils {
             return resultList;
         } catch (Exception e) {
             log.error("Excel 导入失败", e);
+            throw e;
+        } finally {
+            try {
+                if (workbook != null) {
+                    workbook.close();
+                }
+            } catch (IOException e) {
+                log.error("关闭工作簿失败", e);
+            }
+        }
+    }
+
+    /**
+     * Excel导入（流式方式）：通过Consumer接口流式处理Excel数据
+     * @param inputStream 输入流
+     * @param clazz 目标对象类型
+     * @param consumer 数据消费者，用于处理每一行数据
+     * @param <T> 数据类型
+     * @throws Exception 导入过程中发生的异常
+     */
+    public static <T> void importWithStream(InputStream inputStream, Class<T> clazz, Consumer<T> consumer) throws Exception {
+        if (inputStream == null) {
+            throw new IllegalArgumentException("输入流不能为空");
+        }
+        if (clazz == null) {
+            throw new IllegalArgumentException("目标对象类型不能为空");
+        }
+        if (consumer == null) {
+            throw new IllegalArgumentException("数据消费者不能为空");
+        }
+
+        Workbook workbook = null;
+
+        try {
+            // 创建工作簿
+            workbook = WorkbookFactory.create(inputStream);
+            // 获取第一个工作表
+            Sheet sheet = workbook.getSheetAt(0);
+
+            // 获取并排序字段信息
+            List<FieldInfo> fieldInfos = getFieldInfos(clazz);
+
+            // 获取表头行
+            Row headerRow = sheet.getRow(0);
+            if (headerRow == null) {
+                throw new Exception("Excel 文件中没有表头");
+            }
+
+            // 创建表头列名到列索引的映射
+            Map<String, Integer> headerMap = new HashMap<>();
+            for (int i = 0; i < headerRow.getLastCellNum(); i++) {
+                Cell cell = headerRow.getCell(i);
+                if (cell != null) {
+                    String headerName = cell.getStringCellValue();
+                    headerMap.put(headerName, i);
+                }
+            }
+
+            // 遍历数据行
+            for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+                Row row = sheet.getRow(rowIndex);
+                if (row == null) {
+                    continue;
+                }
+
+                // 创建对象实例
+                T instance = clazz.getDeclaredConstructor().newInstance();
+
+                // 填充字段值
+                for (FieldInfo fieldInfo : fieldInfos) {
+                    String columnName = fieldInfo.getColumnName();
+                    Integer columnIndex = headerMap.get(columnName);
+                    if (columnIndex != null) {
+                        Cell cell = row.getCell(columnIndex);
+                        if (cell != null) {
+                            Field field = clazz.getDeclaredField(fieldInfo.getFieldName());
+                            field.setAccessible(true);
+                            
+                            // 根据字段类型设置值
+                            Object value = getCellValue(cell, field.getType(), fieldInfo.getFormat());
+                            if (value != null) {
+                                field.set(instance, value);
+                            }
+                        }
+                    }
+                }
+
+                // 处理数据
+                consumer.accept(instance);
+            }
+
+            log.info("Excel 流式导入成功");
+        } catch (Exception e) {
+            log.error("Excel 流式导入失败", e);
             throw e;
         } finally {
             try {

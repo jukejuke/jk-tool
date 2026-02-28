@@ -319,6 +319,49 @@ public class ExcelUtilsTest {
     }
 
     /**
+     * 测试通过Consumer接口流式处理Excel数据的导入功能
+     */
+    @Test
+    public void testImportWithStream() throws Exception {
+        // 创建测试数据
+        List<UserWithAnnotation> userList = new ArrayList<>();
+        userList.add(new UserWithAnnotation(1, "张三", 25, "男", new java.util.Date()));
+        userList.add(new UserWithAnnotation(2, "李四", 30, "女", new java.util.Date()));
+        userList.add(new UserWithAnnotation(3, "王五", 35, "男", new java.util.Date()));
+
+        // 先导出到文件
+        String fileName = "test_excel_import_stream_" + System.currentTimeMillis() + ".xlsx";
+        java.io.File file = new java.io.File(fileName);
+
+        try (java.io.FileOutputStream fileOutputStream = new java.io.FileOutputStream(file)) {
+            ExcelUtils.exportWithAnnotation(userList, "用户信息", fileOutputStream);
+        }
+
+        // 再通过流式方式导入
+        final List<UserWithAnnotation> importedList = new ArrayList<>();
+        try (java.io.FileInputStream fileInputStream = new java.io.FileInputStream(file)) {
+            ExcelUtils.importWithStream(fileInputStream, UserWithAnnotation.class, user -> {
+                importedList.add(user);
+                System.out.println("处理数据：" + user.getName());
+            });
+            // 验证导入的数据条数
+            assertEquals("导入的数据条数与导出的不一致", userList.size(), importedList.size());
+            System.out.println("Excel 流式导入成功，导入数据条数：" + importedList.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Excel 流式导入失败：" + e.getMessage());
+        } finally {
+            // 清理测试文件
+            if (file.exists()) {
+                boolean deleted = file.delete();
+                if (deleted) {
+                    System.out.println("测试文件已清理");
+                }
+            }
+        }
+    }
+
+    /**
      * 测试导入功能
      */
     @Test
