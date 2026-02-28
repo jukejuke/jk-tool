@@ -148,7 +148,7 @@ public class ExcelUtils {
                         value = fieldInfo.getDefaultValue();
                     }
                     // 设置单元格值
-                    setCellValue(cell, value, fieldInfo.getFormat());
+                    setCellValue(cell, value, fieldInfo.getFormat(), fieldInfo.getAlignment().getPoiAlignment());
                 }
                 rowIndex++;
             }
@@ -197,6 +197,7 @@ public class ExcelUtils {
                 fieldInfo.setWidth(annotation.width());
                 fieldInfo.setRequired(annotation.required());
                 fieldInfo.setDefaultValue(annotation.defaultValue());
+                fieldInfo.setAlignment(annotation.alignment());
                 fieldInfos.add(fieldInfo);
             }
         }
@@ -266,24 +267,18 @@ public class ExcelUtils {
     }
 
     /**
-     * 设置单元格值
-     * @param cell 单元格
-     * @param value 值
-     */
-    private static void setCellValue(Cell cell, Object value) {
-        setCellValue(cell, value, "");
-    }
-
-    /**
-     * 设置单元格值（支持格式）
+     * 设置单元格值（支持格式和对齐方式）
      * @param cell 单元格
      * @param value 值
      * @param format 格式
+     * @param alignment 对齐方式
      */
-    private static void setCellValue(Cell cell, Object value, String format) {
+    private static void setCellValue(Cell cell, Object value, String format, org.apache.poi.ss.usermodel.HorizontalAlignment alignment) {
         Workbook workbook = cell.getSheet().getWorkbook();
         // 创建基础数据样式
         CellStyle style = createDataCellStyle(workbook);
+        // 设置对齐方式
+        style.setAlignment(alignment);
         
         if (value == null) {
             cell.setCellValue("");
@@ -314,6 +309,25 @@ public class ExcelUtils {
     }
 
     /**
+     * 设置单元格值（支持格式）
+     * @param cell 单元格
+     * @param value 值
+     * @param format 格式
+     */
+    private static void setCellValue(Cell cell, Object value, String format) {
+        setCellValue(cell, value, format, org.apache.poi.ss.usermodel.HorizontalAlignment.LEFT);
+    }
+
+    /**
+     * 设置单元格值
+     * @param cell 单元格
+     * @param value 值
+     */
+    private static void setCellValue(Cell cell, Object value) {
+        setCellValue(cell, value, "");
+    }
+
+    /**
      * 字段信息类
      */
     private static class FieldInfo {
@@ -324,6 +338,7 @@ public class ExcelUtils {
         private int width;
         private boolean required;
         private String defaultValue;
+        private ExcelAlignment alignment;
 
         public String getFieldName() {
             return fieldName;
@@ -379,6 +394,14 @@ public class ExcelUtils {
 
         public void setDefaultValue(String defaultValue) {
             this.defaultValue = defaultValue;
+        }
+
+        public ExcelAlignment getAlignment() {
+            return alignment;
+        }
+
+        public void setAlignment(ExcelAlignment alignment) {
+            this.alignment = alignment;
         }
     }
 }

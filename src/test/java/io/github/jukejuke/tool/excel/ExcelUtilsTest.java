@@ -229,19 +229,19 @@ public class ExcelUtilsTest {
      * 测试使用注解配置的用户实体类
      */
     static class UserWithAnnotation {
-        @ExcelColumn(name = "用户ID", order = 1, width = 10)
+        @ExcelColumn(name = "用户ID", order = 1, width = 10, alignment = ExcelAlignment.CENTER)
         private int id;
         
         @ExcelColumn(name = "姓名", order = 2, width = 15)
         private String name;
         
-        @ExcelColumn(name = "年龄", order = 3, width = 8)
+        @ExcelColumn(name = "年龄", order = 3, width = 8, alignment = ExcelAlignment.RIGHT)
         private int age;
         
         @ExcelColumn(name = "性别", order = 4, width = 8, defaultValue = "未知")
         private String gender;
         
-        @ExcelColumn(name = "注册时间", order = 5, width = 20, format = "yyyy-MM-dd HH:mm:ss")
+        @ExcelColumn(name = "注册时间", order = 5, width = 20, format = "yyyy-MM-dd HH:mm:ss", alignment = ExcelAlignment.CENTER)
         private java.util.Date registerTime;
 
         public UserWithAnnotation(int id, String name, int age, String gender, java.util.Date registerTime) {

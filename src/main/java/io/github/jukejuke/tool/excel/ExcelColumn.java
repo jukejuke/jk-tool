@@ -42,4 +42,9 @@ public @interface ExcelColumn {
      * 字段为空时的默认填充值（默认空字符串）
      */
     String defaultValue() default "";
+    
+    /**
+     * 水平对齐方式
+     */
+    ExcelAlignment alignment() default ExcelAlignment.LEFT;
 }
