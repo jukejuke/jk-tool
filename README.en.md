@@ -1,132 +1,208 @@
 # JK Tool
 
-JK Tool is a Java-based utility library primarily designed to convert between address information and latitude/longitude coordinates using the geocoding and reverse geocoding services of Amap (Gaode Map) and Tianditu. This project is suitable for Java applications requiring integration with geocoding services.
+JK Tool is a Java-based utility library that provides rich functionality modules, including geocoding services, coordinate conversion, general utility classes, Qiniu Cloud object storage tools, encryption and decryption tools, system utility classes, and API response encapsulation. This project is suitable for Java applications that need to integrate various tool functions.
 
-## Features
+## Quick Start
 
-### Geocoding Services
-- **Amap Reverse Geocoding**: Implemented via the `AmapRegeoCoder` class, supporting conversion of coordinates into structured address information.
-- **Amap Geocoding**: Implemented via the `AmapGeoCoder` class, supporting conversion of address information into coordinates.
-- **Amap District Query**: Implemented via the `AmapDistrictQuery` class, supporting area information query based on keywords.
-- **Amap Coordinate Conversion**: Implemented via the `AmapCoordinateConverter` class, supporting coordinate conversion through API.
-- **Amap POI Search**: Implemented via the `AmapPoiSearcher` class, supporting search for points of interest based on keywords, categories, regions, etc.
-- **Tianditu Reverse Geocoding**: Implemented via the `TiandituGeocoder` class, supporting conversion of coordinates into structured address information and address information into coordinates.
-- **Tianditu Administrative Area Query**: Implemented via the `TiandituAdministrative` class, supporting administrative area information query.
+### Environment Requirements
 
-### Coordinate Conversion Tools
-- **Local Coordinate Conversion**: Implemented via the `CoordinateConverter` class, supporting local conversion between WGS-84, GCJ-02, and BD-09 coordinate systems.
-  - **WGS-84 to GCJ-02**: Convert GPS original coordinates to Mars coordinate system, supporting high-precision conversion algorithm.
-  - **GCJ-02 to WGS-84**: Restore Mars coordinates to GPS original coordinates, suitable for precise positioning requirements.
-  - **GCJ-02 to BD-09**: Convert Mars coordinates (Amap/Tencent Map) to Baidu coordinate system.
-  - **BD-09 to GCJ-02**: Convert Baidu coordinate system to Mars coordinate system.
-  - **WGS-84 to BD-09**: Directly convert GPS coordinates to Baidu coordinate system.
-  - **BD-09 to WGS-84**: Directly restore Baidu coordinates to GPS coordinates.
-
-### General Utility Classes
-- **Annotation Tool**: Implemented via the `AnnotationUtils` class, providing annotation-related utility methods.
-- **Bean Conversion Tool**: Implemented via the `BeanConvertUtils` class, supporting conversion between Beans.
-- **Bean Property Operations**: Implemented via the `BeanPropertyUtils` and `BeanUtils` classes, providing tools for reading and setting Bean properties.
-- **HTTP Request Tool**: Implemented via the `HttpUtil` class, supporting common HTTP request methods such as GET, POST, and POST JSON.
-- **String Processing**: Implemented via the `StringUtils` class, providing common operations like string null check, splitting, joining, replacement, and formatting.
-- **File Operations**: Implemented via the `FileUtils` class, supporting file creation, reading, writing, deletion, and directory creation and traversal operations.
-- **Download Tool**: Implemented via the `DownloadUtil` and `SimpleDownloadUtil` classes, supporting file download functionality.
-- **Configuration File Processing**: Implemented via the `PropertiesUtils` class, supporting reading, modifying, and saving properties configuration files from classpath or file system.
-- **Bean Field Filtering**: Implemented via the `BeanFieldFilter` class, supporting flexible filtering of fields in Java Beans.
-- **Date and Time Processing**: Implemented via the `DateUtils` and `DateUtil` classes, supporting date formatting, conversion, and calculation functions.
-- **Internet Time Synchronization**: Implemented via the `InternetTimeUtils` class, supporting obtaining standard time from internet time servers.
-- **Freemarker Templates**: Implemented via the `FreemarkerUtils` class, simplifying template rendering and data binding operations.
-- **JWT Token Processing**: Implemented via the `JwtUtils` class, supporting JWT token generation, parsing, and verification functions.
-- **Mail Tool**: Implemented via the `MailUtils`, `MailReaderUtils`, and `MailDeleterUtils` classes, supporting email sending, reading, and deletion functions.
-- **Excel Tool**: Implemented via the `ExcelUtils` class, supporting Excel file export and import functions, including:
-  - **Basic Export**: Supports exporting data lists to Excel files with custom headers.
-  - **Annotation-based Export**: Supports configuring Excel column names, order, format, width, etc. via annotations.
-  - **Streaming Export**: Supports processing large datasets to avoid memory overflow.
-  - **Streaming Data Acquisition Export**: Acquires data streaming through Supplier interface and exports.
-  - **Import Functionality**: Supports importing data from Excel files to object lists.
-  - **Streaming Import**: Processes Excel data streaming through Consumer interface.
-
-
-### Qiniu Cloud Object Storage Tools
-- **Qiniu Cloud Utility Class**: Implemented via the `QiniuUtils` class, providing complete operations for Qiniu Cloud Object Storage, including file upload, download, deletion, renaming, copying, moving, and other functions.
-- **Configuration Management**: Implemented via the `QiniuConfig` class, supporting management of Qiniu Cloud configuration information, including Access Key, Secret Key, storage bucket, domain name, region, etc.
-- **Multiple Upload Methods**: Supporting three upload methods: from local files, byte arrays, and input streams.
-- **Access Link Generation**: Supporting generation of public access links and signed private access links.
-- **Resumable Upload**: Supporting resumable upload for large files.
-- **Region Configuration**: Supporting configuration of different storage regions, including East China, North China, South China, North America, Asia-Pacific, etc.
-
-### Encryption and Decryption Tools
-- **Security Utility Class**: Implemented via the `SecureUtil` class, providing AES/DES symmetric encryption, MD5/SHA hash algorithms, HMAC message authentication codes, UUID generation, and other security-related functions.
-- **AES Encryption and Decryption**: Implemented via the `AESUtil` class, providing complete implementation of AES symmetric encryption algorithm, supporting multiple modes and padding methods.
-- **RSA Encryption and Decryption**: Implemented via the `RSAUtil` class, providing RSA asymmetric encryption algorithm key generation, encryption, decryption, signature, and verification functions.
-- **DSA Digital Signature**: Implemented via the `DSAUtil` and `DSAKeyExportImport` classes, providing DSA digital signature algorithm key generation, signature, and verification functions.
-- **Digest Algorithms**: Implemented via the `DigestUtil` class, supporting common digest algorithms such as MD5, SHA-1, SHA-256, and SHA-512.
-
-### System Utility Classes
-- **Hosts File Management**: Implemented via the `HostsFileManager` class, supporting Hosts file reading, editing, and backup functions.
-- **DNS Resolution Tools**: Implemented via the `DnsResolver`, `ProxyDnsResolver`, `DoHQuery`, and `DoHWithHttpProxy` classes, supporting DNS query and DNS over HTTPS functions.
-- **IP Address Processing**: Implemented via the `IPAddressResolver` and `ProxyIPAddressResolver` classes, supporting IP address resolution and proxy IP identification.
-- **Process Management**: Implemented via the `ProcessManager`, `ProcessManagerFactory`, `WindowExeProcessManager`, and `LinuxExeProcessManager` classes, supporting cross-platform process startup, query, and management functions.
-- **Logging Tools**: Implemented via the `LogUtil` class, providing concise logging functionality.
-
-### License Management
-- **Hardware Information Acquisition**: Implemented via the `HardwareUtils` class, supporting acquisition of computer hardware identification information.
-- **License Generation**: Implemented via the `LicenseUtils` class, supporting generation of software licenses based on hardware information.
-- **License Verification**: Implemented via the `LicenseInfo` class, supporting verification and parsing of license information.
-
-### API Response Encapsulation
-- **Unified Response Result**: Implemented via the `ApiResponse<T>` class, providing a unified API response format, including status code, message, and data.
-- **Response Status Codes**: Implemented via the `ApiCode` enum class, defining HTTP standard status codes and business custom status codes.
-- **Pagination Response Encapsulation**: Implemented via the `PageResponse<T>` class, encapsulating pagination query results, including total records, records per page, current page number, total pages, and data list.
-- **Convenient Static Methods**: Providing `success()`, `fail()`, and other static methods to simplify API response creation.
-- **Generic Support**: Supporting generic data types, suitable for various API return data scenarios.
-- **Support for Pagination Queries**: Integrating pagination functionality to facilitate processing of large data pagination query results.
-
-## Usage
+- **JDK 11 or higher**
+- **Maven 3.0+**
 
 ### Add Dependencies
 
-Ensure your `pom.xml` file includes the required dependencies, such as `OkHttpClient` and other necessary libraries.
+#### Maven
 
-### Initialize Reverse Geocoders
+Add the following dependency to your project's `pom.xml` file:
 
-#### Amap
+```xml
+<dependency>
+    <groupId>io.github.jukejuke</groupId>
+    <artifactId>jk-tool</artifactId>
+    <version>0.0.4</version>
+</dependency>
+```
+
+#### Gradle
+
+```gradle
+implementation 'io.github.jukejuke:jk-tool:0.0.4'
+```
+
+#### Direct Download
+
+Click the link below to download `jk-tool-X.X.X.jar`:
+
+- [Maven Central Repository](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.4/)
+
+## Core Function Modules
+
+### Geocoding Services
+
+#### Amap Services
+
+##### Reverse Geocoding
+
+Convert coordinates to structured address information:
 
 ```java
+// Initialize reverse geocoder
 AmapRegeoCoder amapRegeoCoder = new AmapRegeoCoder.Builder("your_api_key").build();
+
+// Execute reverse geocoding
 AmapResponse response = amapRegeoCoder.reverseGeocode(116.397428, 39.90923);
+
+// Parse response result
+if (response.isSuccess()) {
+    System.out.println("Address: " + response.getAddress());
+    System.out.println("Province: " + response.getProvince());
+    System.out.println("City: " + response.getCity());
+    System.out.println("District: " + response.getDistrict());
+    System.out.println("Street: " + response.getStreet());
+    System.out.println("Number: " + response.getNumber());
+}
 ```
 
-#### Tianditu
+##### Geocoding
+
+Convert address information to coordinates:
 
 ```java
-TiandituGeocoder tiandituGeocoder = new TiandituGeocoder.Builder("your_api_key").build();
-TiandituResponse response = tiandituGeocoder.reverseGeocode(116.397428, 39.90923);
-```
-
-### Initialize Geocoder (Amap)
-
-```java
+// Initialize geocoder
 AmapGeoCoder amapGeoCoder = new AmapGeoCoder.Builder("your_api_key").build();
+
+// Execute geocoding
 AmapGeoResponse response = amapGeoCoder.geoCode("Beijing");
+
+// Parse response result
+if (response.isSuccess() && response.getGeocodes() != null && !response.getGeocodes().isEmpty()) {
+    AmapGeoResponse.Geocode geocode = response.getGeocodes().get(0);
+    System.out.println("Longitude: " + geocode.getLocation().split(",")[0]);
+    System.out.println("Latitude: " + geocode.getLocation().split(",")[1]);
+    System.out.println("Formatted Address: " + geocode.getFormattedAddress());
+}
 ```
 
-### Initialize District Query (Amap)
+##### District Query
+
+Query area information based on keywords:
 
 ```java
+// Initialize district query
 AmapDistrictQuery districtQuery = new AmapDistrictQuery.Builder("your_api_key").build();
+
+// Execute district query
 DistrictResponse response = districtQuery.query("Beijing");
+
+// Parse response result
+if (response.isSuccess() && response.getDistricts() != null && !response.getDistricts().isEmpty()) {
+    for (DistrictResponse.District district : response.getDistricts()) {
+        System.out.println("District Name: " + district.getName());
+        System.out.println("District Code: " + district.getAdcode());
+        System.out.println("Center: " + district.getCenter());
+    }
+}
 ```
 
-### Initialize Administrative Area Query (Tianditu)
+##### Coordinate Conversion
+
+Perform coordinate conversion through API:
 
 ```java
-TiandituAdministrative administrative = new TiandituAdministrative.Builder("your_api_key").build();
-TiandituAdministrativeResponse response = administrative.queryAdministrative("Beijing");
+// Initialize coordinate converter
+AmapCoordinateConverter converter = new AmapCoordinateConverter.Builder("your_api_key").build();
+
+// Execute coordinate conversion (WGS84 to GCJ02)
+CoordinateConverterResponse response = converter.convert(116.397428, 39.90923, "wgs84", "gcj02");
+
+// Parse response result
+if (response.isSuccess()) {
+    System.out.println("Converted Longitude: " + response.getLocations().get(0).getLongitude());
+    System.out.println("Converted Latitude: " + response.getLocations().get(0).getLatitude());
+}
 ```
 
-### Local Coordinate Conversion
+##### POI Search
 
-#### Using CoordinateConverter Class
+Search for points of interest based on keywords, categories, regions, etc.:
+
+```java
+// Initialize POI searcher
+AmapPoiSearcher poiSearcher = new AmapPoiSearcher.Builder("your_api_key").build();
+
+// Build search parameters
+AmapPoiSearcher.SearchParams params = new AmapPoiSearcher.SearchParams();
+params.setKeywords("restaurant");
+params.setCity("Beijing");
+params.setPageSize(20);
+params.setPageNum(1);
+
+// Execute POI search
+AmapPoiResponse response = poiSearcher.search(params);
+
+// Parse response result
+if (response.isSuccess() && response.getPois() != null && !response.getPois().isEmpty()) {
+    for (AmapPoiResponse.Poi poi : response.getPois()) {
+        System.out.println("Name: " + poi.getName());
+        System.out.println("Address: " + poi.getAddress());
+        System.out.println("Coordinates: " + poi.getLocation());
+        System.out.println("Phone: " + poi.getTel());
+    }
+}
+```
+
+#### Tianditu Services
+
+##### Geocoding and Reverse Geocoding
+
+```java
+// Initialize Tianditu geocoder
+TiandituGeocoder tiandituGeocoder = new TiandituGeocoder.Builder("your_api_key").build();
+
+// Execute reverse geocoding
+TiandituResponse response = tiandituGeocoder.reverseGeocode(116.397428, 39.90923);
+
+// Parse response result
+if (response.isSuccess()) {
+    System.out.println("Address: " + response.getFormattedAddress());
+    System.out.println("Province: " + response.getProvince());
+    System.out.println("City: " + response.getCity());
+    System.out.println("District: " + response.getDistrict());
+}
+
+// Execute geocoding
+TiandituGeoResponse geoResponse = tiandituGeocoder.geoCode("Beijing");
+
+// Parse response result
+if (geoResponse.isSuccess() && geoResponse.getLocations() != null && !geoResponse.getLocations().isEmpty()) {
+    TiandituGeoResponse.Location location = geoResponse.getLocations().get(0);
+    System.out.println("Longitude: " + location.getLongitude());
+    System.out.println("Latitude: " + location.getLatitude());
+}
+```
+
+##### Administrative Area Query
+
+```java
+// Initialize administrative area query
+TiandituAdministrative administrative = new TiandituAdministrative.Builder("your_api_key").build();
+
+// Execute administrative area query
+TiandituAdministrativeResponse response = administrative.queryAdministrative("Beijing");
+
+// Parse response result
+if (response.isSuccess() && response.getAdministratives() != null && !response.getAdministratives().isEmpty()) {
+    for (TiandituAdministrativeResponse.Administrative admin : response.getAdministratives()) {
+        System.out.println("Name: " + admin.getName());
+        System.out.println("Level: " + admin.getLevel());
+        System.out.println("Code: " + admin.getCode());
+    }
+}
+```
+
+### Coordinate Conversion Tools
+
+Local coordinate conversion, supporting conversion between WGS-84, GCJ-02, and BD-09 coordinate systems:
 
 ```java
 // Create coordinate point
@@ -149,103 +225,920 @@ CoordinateConverter.Point backToWgs84 = CoordinateConverter.gcj02ToWgs84(backToG
 System.out.println("Back to WGS-84: " + backToWgs84);
 ```
 
-#### Common City Coordinate Conversion Examples
+### General Utility Classes
+
+#### Excel Tools
+
+##### Basic Export
 
 ```java
-// Beijing
-CoordinateConverter.Point beijing = new CoordinateConverter.Point(116.397428, 39.90923);
-CoordinateConverter.Point beijingGcj02 = CoordinateConverter.wgs84ToGcj02(beijing);
-CoordinateConverter.Point beijingBd09 = CoordinateConverter.gcj02ToBd09(beijingGcj02);
+// Prepare data
+List<User> userList = new ArrayList<>();
+userList.add(new User(1, "Zhang San", 25, "zhangsan@example.com"));
+userList.add(new User(2, "Li Si", 30, "lisi@example.com"));
 
-// Shanghai
-CoordinateConverter.Point shanghai = new CoordinateConverter.Point(121.4737, 31.2304);
-CoordinateConverter.Point shanghaiGcj02 = CoordinateConverter.wgs84ToGcj02(shanghai);
-CoordinateConverter.Point shanghaiBd09 = CoordinateConverter.gcj02ToBd09(shanghaiGcj02);
+// Define headers
+Map<String, String> headers = new HashMap<>();
+headers.put("id", "ID");
+headers.put("name", "Name");
+headers.put("age", "Age");
+headers.put("email", "Email");
 
-// Guangzhou
-CoordinateConverter.Point guangzhou = new CoordinateConverter.Point(113.2644, 23.1291);
-CoordinateConverter.Point guangzhouGcj02 = CoordinateConverter.wgs84ToGcj02(guangzhou);
-CoordinateConverter.Point guangzhouBd09 = CoordinateConverter.gcj02ToBd09(guangzhouGcj02);
-```
-
-#### Batch Conversion Processing
-
-```java
-public void batchConvertCoordinates(List<CoordinateConverter.Point> wgs84Points) {
-    for (CoordinateConverter.Point wgs84 : wgs84Points) {
-        CoordinateConverter.Point gcj02 = CoordinateConverter.wgs84ToGcj02(wgs84);
-        CoordinateConverter.Point bd09 = CoordinateConverter.gcj02ToBd09(gcj02);
-        
-        System.out.printf("Original WGS-84: %s -> GCJ-02: %s -> BD-09: %s%n", 
-                          wgs84, gcj02, bd09);
-    }
+// Export Excel
+try (FileOutputStream fos = new FileOutputStream("users.xlsx")) {
+    ExcelUtils.export(userList, headers, "User List", fos);
+    System.out.println("Excel export successful");
+} catch (Exception e) {
+    e.printStackTrace();
 }
 ```
 
-### Parse Response Data
+##### Annotation-based Export
 
-You can easily obtain structured address or area information from the returned `AmapResponse`, `AmapGeoResponse`, `DistrictResponse`, `TiandituResponse`, or `TiandituAdministrativeResponse` objects.
+First, use the `@ExcelColumn` annotation on the entity class:
+
+```java
+public class User {
+    @ExcelColumn(name = "ID", order = 1, width = 10)
+    private Integer id;
+    
+    @ExcelColumn(name = "Name", order = 2, width = 20)
+    private String name;
+    
+    @ExcelColumn(name = "Age", order = 3, width = 10, alignment = ExcelAlignment.CENTER)
+    private Integer age;
+    
+    @ExcelColumn(name = "Email", order = 4, width = 30)
+    private String email;
+    
+    // Constructor, getters and setters
+}
+```
+
+Then, use annotation-based export:
+
+```java
+// Prepare data
+List<User> userList = new ArrayList<>();
+userList.add(new User(1, "Zhang San", 25, "zhangsan@example.com"));
+userList.add(new User(2, "Li Si", 30, "lisi@example.com"));
+
+// Export Excel
+try (FileOutputStream fos = new FileOutputStream("users_annotation.xlsx")) {
+    ExcelUtils.exportWithAnnotation(userList, "User List", fos);
+    System.out.println("Excel export successful");
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+##### Streaming Export
+
+Suitable for processing large datasets to avoid memory overflow:
+
+```java
+// Prepare large dataset
+List<User> userList = new ArrayList<>();
+for (int i = 1; i <= 10000; i++) {
+    userList.add(new User(i, "User" + i, 20 + i % 30, "user" + i + "@example.com"));
+}
+
+// Streaming export Excel
+try (FileOutputStream fos = new FileOutputStream("users_streaming.xlsx")) {
+    ExcelUtils.exportWithAnnotationStreaming(userList, "User List", fos);
+    System.out.println("Excel streaming export successful");
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+##### Streaming Data Acquisition Export
+
+Acquire data streaming through Supplier interface and export:
+
+```java
+// Simulate data supplier
+AtomicInteger counter = new AtomicInteger(0);
+Supplier<User> dataSupplier = () -> {
+    int id = counter.incrementAndGet();
+    if (id > 10000) {
+        return null; // End of data
+    }
+    return new User(id, "User" + id, 20 + id % 30, "user" + id + "@example.com");
+};
+
+// Streaming data acquisition export
+try (FileOutputStream fos = new FileOutputStream("users_supplier.xlsx")) {
+    ExcelUtils.exportWithStream(fos, dataSupplier);
+    System.out.println("Excel streaming data acquisition export successful");
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+##### Import Functionality
+
+```java
+// Import Excel
+try (FileInputStream fis = new FileInputStream("users.xlsx")) {
+    List<User> userList = ExcelUtils.importFromExcel(fis, User.class);
+    System.out.println("Excel import successful, imported " + userList.size() + " records");
+    for (User user : userList) {
+        System.out.println(user);
+    }
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+##### Streaming Import
+
+Process Excel data streaming through Consumer interface:
+
+```java
+// Define data consumer
+List<User> importedUsers = new ArrayList<>();
+Consumer<User> consumer = user -> {
+    importedUsers.add(user);
+    System.out.println("Processing user: " + user);
+};
+
+// Streaming import Excel
+try (FileInputStream fis = new FileInputStream("users.xlsx")) {
+    ExcelUtils.importWithStream(fis, User.class, consumer);
+    System.out.println("Excel streaming import successful, processed " + importedUsers.size() + " records");
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+#### HTTP Tools
+
+##### GET Request
+
+```java
+// Send GET request (no parameters)
+String response = HttpUtil.get("https://api.example.com/users");
+System.out.println("Response content: " + response);
+
+// Send GET request (with parameters)
+Map<String, Object> params = new HashMap<>();
+params.put("page", 1);
+params.put("size", 10);
+String responseWithParams = HttpUtil.get("https://api.example.com/users", params);
+System.out.println("Response with parameters: " + responseWithParams);
+
+// Send GET request (with parameters, custom charset)
+String responseWithCharset = HttpUtil.get("https://api.example.com/users", params, "GBK");
+System.out.println("Response with custom charset: " + responseWithCharset);
+```
+
+##### POST Request
+
+```java
+// Send POST request (with parameters)
+Map<String, Object> postParams = new HashMap<>();
+postParams.put("name", "Zhang San");
+postParams.put("age", 25);
+String postResponse = HttpUtil.post("https://api.example.com/users", postParams);
+System.out.println("POST response content: " + postResponse);
+```
+
+##### POST JSON Request
+
+```java
+// Send POST JSON request
+String json = "{\"name\": \"Zhang San\", \"age\": 25}";
+String jsonResponse = HttpUtil.postJson("https://api.example.com/users", json);
+System.out.println("POST JSON response content: " + jsonResponse);
+```
+
+#### String Tools
+
+```java
+// String null check
+String str = "test";
+boolean isEmpty = StringUtils.isEmpty(str);
+boolean isBlank = StringUtils.isBlank(str);
+
+// String splitting
+String[] parts = StringUtils.split("a,b,c", ",");
+
+// String joining
+String joined = StringUtils.join(Arrays.asList("a", "b", "c"), ",");
+
+// String replacement
+String replaced = StringUtils.replace("Hello World", "World", "Java");
+
+// String formatting
+String formatted = StringUtils.format("Hello, {}!", "World");
+```
+
+#### Date and Time Tools
+
+```java
+// Get current time
+Date now = DateUtils.now();
+
+// Date formatting
+String formattedDate = DateUtils.format(now, "yyyy-MM-dd HH:mm:ss");
+
+// String to date
+Date date = DateUtils.parse("2023-01-01 12:00:00", "yyyy-MM-dd HH:mm:ss");
+
+// Date calculation
+Date nextDay = DateUtils.addDays(now, 1);
+Date lastMonth = DateUtils.addMonths(now, -1);
+
+// Calculate time difference
+long days = DateUtils.diffDays(now, nextDay);
+
+// Get internet standard time
+Date internetTime = InternetTimeUtils.getInternetTime();
+```
+
+#### File Tools
+
+```java
+// File operations
+File file = new File("test.txt");
+FileUtils.write(file, "Hello World");
+String content = FileUtils.read(file);
+
+// Directory operations
+File dir = new File("test");
+FileUtils.mkdirs(dir);
+List<File> files = FileUtils.listFiles(dir);
+
+// Download file
+String url = "https://example.com/file.zip";
+String savePath = "D:/downloads/file.zip";
+DownloadUtil.download(url, savePath);
+```
+
+#### Annotation Tools
+
+Provide annotation-related utility classes for processing annotation parsing and application:
+
+```java
+// Scan all classes under specified package
+Set<Class<?>> classes = AnnotationUtils.scanPackages("com.example");
+System.out.println("Number of scanned classes: " + classes.size());
+
+// Get specified annotation on class
+MyAnnotation annotation = AnnotationUtils.getAnnotation(MyClass.class, MyAnnotation.class);
+if (annotation != null) {
+    System.out.println("Annotation value: " + annotation.value());
+}
+
+// Get specified annotation on method
+Method method = MyClass.class.getMethod("method");
+MyAnnotation methodAnnotation = AnnotationUtils.getAnnotation(method, MyAnnotation.class);
+if (methodAnnotation != null) {
+    System.out.println("Method annotation value: " + methodAnnotation.value());
+}
+```
+
+#### Bean Conversion Tools
+
+Provide object conversion functionality, supporting property mapping between different types of objects:
+
+```java
+// Create source object
+SourceBean source = new SourceBean();
+source.setId(1);
+source.setName("Zhang San");
+source.setAge(25);
+
+// Convert to target object
+TargetBean target = BeanConverter.convert(source, TargetBean.class);
+System.out.println("Converted object: " + target);
+
+// Conversion with mapping rules
+Map<String, String> mapping = new HashMap<>();
+mapping.put("name", "userName"); // source property name -> target property name
+TargetBean mappedTarget = BeanConverter.convert(source, TargetBean.class, mapping);
+System.out.println("Conversion result with mapping rules: " + mappedTarget);
+
+// Batch conversion
+List<SourceBean> sourceList = new ArrayList<>();
+sourceList.add(source);
+List<TargetBean> targetList = BeanConverter.convertList(sourceList, TargetBean.class);
+System.out.println("Batch conversion result count: " + targetList.size());
+```
+
+#### Configuration File Processing
+
+Provide configuration file reading and parsing functionality, supporting Properties, YAML, and JSON formats:
+
+```java
+// Read Properties configuration file
+Properties props = ConfigUtils.readProperties("config.properties");
+String value = props.getProperty("key");
+System.out.println("Properties configuration value: " + value);
+
+// Read YAML configuration file
+Map<String, Object> yamlConfig = ConfigUtils.readYaml("config.yaml");
+String yamlValue = (String) yamlConfig.get("key");
+System.out.println("YAML configuration value: " + yamlValue);
+
+// Read JSON configuration file
+Map<String, Object> jsonConfig = ConfigUtils.readJson("config.json");
+String jsonValue = (String) jsonConfig.get("key");
+System.out.println("JSON configuration value: " + jsonValue);
+
+// Map configuration to object
+AppConfig appConfig = ConfigUtils.mapToObject(yamlConfig, AppConfig.class);
+System.out.println("Configuration object: " + appConfig);
+```
+
+#### Freemarker Templates
+
+Provide Freemarker template rendering functionality for generating dynamic content:
+
+```java
+// Get default configuration
+Configuration defaultConfig = FreemarkerUtils.getDefaultConfiguration();
+System.out.println("Default encoding: " + defaultConfig.getDefaultEncoding());
+
+// Create custom configuration
+Properties properties = new Properties();
+properties.setProperty("template_update_delay", "1000");
+properties.setProperty("default_encoding", "UTF-8");
+Configuration customConfig = FreemarkerUtils.createConfiguration(properties);
+
+// Create template data
+Map<String, Object> data = new HashMap<>();
+data.put("name", "Zhang San");
+data.put("age", 30);
+data.put("city", "Beijing");
+
+// Render string template
+String templateContent = "Hello, ${name}! You are ${age} years old and from ${city}.";
+String result = FreemarkerUtils.renderTemplate(templateContent, data);
+System.out.println("String template rendering result: " + result);
+
+// Render string template with custom configuration
+String customResult = FreemarkerUtils.renderTemplate(templateContent, data, customConfig);
+System.out.println("Rendering result with custom configuration: " + customResult);
+
+// Render file template
+String templatePath = "path/to/template.ftl";
+String fileResult = FreemarkerUtils.renderFileTemplate(templatePath, data);
+System.out.println("File template rendering result: " + fileResult);
+
+// Render file template with custom configuration
+String customFileResult = FreemarkerUtils.renderFileTemplate(templatePath, data, customConfig);
+System.out.println("File template rendering result with custom configuration: " + customFileResult);
+
+// Render string template to file
+String outputPath = "path/to/output.txt";
+FreemarkerUtils.renderTemplateToFile(templateContent, data, outputPath);
+System.out.println("String template rendered to file successfully");
+
+// Render file template to file
+FreemarkerUtils.renderFileTemplateToFile(templatePath, data, outputPath);
+System.out.println("File template rendered to file successfully");
+
+// Render file template to output stream
+ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+FreemarkerUtils.renderFileTemplateToStream(templatePath, data, outputStream);
+String streamResult = outputStream.toString(FreemarkerUtils.DEFAULT_ENCODING);
+System.out.println("File template rendering result to output stream: " + streamResult);
+```
+
+#### ID Generation
+
+Provide multiple ID generation strategies, including UUID, snowflake algorithm, timestamp, etc.:
+
+```java
+// Generate UUID
+String uuid = IdGenerator.uuid();
+System.out.println("UUID: " + uuid);
+
+// Generate simplified UUID (without hyphens)
+String simpleUuid = IdGenerator.simpleUuid();
+System.out.println("Simplified UUID: " + simpleUuid);
+
+// Generate ID using snowflake algorithm
+long snowflakeId = IdGenerator.snowflake();
+System.out.println("Snowflake algorithm ID: " + snowflakeId);
+
+// Generate timestamp-based ID
+String timestampId = IdGenerator.timestamp();
+System.out.println("Timestamp ID: " + timestampId);
+
+// Generate prefixed ID
+String prefixedId = IdGenerator.prefixed("USER");
+System.out.println("Prefixed ID: " + prefixedId);
+```
+
+#### JWT Token
+
+Provide JWT (JSON Web Token) generation and parsing functionality:
+
+```java
+// Generate JWT token
+String secretKey = "your_secret_key";
+Map<String, Object> claims = new HashMap<>();
+claims.put("userId", 123);
+claims.put("username", "Zhang San");
+claims.put("roles", Arrays.asList("admin", "user"));
+
+String token = JwtUtils.generateToken(claims, secretKey, 3600); // 1 hour validity
+System.out.println("Generated JWT token: " + token);
+
+// Parse JWT token
+Map<String, Object> parsedClaims = JwtUtils.parseToken(token, secretKey);
+System.out.println("Parsed user ID: " + parsedClaims.get("userId"));
+System.out.println("Parsed username: " + parsedClaims.get("username"));
+
+// Validate JWT token
+boolean valid = JwtUtils.validateToken(token, secretKey);
+System.out.println("Is token valid: " + valid);
+
+// Get token expiration time
+Date expiration = JwtUtils.getExpiration(token, secretKey);
+System.out.println("Token expiration time: " + expiration);
+```
+
+#### Logging Tools
+
+Provide logging-related utility classes to simplify logging usage:
+
+```java
+// Get logger
+Logger logger = LogUtils.getLogger(MyClass.class);
+
+// Log at different levels
+logger.debug("Debug information");
+logger.info("Information log");
+logger.warn("Warning log");
+logger.error("Error log");
+
+// Log with parameters
+logger.info("User {} logged in successfully, IP address: {}", "Zhang San", "192.168.1.1");
+
+// Log exception
+try {
+    // Business logic
+} catch (Exception e) {
+    logger.error("Operation failed", e);
+}
+
+// Using @Slf4j annotation (recommended)
+// After adding @Slf4j annotation to the class, you can directly use the log variable
+// log.info("Logging with @Slf4j annotation");
+```
+
+#### Mail Tools
+
+Provide email sending functionality, supporting simple emails, HTML emails, and emails with attachments:
+
+```java
+// Initialize mail configuration
+MailConfig config = new MailConfig();
+config.setHost("smtp.example.com");
+config.setPort(587);
+config.setUsername("your_email@example.com");
+config.setPassword("your_password");
+config.setFrom("your_email@example.com");
+
+// Create mail sender
+MailSender sender = new MailSender(config);
+
+// Send simple email
+MailMessage message = new MailMessage();
+message.setTo(Arrays.asList("recipient@example.com"));
+message.setSubject("Test Email");
+message.setText("This is a test email");
+sender.send(message);
+System.out.println("Simple email sent successfully");
+
+// Send HTML email
+MailMessage htmlMessage = new MailMessage();
+htmlMessage.setTo(Arrays.asList("recipient@example.com"));
+htmlMessage.setSubject("HTML Test Email");
+htmlMessage.setHtml("<h1>Test Email</h1><p>This is an HTML format test email</p>");
+sender.send(htmlMessage);
+System.out.println("HTML email sent successfully");
+
+// Send email with attachment
+MailMessage attachmentMessage = new MailMessage();
+attachmentMessage.setTo(Arrays.asList("recipient@example.com"));
+attachmentMessage.setSubject("Test Email with Attachment");
+attachmentMessage.setText("This is a test email with attachment");
+attachmentMessage.addAttachment("test.txt", new File("test.txt"));
+sender.send(attachmentMessage);
+System.out.println("Email with attachment sent successfully");
+```
+
+#### URL Processing
+
+Provide URL-related utility classes for URL parsing, building, and processing:
+
+```java
+// URL encoding
+String original = "https://example.com/path?name=Zhang San&age=25";
+String encoded = UrlUtils.encode(original);
+System.out.println("Encoded URL: " + encoded);
+
+// URL decoding
+String decoded = UrlUtils.decode(encoded);
+System.out.println("Decoded URL: " + decoded);
+
+// Build URL
+UrlBuilder builder = new UrlBuilder("https://example.com");
+builder.addPath("api")
+       .addPath("users")
+       .addParam("page", "1")
+       .addParam("size", "10");
+String builtUrl = builder.build();
+System.out.println("Built URL: " + builtUrl);
+
+// Parse URL
+UrlParser parser = new UrlParser("https://example.com/api/users?page=1&size=10");
+System.out.println("Scheme: " + parser.getScheme());
+System.out.println("Host: " + parser.getHost());
+System.out.println("Path: " + parser.getPath());
+System.out.println("Page parameter: " + parser.getParam("page"));
+
+// Get file extension from URL
+String extension = UrlUtils.getFileExtension("https://example.com/image.jpg");
+System.out.println("File extension: " + extension);
+```
+
+### Qiniu Cloud Object Storage Tools
+
+#### Initialize Configuration
+
+```java
+// Initialize Qiniu Cloud configuration
+QiniuConfig config = new QiniuConfig();
+config.setAccessKey("your_access_key");
+config.setSecretKey("your_secret_key");
+config.setBucket("your_bucket");
+config.setDomain("your_domain");
+config.setZone(QiniuConfig.Zone.HUADONG); // Set storage region
+
+// Initialize Qiniu Cloud tool
+QiniuUtils qiniuUtils = new QiniuUtils(config);
+```
+
+#### File Upload
+
+```java
+// Upload from local file
+String localFilePath = "D:/upload/test.jpg";
+String key = "test.jpg";
+String url = qiniuUtils.upload(localFilePath, key);
+System.out.println("Upload successful, access address: " + url);
+
+// Upload from byte array
+byte[] data = "Hello Qiniu".getBytes();
+String byteKey = "hello.txt";
+String byteUrl = qiniuUtils.upload(data, byteKey);
+System.out.println("Byte array upload successful, access address: " + byteUrl);
+
+// Upload from input stream
+try (InputStream inputStream = new FileInputStream("D:/upload/test.jpg")) {
+    String streamKey = "stream.jpg";
+    String streamUrl = qiniuUtils.upload(inputStream, streamKey);
+    System.out.println("Input stream upload successful, access address: " + streamUrl);
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+#### File Download
+
+```java
+// Download file
+String key = "test.jpg";
+String savePath = "D:/downloads/test.jpg";
+qiniuUtils.download(key, savePath);
+System.out.println("File downloaded successfully");
+```
+
+#### File Deletion
+
+```java
+// Delete file
+String key = "test.jpg";
+boolean success = qiniuUtils.delete(key);
+System.out.println("File deletion " + (success ? "successful" : "failed"));
+```
+
+#### File Renaming
+
+```java
+// Rename file
+String oldKey = "test.jpg";
+String newKey = "new_test.jpg";
+boolean success = qiniuUtils.rename(oldKey, newKey);
+System.out.println("File renaming " + (success ? "successful" : "failed"));
+```
+
+### Encryption and Decryption Tools
+
+#### AES Encryption and Decryption
+
+```java
+// Generate key
+String key = AESUtil.generateKey();
+System.out.println("Generated key: " + key);
+
+// Encrypt
+String plaintext = "Hello AES";
+String ciphertext = AESUtil.encrypt(plaintext, key);
+System.out.println("Encrypted: " + ciphertext);
+
+// Decrypt
+String decrypted = AESUtil.decrypt(ciphertext, key);
+System.out.println("Decrypted: " + decrypted);
+```
+
+#### RSA Encryption and Decryption
+
+```java
+// Generate key pair
+RSAUtil.KeyPair keyPair = RSAUtil.generateKeyPair();
+System.out.println("Public key: " + keyPair.getPublicKey());
+System.out.println("Private key: " + keyPair.getPrivateKey());
+
+// Encrypt
+String plaintext = "Hello RSA";
+String ciphertext = RSAUtil.encrypt(plaintext, keyPair.getPublicKey());
+System.out.println("Encrypted: " + ciphertext);
+
+// Decrypt
+String decrypted = RSAUtil.decrypt(ciphertext, keyPair.getPrivateKey());
+System.out.println("Decrypted: " + decrypted);
+
+// Sign
+String signature = RSAUtil.sign(plaintext, keyPair.getPrivateKey());
+System.out.println("Signature: " + signature);
+
+// Verify signature
+boolean verified = RSAUtil.verify(plaintext, signature, keyPair.getPublicKey());
+System.out.println("Signature verification " + (verified ? "successful" : "failed"));
+```
+
+#### Digest Algorithms
+
+```java
+// MD5
+String md5 = DigestUtil.md5("Hello MD5");
+System.out.println("MD5: " + md5);
+
+// SHA-1
+String sha1 = DigestUtil.sha1("Hello SHA1");
+System.out.println("SHA-1: " + sha1);
+
+// SHA-256
+String sha256 = DigestUtil.sha256("Hello SHA256");
+System.out.println("SHA-256: " + sha256);
+
+// SHA-512
+String sha512 = DigestUtil.sha512("Hello SHA512");
+System.out.println("SHA-512: " + sha512);
+```
+
+### System Utility Classes
+
+#### Hosts File Management
+
+```java
+// Read Hosts file
+List<String> hosts = HostsFileManager.readHosts();
+System.out.println("Hosts file content:");
+for (String line : hosts) {
+    System.out.println(line);
+}
+
+// Add Hosts entry
+boolean added = HostsFileManager.addHost("127.0.0.1", "localhost");
+System.out.println("Hosts entry addition " + (added ? "successful" : "failed"));
+
+// Remove Hosts entry
+boolean removed = HostsFileManager.removeHost("127.0.0.1", "localhost");
+System.out.println("Hosts entry removal " + (removed ? "successful" : "failed"));
+
+// Backup Hosts file
+HostsFileManager.backupHosts();
+System.out.println("Hosts file backed up successfully");
+```
+
+#### DNS Resolution Tools
+
+```java
+// DNS resolution
+List<String> ips = DnsResolver.resolve("www.example.com");
+System.out.println("DNS resolution results:");
+for (String ip : ips) {
+    System.out.println(ip);
+}
+
+// DNS over HTTPS query
+List<String> dohIps = DoHQuery.query("www.example.com");
+System.out.println("DoH query results:");
+for (String ip : dohIps) {
+    System.out.println(ip);
+}
+```
+
+#### IP Address Processing
+
+```java
+// Parse IP address
+String ip = "192.168.1.1";
+IPAddressResolver resolver = new IPAddressResolver();
+IPAddressResolver.IPInfo info = resolver.resolve(ip);
+System.out.println("IP address information:");
+System.out.println("Country: " + info.getCountry());
+System.out.println("Province: " + info.getProvince());
+System.out.println("City: " + info.getCity());
+```
+
+#### Process Management
+
+```java
+// Get process manager
+ProcessManager processManager = ProcessManagerFactory.getProcessManager();
+
+// Start process
+Process process = processManager.startProcess("notepad.exe");
+System.out.println("Process started successfully, PID: " + processManager.getProcessId(process));
+
+// Check if process is running
+boolean isRunning = processManager.isProcessRunning(process);
+System.out.println("Is process running: " + isRunning);
+
+// Stop process
+processManager.stopProcess(process);
+System.out.println("Process stopped successfully");
+```
+
+### License Management
+
+#### Hardware Information Acquisition
+
+```java
+// Get hardware information
+String hardwareId = HardwareUtils.getHardwareId();
+System.out.println("Hardware ID: " + hardwareId);
+
+// Get CPU ID
+String cpuId = HardwareUtils.getCpuId();
+System.out.println("CPU ID: " + cpuId);
+
+// Get disk ID
+String diskId = HardwareUtils.getDiskId();
+System.out.println("Disk ID: " + diskId);
+
+// Get MAC address
+String macAddress = HardwareUtils.getMacAddress();
+System.out.println("MAC address: " + macAddress);
+```
+
+#### License Generation and Verification
+
+```java
+// Generate license
+String hardwareId = HardwareUtils.getHardwareId();
+String license = LicenseUtils.generateLicense(hardwareId, 365); // 365 days validity
+System.out.println("Generated license: " + license);
+
+// Verify license
+LicenseInfo licenseInfo = LicenseUtils.verifyLicense(license, hardwareId);
+if (licenseInfo.isValid()) {
+    System.out.println("License is valid");
+    System.out.println("Expiry date: " + licenseInfo.getExpiryDate());
+} else {
+    System.out.println("License is invalid: " + licenseInfo.getErrorMessage());
+}
+```
+
+### API Response Encapsulation
+
+#### Unified Response Result
+
+```java
+// Success response
+ApiResponse<String> successResponse = ApiResponse.success("Operation successful");
+System.out.println("Success response: " + successResponse);
+
+// Failure response
+ApiResponse<String> failResponse = ApiResponse.fail(ApiCode.INTERNAL_SERVER_ERROR, "Operation failed");
+System.out.println("Failure response: " + failResponse);
+
+// Response with data
+User user = new User(1, "Zhang San", 25, "zhangsan@example.com");
+ApiResponse<User> dataResponse = ApiResponse.success(user);
+System.out.println("Response with data: " + dataResponse);
+```
+
+#### Pagination Response
+
+```java
+// Pagination response
+List<User> userList = new ArrayList<>();
+userList.add(new User(1, "Zhang San", 25, "zhangsan@example.com"));
+userList.add(new User(2, "Li Si", 30, "lisi@example.com"));
+
+PageResponse<User> pageResponse = PageResponse.success(userList, 1, 10, 2);
+System.out.println("Pagination response: " + pageResponse);
+System.out.println("Total records: " + pageResponse.getTotal());
+System.out.println("Records per page: " + pageResponse.getSize());
+System.out.println("Current page: " + pageResponse.getCurrent());
+System.out.println("Total pages: " + pageResponse.getPages());
+System.out.println("Data list: " + pageResponse.getRecords());
+```
 
 ## Project Structure
 
+### Core Modules
+
+- **Geocoding Services**: `src/main/java/io/github/jukejuke/map/`
+  - Amap: `amap/` directory
+  - Tianditu: `tianditu/` directory
+  - Coordinate conversion tools: `util/` directory
+
+- **General Utility Classes**: `src/main/java/io/github/jukejuke/tool/`
+  - Annotation tools: `annotation/` directory
+  - Bean conversion tools: `bean/` directory
+  - Configuration file processing: `config/` directory
+  - Encryption and decryption tools: `crypto/` directory
+  - Date and time processing: `date/` directory
+  - DNS resolution tools: `dns/` directory
+  - Excel tools: `excel/` directory
+  - Process management: `exec/` directory
+  - File operations: `file/` directory
+  - Freemarker templates: `freemarker/` directory
+  - HTTP requests: `http/` directory
+  - ID generation: `id/` directory
+  - IP address processing: `ip/` directory
+  - JWT tokens: `jwt/` directory
+  - License management: `license/` directory
+  - Logging tools: `log/` directory
+  - Mail tools: `mail/` directory
+  - Response encapsulation: `response/` directory
+  - String processing: `string/` directory
+  - URL processing: `url/` directory
+
+- **Qiniu Cloud Object Storage**: `src/main/java/io/github/jukejuke/qiniu/`
+
+- **API Response Encapsulation**: `src/main/java/io/github/jukejuke/api/`
+
+### Test Modules
+
+- **Test Code**: `src/test/java/io/github/jukejuke/`
+  - Contains test cases and example code for each module
+
+## Common Issues and Solutions
+
 ### Geocoding Services
-- `src/main/java/io/github/jukejuke/map/amap/AmapRegeoCoder.java`: Implementation of Amap reverse geocoding.
-- `src/main/java/io/github/jukejuke/map/amap/AmapGeoCoder.java`: Implementation of Amap geocoding.
-- `src/main/java/io/github/jukejuke/map/amap/AmapDistrictQuery.java`: Implementation of Amap district query.
-- `src/main/java/io/github/jukejuke/map/amap/AmapCoordinateConverter.java`: Implementation of Amap API coordinate conversion.
-- `src/main/java/io/github/jukejuke/map/amap/poi2/AmapPoiSearcher.java`: Implementation of Amap POI search.
-- `src/main/java/io/github/jukejuke/map/tianditu/TiandituGeocoder.java`: Implementation of Tianditu reverse geocoding.
-- `src/main/java/io/github/jukejuke/map/tianditu/TiandituAdministrative.java`: Implementation of Tianditu administrative area query.
 
-### Coordinate Conversion Tools
-- `src/main/java/io/github/jukejuke/map/util/CoordinateConverter.java`: Local coordinate conversion utility class, supporting conversion between WGS-84, GCJ-02, and BD-09 coordinate systems.
-- `src/test/java/io/github/jukejuke/map/util/CoordinateConverterTest.java`: Complete test cases for coordinate conversion utility class.
+**Issue**: Error messages returned when calling geocoding services
 
-### API Response Encapsulation
-- `src/main/java/io/github/jukejuke/api/ApiResponse.java`: Unified API response result encapsulation class.
-- `src/main/java/io/github/jukejuke/api/ApiCode.java`: API response status code enum class.
-- `src/main/java/io/github/jukejuke/api/PageResponse.java`: Pagination response result encapsulation class.
+**Solution**:
+1. Check if the API key is correct
+2. Check if the network connection is normal
+3. Check if the request parameters meet API requirements
+4. Check the API documentation to understand error code meanings
 
-### General Utility Classes
-- `src/main/java/io/github/jukejuke/tool/bean/BeanFieldFilter.java`: Bean field filtering utility class.
-- `src/main/java/io/github/jukejuke/tool/bean/BeanPropertyUtils.java`: Bean property operation utility class.
-- `src/main/java/io/github/jukejuke/tool/date/DateUtils.java`: Date and time processing utility class.
-- `src/main/java/io/github/jukejuke/tool/excel/ExcelUtils.java`: Excel file export and import utility class, supporting basic export, annotation-based export, streaming export, streaming data acquisition export, import functionality, and streaming import.
-- `src/main/java/io/github/jukejuke/tool/excel/ExcelColumn.java`: Excel column configuration annotation class, used to configure Excel column names, order, format, width, etc.
-- `src/main/java/io/github/jukejuke/tool/excel/ExcelAlignment.java`: Excel alignment enumeration class, used to configure Excel cell alignment.
-- `src/main/java/io/github/jukejuke/tool/freemarker/FreemarkerUtils.java`: Freemarker template engine utility class.
-- `src/main/java/io/github/jukejuke/tool/jwt/JwtUtils.java`: JWT token processing utility class.
+### Excel Tools
 
-### Qiniu Cloud Object Storage Tools
-- `src/main/java/io/github/jukejuke/qiniu/QiniuUtils.java`: Qiniu Cloud Object Storage utility class, providing file upload, download, deletion, renaming, copying, moving and other functions.
-- `src/main/java/io/github/jukejuke/qiniu/QiniuConfig.java`: Qiniu Cloud configuration class, used to store configuration information for Qiniu Cloud Object Storage.
-- `src/main/java/io/github/jukejuke/qiniu/QiniuUtilsExample.java`: Qiniu Cloud utility class usage example.
+**Issue**: Memory overflow when exporting large amounts of data
 
-### Maven
-Add the following to your project's pom.xml dependencies:
+**Solution**: Use streaming export methods `exportWithAnnotationStreaming` or `exportWithStream`, which use SXSSFWorkbook to write data to temporary files, avoiding memory overflow.
 
-```xml
-<dependency>
-    <groupId>io.github.jukejuke</groupId>
-    <artifactId>jk-tool</artifactId>
-    <version>0.0.4</version>
-</dependency>
-```
+### HTTP Tools
 
-### Gradle
-```
-implementation 'io.github.jukejuke:jk-tool:0.0.4'
-```
+**Issue**: HTTP request timeout
 
-### Download JAR
+**Solution**:
+1. Check if the network connection is normal
+2. Check if the target server is accessible
+3. Consider increasing the timeout period (currently default 15 seconds)
 
-Click the link below to download `jk-tool-X.X.X.jar`:
+### Qiniu Cloud Tools
 
-- [Maven Central Repository](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.4/)
+**Issue**: File upload failure
 
-## JDK Version
+**Solution**:
+1. Check if Qiniu Cloud configuration is correct (Access Key, Secret Key, Bucket, etc.)
+2. Check if the network connection is normal
+3. Check if the file exists and is readable
+4. Check Qiniu Cloud documentation to understand error code meanings
 
-- **JDK 11 or higher**
+## Summary
+
+JK Tool is a feature-rich Java utility library that provides geocoding services, coordinate conversion, general utility classes, Qiniu Cloud object storage tools, encryption and decryption tools, system utility classes, and API response encapsulation. The project is designed to be simple and easy to use, suitable for various Java application scenarios.
+
+Through this user documentation, you should have understood the main features and usage methods of JK Tool. If you encounter any issues during use, please refer to the Common Issues and Solutions section, or check the project's test code and example code.
+
+We hope JK Tool can help with your Java project development!
 
 ## License
 
@@ -255,6 +1148,12 @@ This project is licensed under the Apache 2.0 License. For details, see the [LIC
 
 Contributions to this project are welcome. Please follow these steps:
 
-1. Fork this project.
-2. Create a new branch.
-3. Submit a Pull Request.
+1. Fork this project
+2. Create a new branch
+3. Submit a Pull Request
+
+## Contact
+
+If you have any questions or suggestions, please contact us through:
+
+- GitHub: [https://github.com/jukejuke/jk-tool](https://github.com/jukejuke/jk-tool)
