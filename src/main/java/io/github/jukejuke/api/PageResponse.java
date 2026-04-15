@@ -12,6 +12,16 @@ public class PageResponse<T> implements Serializable {
     private static final long serialVersionUID = 1L;
     
     /**
+     * 响应状态码
+     */
+    private int code;
+    
+    /**
+     * 响应消息
+     */
+    private String message;
+    
+    /**
      * 总记录数
      */
     private long total;
@@ -44,6 +54,21 @@ public class PageResponse<T> implements Serializable {
      * @param list 数据列表
      */
     public PageResponse(long total, int pageSize, int pageNum, List<T> list) {
+        this(ApiCode.SUCCESS.getCode(), ApiCode.SUCCESS.getMessage(), total, pageSize, pageNum, list);
+    }
+    
+    /**
+     * 构造方法
+     * @param code 响应状态码
+     * @param message 响应消息
+     * @param total 总记录数
+     * @param pageSize 每页记录数
+     * @param pageNum 当前页码
+     * @param list 数据列表
+     */
+    public PageResponse(int code, String message, long total, int pageSize, int pageNum, List<T> list) {
+        this.code = code;
+        this.message = message;
         this.total = total;
         this.pageSize = pageSize;
         this.pageNum = pageNum;
@@ -61,6 +86,22 @@ public class PageResponse<T> implements Serializable {
      * @param list 数据列表
      */
     public PageResponse(long total, int pageSize, int pageNum, int pages, List<T> list) {
+        this(ApiCode.SUCCESS.getCode(), ApiCode.SUCCESS.getMessage(), total, pageSize, pageNum, pages, list);
+    }
+    
+    /**
+     * 构造方法
+     * @param code 响应状态码
+     * @param message 响应消息
+     * @param total 总记录数
+     * @param pageSize 每页记录数
+     * @param pageNum 当前页码
+     * @param pages 总页数
+     * @param list 数据列表
+     */
+    public PageResponse(int code, String message, long total, int pageSize, int pageNum, int pages, List<T> list) {
+        this.code = code;
+        this.message = message;
         this.total = total;
         this.pageSize = pageSize;
         this.pageNum = pageNum;
@@ -84,6 +125,21 @@ public class PageResponse<T> implements Serializable {
     /**
      * 创建分页响应实例
      * @param <T> 数据类型
+     * @param code 响应状态码
+     * @param message 响应消息
+     * @param total 总记录数
+     * @param pageSize 每页记录数
+     * @param pageNum 当前页码
+     * @param list 数据列表
+     * @return PageResponse实例
+     */
+    public static <T> PageResponse<T> of(int code, String message, long total, int pageSize, int pageNum, List<T> list) {
+        return new PageResponse<>(code, message, total, pageSize, pageNum, list);
+    }
+    
+    /**
+     * 创建分页响应实例
+     * @param <T> 数据类型
      * @param total 总记录数
      * @param pageSize 每页记录数
      * @param pageNum 当前页码
@@ -96,11 +152,59 @@ public class PageResponse<T> implements Serializable {
     }
     
     /**
+     * 创建分页响应实例
+     * @param <T> 数据类型
+     * @param code 响应状态码
+     * @param message 响应消息
+     * @param total 总记录数
+     * @param pageSize 每页记录数
+     * @param pageNum 当前页码
+     * @param pages 总页数
+     * @param list 数据列表
+     * @return PageResponse实例
+     */
+    public static <T> PageResponse<T> of(int code, String message, long total, int pageSize, int pageNum, int pages, List<T> list) {
+        return new PageResponse<>(code, message, total, pageSize, pageNum, pages, list);
+    }
+    
+    /**
      * 将分页响应包装为ApiResponse
      * @return ApiResponse实例
      */
     public ApiResponse<PageResponse<T>> toApiResponse() {
         return ApiResponse.success(this);
+    }
+    
+    /**
+     * 获取响应状态码
+     * @return 响应状态码
+     */
+    public int getCode() {
+        return code;
+    }
+    
+    /**
+     * 设置响应状态码
+     * @param code 响应状态码
+     */
+    public void setCode(int code) {
+        this.code = code;
+    }
+    
+    /**
+     * 获取响应消息
+     * @return 响应消息
+     */
+    public String getMessage() {
+        return message;
+    }
+    
+    /**
+     * 设置响应消息
+     * @param message 响应消息
+     */
+    public void setMessage(String message) {
+        this.message = message;
     }
     
     /**
@@ -186,7 +290,9 @@ public class PageResponse<T> implements Serializable {
     @Override
     public String toString() {
         return "PageResponse{" +
-                "total=" + total +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", total=" + total +
                 ", pageSize=" + pageSize +
                 ", pageNum=" + pageNum +
                 ", pages=" + pages +
