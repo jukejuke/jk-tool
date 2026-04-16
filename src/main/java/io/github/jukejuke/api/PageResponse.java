@@ -94,6 +94,14 @@ public class PageResponse<T> implements Serializable {
     public static <T> PageResponse<T> of(long total, int pageSize, int pageNum, int pages, List<T> list) {
         return new PageResponse<>(total, pageSize, pageNum, pages, list);
     }
+
+    /**
+     * 将分页响应包装为ApiResponse
+     * @return ApiResponse实例
+     */
+    public ApiResponse<PageResponse<T>> toApiResponse() {
+        return ApiResponse.success(this);
+    }
     
     /**
      * 获取总记录数
