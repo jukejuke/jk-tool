@@ -9,6 +9,7 @@ import java.io.Serializable;
  * @param <T> 响应数据类型
  */
 @Data
+@Deprecated
 public class ApiResponse<T> implements Serializable {
     private static final long serialVersionUID = 1L;
     

@@ -4,6 +4,7 @@ package io.github.jukejuke.tool.response;
  * API响应工具类
  * 提供静态方法快速构建各种类型的响应
  */
+@Deprecated
 public class ResponseUtils {
     
     /**

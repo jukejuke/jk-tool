@@ -4,6 +4,7 @@ package io.github.jukejuke.tool.response;
  * 响应状态枚举
  * 定义API响应的状态码和消息
  */
+@Deprecated
 public enum ResponseStatus {
     // 成功状态
     SUCCESS(200, "操作成功"),
