@@ -389,4 +389,149 @@ public class BigDecimalMath {
     public static BigDecimal toBigDecimal(double num) {
         return BigDecimal.valueOf(num);
     }
+
+    /**
+     * 将float转换为BigDecimal
+     * @param num float
+     * @return BigDecimal对象
+     */
+    public static BigDecimal toBigDecimal(float num) {
+        return BigDecimal.valueOf(num);
+    }
+
+    /**
+     * 将BigDecimal转换为int
+     * @param a BigDecimal对象
+     * @return int值，如果为null则返回0
+     */
+    public static int toInt(BigDecimal a) {
+        if (a == null) {
+            return 0;
+        }
+        return a.intValue();
+    }
+
+    /**
+     * 将BigDecimal转换为int，四舍五入
+     * @param a BigDecimal对象
+     * @return int值，如果为null则返回0
+     */
+    public static int toIntExact(BigDecimal a) {
+        if (a == null) {
+            return 0;
+        }
+        return round(a, 0).intValueExact();
+    }
+
+    /**
+     * 将BigDecimal转换为long
+     * @param a BigDecimal对象
+     * @return long值，如果为null则返回0
+     */
+    public static long toLong(BigDecimal a) {
+        if (a == null) {
+            return 0L;
+        }
+        return a.longValue();
+    }
+
+    /**
+     * 将BigDecimal转换为long，四舍五入
+     * @param a BigDecimal对象
+     * @return long值，如果为null则返回0
+     */
+    public static long toLongExact(BigDecimal a) {
+        if (a == null) {
+            return 0L;
+        }
+        return round(a, 0).longValueExact();
+    }
+
+    /**
+     * 将BigDecimal转换为double
+     * @param a BigDecimal对象
+     * @return double值，如果为null则返回0.0
+     */
+    public static double toDouble(BigDecimal a) {
+        if (a == null) {
+            return 0.0;
+        }
+        return a.doubleValue();
+    }
+
+    /**
+     * 将BigDecimal转换为float
+     * @param a BigDecimal对象
+     * @return float值，如果为null则返回0.0f
+     */
+    public static float toFloat(BigDecimal a) {
+        if (a == null) {
+            return 0.0f;
+        }
+        return a.floatValue();
+    }
+
+    /**
+     * 将BigDecimal转换为String
+     * @param a BigDecimal对象
+     * @return 字符串，如果为null则返回null
+     */
+    public static String toString(BigDecimal a) {
+        if (a == null) {
+            return null;
+        }
+        return a.toString();
+    }
+
+    /**
+     * 将BigDecimal转换为String，指定格式
+     * @param a BigDecimal对象
+     * @param scale 保留小数位数
+     * @return 格式化后的字符串，如果为null则返回null
+     */
+    public static String toString(BigDecimal a, int scale) {
+        if (a == null) {
+            return null;
+        }
+        return round(a, scale).toString();
+    }
+
+    /**
+     * 将BigDecimal转换为String，使用科学计数法
+     * @param a BigDecimal对象
+     * @return 科学计数法字符串，如果为null则返回null
+     */
+    public static String toEngineeringString(BigDecimal a) {
+        if (a == null) {
+            return null;
+        }
+        return a.toEngineeringString();
+    }
+
+    /**
+     * 将BigDecimal转换为String，不使用科学计数法
+     * @param a BigDecimal对象
+     * @return 普通字符串，如果为null则返回null
+     */
+    public static String toPlainString(BigDecimal a) {
+        if (a == null) {
+            return null;
+        }
+        return a.toPlainString();
+    }
+
+    /**
+     * 将Number类型转换为BigDecimal
+     * @param num Number对象
+     * @return BigDecimal对象，如果为null则返回0
+     */
+    public static BigDecimal toBigDecimal(Number num) {
+        if (num == null) {
+            return BigDecimal.ZERO;
+        }
+        if (num instanceof BigDecimal) {
+            return (BigDecimal) num;
+        }
+        return BigDecimal.valueOf(num.doubleValue());
+    }
 }

@@ -62,6 +62,31 @@ public class BigDecimalMathTest {
         System.out.println("toBigDecimal(100): " + BigDecimalMath.toBigDecimal(100));
         System.out.println("toBigDecimal(123L): " + BigDecimalMath.toBigDecimal(123L));
         System.out.println("toBigDecimal(123.45): " + BigDecimalMath.toBigDecimal(123.45));
+        System.out.println("toBigDecimal(123.45f): " + BigDecimalMath.toBigDecimal(123.45f));
+        System.out.println("toBigDecimal(Integer.valueOf(123)): " + BigDecimalMath.toBigDecimal(Integer.valueOf(123)));
+        System.out.println("toBigDecimal(Double.valueOf(123.45)): " + BigDecimalMath.toBigDecimal(Double.valueOf(123.45)));
+        
+        // 测试 BigDecimal 转其他类型
+        System.out.println("\n=== 测试 BigDecimal 转其他类型 ===");
+        System.out.println("toInt(10.5): " + BigDecimalMath.toInt(a));
+        System.out.println("toIntExact(10.5): " + BigDecimalMath.toIntExact(a));
+        System.out.println("toIntExact(10.4): " + BigDecimalMath.toIntExact(new BigDecimal("10.4")));
+        System.out.println("toLong(10.5): " + BigDecimalMath.toLong(a));
+        System.out.println("toLongExact(10.5): " + BigDecimalMath.toLongExact(a));
+        System.out.println("toDouble(10.5): " + BigDecimalMath.toDouble(a));
+        System.out.println("toFloat(10.5): " + BigDecimalMath.toFloat(a));
+        System.out.println("toString(10.5): " + BigDecimalMath.toString(a));
+        System.out.println("toString(10.567, 2): " + BigDecimalMath.toString(new BigDecimal("10.567"), 2));
+        System.out.println("toEngineeringString(123456789): " + BigDecimalMath.toEngineeringString(new BigDecimal("123456789")));
+        System.out.println("toPlainString(123456789): " + BigDecimalMath.toPlainString(new BigDecimal("123456789")));
+        
+        // 测试 null 转换
+        System.out.println("\n=== 测试 null 转换 ===");
+        System.out.println("toInt(null): " + BigDecimalMath.toInt(null));
+        System.out.println("toLong(null): " + BigDecimalMath.toLong(null));
+        System.out.println("toDouble(null): " + BigDecimalMath.toDouble(null));
+        System.out.println("toFloat(null): " + BigDecimalMath.toFloat(null));
+        System.out.println("toString(null): " + BigDecimalMath.toString(null));
 
         // 测试取余运算
         System.out.println("\n=== 测试取余运算 ===");
