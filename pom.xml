@@ -232,6 +232,7 @@
       <groupId>dnsjava</groupId>
       <artifactId>dnsjava</artifactId>
       <version>${dnsjava.version}</version>
+      <scope>provided</scope>
     </dependency>
 <!--    <dependency>
       <groupId>com.alibaba</groupId>
@@ -279,7 +280,7 @@
         <groupId>org.freemarker</groupId>
         <artifactId>freemarker</artifactId>
         <version>${freemarker.version}</version>
-        <scope>compile</scope>
+        <scope>provided</scope>
     </dependency>
     <dependency>
         <groupId>com.nimbusds</groupId>
@@ -292,13 +293,13 @@
         <groupId>javax.mail</groupId>
         <artifactId>javax.mail-api</artifactId>
         <version>${javax.mail.version}</version>
-        <scope>compile</scope>
+        <scope>provided</scope>
     </dependency>
     <dependency>
         <groupId>com.sun.mail</groupId>
         <artifactId>javax.mail</artifactId>
         <version>${javax.mail.version}</version>
-        <scope>compile</scope>
+        <scope>provided</scope>
     </dependency>
 
     <!--
@@ -317,14 +318,14 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
         <version>${slf4j.version}</version>
-        <scope>compile</scope>
+        <scope>provided</scope>
     </dependency>
     <!-- 七牛云SDK依赖 -->
     <dependency>
         <groupId>com.qiniu</groupId>
         <artifactId>qiniu-java-sdk</artifactId>
         <version>${qiniu.version}</version>
-        <scope>compile</scope>
+        <scope>provided</scope>
     </dependency>
   </dependencies>
 <!--  <distributionManagement>
