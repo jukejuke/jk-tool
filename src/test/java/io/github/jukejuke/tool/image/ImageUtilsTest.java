@@ -27,6 +27,8 @@ public class ImageUtilsTest {
         
         // 测试按文件大小压缩
         test.testCompressToSize();
+
+        ImageUtils.compressImage("C:\\Users\\Administrator\\桌面\\ScreenShot_2026-04-17_173038_003.png", "C:\\Users\\Administrator\\桌面\\test.png",1,300,300);
     }
 
     /**
