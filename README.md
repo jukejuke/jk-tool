@@ -19,21 +19,21 @@ Add the following dependency to your project's `pom.xml`:
 <dependency>
     <groupId>io.github.jukejuke</groupId>
     <artifactId>jk-tool</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
 </dependency>
 ```
 
 #### Gradle
 
 ```gradle
-implementation 'io.github.jukejuke:jk-tool:0.0.4'
+implementation 'io.github.jukejuke:jk-tool:0.0.5'
 ```
 
 #### Direct Download
 
 Click the link below to download `jk-tool-X.X.X.jar`:
 
-- [Maven Central Repository](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.4/)
+- [Maven Central Repository](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.5/)
 
 ## Core Feature Modules
 
@@ -1085,6 +1085,9 @@ System.out.println("Data list: " + pageResponse.getRecords());
   - Response wrapper: `response/` directory
   - String processing: `string/` directory
   - URL processing: `url/` directory
+  - Image processing: `image/` directory
+  - Math calculation: `math/` directory
+  - ZIP compression: `zip/` directory
 
 - **Qiniu Cloud Object Storage**: `src/main/java/io/github/jukejuke/qiniu/`
 
