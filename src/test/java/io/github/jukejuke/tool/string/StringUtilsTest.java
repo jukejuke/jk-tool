@@ -1,5 +1,7 @@
 package io.github.jukejuke.tool.string;
 
+import java.util.List;
+
 /**
  * StringUtils测试类
  */
@@ -38,6 +40,27 @@ public class StringUtilsTest {
         System.out.println("listToString(Arrays.asList(\"a\", null, \"c\"), \"|\"): " + StringUtils.listToString(java.util.Arrays.asList("a", null, "c"), "|"));
         System.out.println("listToString(Arrays.asList(1, 2, 3, 4, 5), \"-\"): " + StringUtils.listToString(java.util.Arrays.asList(1, 2, 3, 4, 5), "-"));
         System.out.println("listToString(Arrays.asList(true, false, true), \" \"): " + StringUtils.listToString(java.util.Arrays.asList(true, false, true), " "));
+        
+        // 测试字符串转换为List功能
+        System.out.println("\n=== 测试字符串转换为List功能 ===");
+        System.out.println("stringToList(null, \",\"): " + StringUtils.stringToList(null, ","));
+        System.out.println("stringToList(\"\", \",\"): " + StringUtils.stringToList("", ","));
+        System.out.println("stringToList(\"a,b,c\", \",\"): " + StringUtils.stringToList("a,b,c", ","));
+        System.out.println("stringToList(\"a , b , c\", \",\"): " + StringUtils.stringToList("a , b , c", ","));
+        System.out.println("stringToList(\"1-2-3-4-5\", \"-\"): " + StringUtils.stringToList("1-2-3-4-5", "-"));
+        System.out.println("stringToList(\"a|b|c|d\", \"|\"): " + StringUtils.stringToList("a|b|c|d", "|"));
+        
+        // 测试字符串转换为不同基础类型List
+        System.out.println("\n=== 测试字符串转换为不同基础类型List ===");
+        System.out.println("stringToIntegerList(\"1,2,3,4,5\", \",\"): " + StringUtils.stringToIntegerList("1,2,3,4,5", ","));
+        System.out.println("stringToLongList(\"100,200,300\", \",\"): " + StringUtils.stringToLongList("100,200,300", ","));
+        System.out.println("stringToDoubleList(\"1.1,2.2,3.3\", \",\"): " + StringUtils.stringToDoubleList("1.1,2.2,3.3", ","));
+        System.out.println("stringToBooleanList(\"true,false,TRUE,FALSE\", \",\"): " + StringUtils.stringToBooleanList("true,false,TRUE,FALSE", ","));
+        
+        // 测试自定义转换器
+        System.out.println("\n=== 测试自定义转换器 ===");
+        List<String> customList = StringUtils.stringToList("apple,banana,orange", ",", s -> s.toUpperCase());
+        System.out.println("自定义转换器(转大写): " + customList);
 
         // 测试字符串相等判断功能
         System.out.println("\n=== 测试字符串相等判断功能 ===");

@@ -403,4 +403,73 @@ public class StringUtils {
         }
         return joiner.toString();
     }
+
+    /**
+     * 将字符串按指定分隔符转换为List
+     * @param str 要转换的字符串
+     * @param delimiter 分隔符
+     * @return 转换后的List，如果字符串为null或空则返回空List
+     */
+    public static List<String> stringToList(String str, String delimiter) {
+        return stringToList(str, delimiter, s -> s);
+    }
+
+    /**
+     * 将字符串按指定分隔符转换为List，并使用自定义转换器转换为指定类型
+     * @param str 要转换的字符串
+     * @param delimiter 分隔符
+     * @param converter 类型转换器
+     * @param <T> 目标类型
+     * @return 转换后的List，如果字符串为null或空则返回空List
+     */
+    public static <T> List<T> stringToList(String str, String delimiter, java.util.function.Function<String, T> converter) {
+        if (isEmpty(str)) {
+            return Collections.emptyList();
+        }
+        return Arrays.stream(str.split(Pattern.quote(delimiter)))
+                .map(String::trim)
+                .filter(StringUtils::isNotEmpty)
+                .map(converter)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 将字符串按指定分隔符转换为List&lt;Integer&gt;
+     * @param str 要转换的字符串
+     * @param delimiter 分隔符
+     * @return 转换后的List，如果字符串为null或空则返回空List
+     */
+    public static List<Integer> stringToIntegerList(String str, String delimiter) {
+        return stringToList(str, delimiter, Integer::valueOf);
+    }
+
+    /**
+     * 将字符串按指定分隔符转换为List&lt;Long&gt;
+     * @param str 要转换的字符串
+     * @param delimiter 分隔符
+     * @return 转换后的List，如果字符串为null或空则返回空List
+     */
+    public static List<Long> stringToLongList(String str, String delimiter) {
+        return stringToList(str, delimiter, Long::valueOf);
+    }
+
+    /**
+     * 将字符串按指定分隔符转换为List&lt;Double&gt;
+     * @param str 要转换的字符串
+     * @param delimiter 分隔符
+     * @return 转换后的List，如果字符串为null或空则返回空List
+     */
+    public static List<Double> stringToDoubleList(String str, String delimiter) {
+        return stringToList(str, delimiter, Double::valueOf);
+    }
+
+    /**
+     * 将字符串按指定分隔符转换为List&lt;Boolean&gt;
+     * @param str 要转换的字符串
+     * @param delimiter 分隔符
+     * @return 转换后的List，如果字符串为null或空则返回空List
+     */
+    public static List<Boolean> stringToBooleanList(String str, String delimiter) {
+        return stringToList(str, delimiter, Boolean::valueOf);
+    }
 }
