@@ -29,6 +29,15 @@ public class StringUtilsTest {
         String[] splitResult = StringUtils.split("a,b,c,d", ",");
         System.out.println("split(\"a,b,c,d\", \",\"): " + java.util.Arrays.toString(splitResult));
         System.out.println("join([\"a\", \"b\", \"c\"], \"-\"): " + StringUtils.join(new String[]{"a", "b", "c"}, "-"));
+        
+        // 测试List转换为字符串功能
+        System.out.println("\n=== 测试List转换为字符串功能 ===");
+        System.out.println("listToString(null, \",\"): |" + StringUtils.listToString(null, ",") + "|");
+        System.out.println("listToString(Collections.emptyList(), \",\"): |" + StringUtils.listToString(java.util.Collections.emptyList(), ",") + "|");
+        System.out.println("listToString(Arrays.asList(\"a\", \"b\", \"c\"), \",\"): " + StringUtils.listToString(java.util.Arrays.asList("a", "b", "c"), ","));
+        System.out.println("listToString(Arrays.asList(\"a\", null, \"c\"), \"|\"): " + StringUtils.listToString(java.util.Arrays.asList("a", null, "c"), "|"));
+        System.out.println("listToString(Arrays.asList(1, 2, 3, 4, 5), \"-\"): " + StringUtils.listToString(java.util.Arrays.asList(1, 2, 3, 4, 5), "-"));
+        System.out.println("listToString(Arrays.asList(true, false, true), \" \"): " + StringUtils.listToString(java.util.Arrays.asList(true, false, true), " "));
 
         // 测试字符串相等判断功能
         System.out.println("\n=== 测试字符串相等判断功能 ===");

@@ -383,4 +383,24 @@ public class StringUtils {
         }
         return new StringBuilder(str).reverse().toString();
     }
+
+    /**
+     * 将List转换为字符串，用指定符号分割
+     * @param list 要转换的List
+     * @param delimiter 分隔符
+     * @param <T> List中元素的类型
+     * @return 转换后的字符串，如果List为null或空则返回空字符串
+     */
+    public static <T> String listToString(List<T> list, String delimiter) {
+        if (list == null || list.isEmpty()) {
+            return "";
+        }
+        StringJoiner joiner = new StringJoiner(delimiter);
+        for (T item : list) {
+            if (item != null) {
+                joiner.add(item.toString());
+            }
+        }
+        return joiner.toString();
+    }
 }
