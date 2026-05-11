@@ -46,3 +46,6 @@ logs/
 /target/maven-archiver/
 /target/maven-status/
 *.class
+
+/temp/
+/.mybatis/
