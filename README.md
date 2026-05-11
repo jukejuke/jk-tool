@@ -947,18 +947,6 @@ for (String ip : dohIps) {
 }
 ```
 
-#### IP Address Processing
-
-```java
-// Resolve IP address
-String ip = "192.168.1.1";
-IPAddressResolver resolver = new IPAddressResolver();
-IPAddressResolver.IPInfo info = resolver.resolve(ip);
-System.out.println("IP address information:");
-System.out.println("Country: " + info.getCountry());
-System.out.println("Province: " + info.getProvince());
-System.out.println("City: " + info.getCity());
-```
 
 #### Process Management
 
@@ -1077,7 +1065,6 @@ System.out.println("Data list: " + pageResponse.getRecords());
   - Freemarker template: `freemarker/` directory
   - HTTP request: `http/` directory
   - ID generation: `id/` directory
-  - IP address processing: `ip/` directory
   - JWT token: `jwt/` directory
   - License management: `license/` directory
   - Logging utility: `log/` directory

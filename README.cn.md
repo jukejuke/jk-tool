@@ -947,19 +947,6 @@ for (String ip : dohIps) {
 }
 ```
 
-#### IP地址处理
-
-```java
-// 解析IP地址
-String ip = "192.168.1.1";
-IPAddressResolver resolver = new IPAddressResolver();
-IPAddressResolver.IPInfo info = resolver.resolve(ip);
-System.out.println("IP地址信息：");
-System.out.println("国家：" + info.getCountry());
-System.out.println("省份：" + info.getProvince());
-System.out.println("城市：" + info.getCity());
-```
-
 #### 进程管理
 
 ```java
@@ -1077,7 +1064,6 @@ System.out.println("数据列表：" + pageResponse.getRecords());
   - Freemarker模板：`freemarker/` 目录
   - HTTP请求：`http/` 目录
   - ID生成：`id/` 目录
-  - IP地址处理：`ip/` 目录
   - JWT令牌：`jwt/` 目录
   - 许可证管理：`license/` 目录
   - 日志工具：`log/` 目录
