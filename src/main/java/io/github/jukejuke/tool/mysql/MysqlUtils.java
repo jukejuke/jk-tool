@@ -2,8 +2,16 @@ package io.github.jukejuke.tool.mysql;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import io.github.jukejuke.tool.file.FileUtils;
+import io.github.jukejuke.tool.string.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -173,12 +181,12 @@ public class MysqlUtils {
      * @param sql SQL语句
      * @return 格式化后的SQL
      */
-    private static String formatSql(String sql) {
-        if (sql == null) {
-            return null;
-        }
-        return sql.replaceAll("\\s+", " ").trim();
-    }
+//    private static String formatSql(String sql) {
+//        if (sql == null) {
+//            return null;
+//        }
+//        return sql.replaceAll("\\s+", " ").trim();
+//    }
 
     /**
      * 设置PreparedStatement参数
@@ -275,5 +283,217 @@ public class MysqlUtils {
      */
     public static int getIdleConnections() {
         return dataSource != null ? dataSource.getHikariPoolMXBean().getIdleConnections() : 0;
+    }
+
+    /**
+     * 从文件读取SQL语句（默认UTF-8编码）
+     * @param filePath SQL文件路径
+     * @return SQL语句
+     * @throws IOException 读取文件时发生异常
+     */
+    public static String readSqlFromFile(String filePath) throws IOException {
+        return readSqlFromFile(filePath, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * 从文件读取SQL语句
+     * @param filePath SQL文件路径
+     * @param charset 字符集
+     * @return SQL语句
+     * @throws IOException 读取文件时发生异常
+     */
+    public static String readSqlFromFile(String filePath, Charset charset) throws IOException {
+        if (StringUtils.isEmpty(filePath)) {
+            throw new IllegalArgumentException("SQL文件路径不能为空");
+        }
+        String sql = FileUtils.readFile(filePath, charset);
+        if (sql == null) {
+            throw new IOException("读取SQL文件失败：" + filePath);
+        }
+        log.debug("从文件读取SQL成功: {}", filePath);
+        return sql.trim();
+    }
+
+    /**
+     * 从classpath资源读取SQL语句（默认UTF-8编码）
+     * @param resourcePath 资源路径
+     * @return SQL语句
+     * @throws IOException 读取资源时发生异常
+     */
+    public static String readSqlFromResource(String resourcePath) throws IOException {
+        return readSqlFromResource(resourcePath, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * 从classpath资源读取SQL语句
+     * @param resourcePath 资源路径
+     * @param charset 字符集
+     * @return SQL语句
+     * @throws IOException 读取资源时发生异常
+     */
+    public static String readSqlFromResource(String resourcePath, Charset charset) throws IOException {
+        if (StringUtils.isEmpty(resourcePath)) {
+            throw new IllegalArgumentException("SQL资源路径不能为空");
+        }
+        StringBuilder sql = new StringBuilder();
+        try (InputStream is = MysqlUtils.class.getClassLoader().getResourceAsStream(resourcePath)) {
+            if (is == null) {
+                throw new IOException("找不到SQL资源文件：" + resourcePath);
+            }
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    sql.append(line).append(System.lineSeparator());
+                }
+            }
+        }
+        log.debug("从资源读取SQL成功: {}", resourcePath);
+        return sql.toString().trim();
+    }
+
+    /**
+     * 将SQL语句写入文件（默认UTF-8编码，覆盖模式）
+     * @param sql SQL语句
+     * @param filePath 文件路径
+     * @throws IOException 写入文件时发生异常
+     */
+    public static void writeSqlToFile(String sql, String filePath) throws IOException {
+        writeSqlToFile(sql, filePath, StandardCharsets.UTF_8, false);
+    }
+
+    /**
+     * 将SQL语句写入文件（默认UTF-8编码）
+     * @param sql SQL语句
+     * @param filePath 文件路径
+     * @param append 是否追加模式
+     * @throws IOException 写入文件时发生异常
+     */
+    public static void writeSqlToFile(String sql, String filePath, boolean append) throws IOException {
+        writeSqlToFile(sql, filePath, StandardCharsets.UTF_8, append);
+    }
+
+    /**
+     * 将SQL语句写入文件
+     * @param sql SQL语句
+     * @param filePath 文件路径
+     * @param charset 字符集
+     * @param append 是否追加模式
+     * @throws IOException 写入文件时发生异常
+     */
+    public static void writeSqlToFile(String sql, String filePath, Charset charset, boolean append) throws IOException {
+        if (StringUtils.isEmpty(filePath)) {
+            throw new IllegalArgumentException("文件路径不能为空");
+        }
+        if (sql == null) {
+            throw new IllegalArgumentException("SQL语句不能为空");
+        }
+        boolean success = FileUtils.writeFile(filePath, sql, charset, append);
+        if (!success) {
+            throw new IOException("写入SQL文件失败：" + filePath);
+        }
+        log.debug("写入SQL到文件成功: {}", filePath);
+    }
+
+    /**
+     * 从文件读取SQL并执行查询，返回对象列表
+     * @param sqlFilePath SQL文件路径
+     * @param params 参数
+     * @return 查询结果列表
+     * @throws IOException 读取文件时发生异常
+     * @throws SQLException 执行SQL时发生异常
+     */
+    public static List<Map<String, Object>> selectListFromFile(String sqlFilePath, Object... params) throws IOException, SQLException {
+        String sql = readSqlFromFile(sqlFilePath);
+        return selectList(sql, params);
+    }
+
+    /**
+     * 从文件读取SQL并执行查询，返回单个对象
+     * @param sqlFilePath SQL文件路径
+     * @param params 参数
+     * @return 查询结果
+     * @throws IOException 读取文件时发生异常
+     * @throws SQLException 执行SQL时发生异常
+     */
+    public static Map<String, Object> selectOneFromFile(String sqlFilePath, Object... params) throws IOException, SQLException {
+        String sql = readSqlFromFile(sqlFilePath);
+        return selectOne(sql, params);
+    }
+
+    /**
+     * 从文件读取SQL并执行更新操作（INSERT、UPDATE、DELETE）
+     * @param sqlFilePath SQL文件路径
+     * @param params 参数
+     * @return 影响的行数
+     * @throws IOException 读取文件时发生异常
+     * @throws SQLException 执行SQL时发生异常
+     */
+    public static int updateFromFile(String sqlFilePath, Object... params) throws IOException, SQLException {
+        String sql = readSqlFromFile(sqlFilePath);
+        return update(sql, params);
+    }
+
+    /**
+     * 从classpath资源读取SQL并执行查询，返回对象列表
+     * @param resourcePath 资源路径
+     * @param params 参数
+     * @return 查询结果列表
+     * @throws IOException 读取资源时发生异常
+     * @throws SQLException 执行SQL时发生异常
+     */
+    public static List<Map<String, Object>> selectListFromResource(String resourcePath, Object... params) throws IOException, SQLException {
+        String sql = readSqlFromResource(resourcePath);
+        return selectList(sql, params);
+    }
+
+    /**
+     * 从classpath资源读取SQL并执行查询，返回单个对象
+     * @param resourcePath 资源路径
+     * @param params 参数
+     * @return 查询结果
+     * @throws IOException 读取资源时发生异常
+     * @throws SQLException 执行SQL时发生异常
+     */
+    public static Map<String, Object> selectOneFromResource(String resourcePath, Object... params) throws IOException, SQLException {
+        String sql = readSqlFromResource(resourcePath);
+        return selectOne(sql, params);
+    }
+
+    /**
+     * 从classpath资源读取SQL并执行更新操作（INSERT、UPDATE、DELETE）
+     * @param resourcePath 资源路径
+     * @param params 参数
+     * @return 影响的行数
+     * @throws IOException 读取资源时发生异常
+     * @throws SQLException 执行SQL时发生异常
+     */
+    public static int updateFromResource(String resourcePath, Object... params) throws IOException, SQLException {
+        String sql = readSqlFromResource(resourcePath);
+        return update(sql, params);
+    }
+
+    /**
+     * 格式化SQL语句（保留换行和缩进，只移除多余空白）
+     * @param sql SQL语句
+     * @return 格式化后的SQL
+     */
+    private static String formatSql(String sql) {
+        if (sql == null) {
+            return null;
+        }
+        // 保留原有的换行，只处理每行的首尾空白
+        String[] lines = sql.split(System.lineSeparator());
+        StringBuilder formatted = new StringBuilder();
+        for (int i = 0; i < lines.length; i++) {
+            String trimmedLine = lines[i].trim();
+            if (trimmedLine.isEmpty()) {
+                continue;
+            }
+            if (i > 0) {
+                formatted.append(System.lineSeparator());
+            }
+            formatted.append(trimmedLine);
+        }
+        return formatted.toString();
     }
 }
