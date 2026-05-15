@@ -1,19 +1,19 @@
 # JK Tool
 
-JK Tool is a Java-based utility library that provides rich functional modules, including geocoding services, coordinate conversion, general utilities, Qiniu Cloud object storage tools, encryption and decryption tools, system utilities, and API response wrappers. This project is suitable for Java applications that need to integrate various tool functions.
+JK Tool 是一个基于 Java 的工具库，提供了丰富的功能模块，包括地理编码服务、坐标转换、通用工具类、七牛云对象存储工具、加密解密工具、系统工具类和API响应封装等。该项目适用于需要集成各种工具功能的 Java 应用程序。
 
-## Quick Start
+## 快速开始
 
-### Requirements
+### 环境要求
 
-- **JDK 11 or higher**
+- **JDK 11 或更高版本**
 - **Maven 3.0+**
 
-### Adding Dependencies
+### 添加依赖
 
 #### Maven
 
-Add the following dependency to your project's `pom.xml`:
+在项目的 `pom.xml` 文件中添加以下依赖：
 
 ```xml
 <dependency>
@@ -29,320 +29,320 @@ Add the following dependency to your project's `pom.xml`:
 implementation 'io.github.jukejuke:jk-tool:0.0.5'
 ```
 
-#### Direct Download
+#### 直接下载
 
-Click the link below to download `jk-tool-X.X.X.jar`:
+点击以下链接，下载 `jk-tool-X.X.X.jar` 即可：
 
-- [Maven Central Repository](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.5/)
+- [Maven中央库](https://repo1.maven.org/maven2/io/github/jukejuke/jk-tool/0.0.5/)
 
-## Core Feature Modules
+## 核心功能模块
 
-### Geocoding Service
+### 地理编码服务
 
-#### Amap Service
+#### 高德地图服务
 
-##### Reverse Geocoding
+##### 反地理编码
 
-Convert latitude and longitude to structured address information:
+将经纬度转换为结构化地址信息：
 
 ```java
-// Initialize reverse geocoder
+// 初始化反地理编码器
 AmapRegeoCoder amapRegeoCoder = new AmapRegeoCoder.Builder("your_api_key").build();
 
-// Execute reverse geocoding
+// 执行反地理编码
 AmapResponse response = amapRegeoCoder.reverseGeocode(116.397428, 39.90923);
 
-// Parse response result
+// 解析响应结果
 if (response.isSuccess()) {
-    System.out.println("Address: " + response.getAddress());
-    System.out.println("Province: " + response.getProvince());
-    System.out.println("City: " + response.getCity());
-    System.out.println("District: " + response.getDistrict());
-    System.out.println("Street: " + response.getStreet());
-    System.out.println("Number: " + response.getNumber());
+    System.out.println("地址：" + response.getAddress());
+    System.out.println("省份：" + response.getProvince());
+    System.out.println("城市：" + response.getCity());
+    System.out.println("区县：" + response.getDistrict());
+    System.out.println("街道：" + response.getStreet());
+    System.out.println("门牌号：" + response.getNumber());
 }
 ```
 
-##### Geocoding
+##### 地理编码
 
-Convert address information to latitude and longitude:
+将地址信息转换为经纬度：
 
 ```java
-// Initialize geocoder
+// 初始化地理编码器
 AmapGeoCoder amapGeoCoder = new AmapGeoCoder.Builder("your_api_key").build();
 
-// Execute geocoding
-AmapGeoResponse response = amapGeoCoder.geoCode("Beijing");
+// 执行地理编码
+AmapGeoResponse response = amapGeoCoder.geoCode("北京市");
 
-// Parse response result
+// 解析响应结果
 if (response.isSuccess() && response.getGeocodes() != null && !response.getGeocodes().isEmpty()) {
     AmapGeoResponse.Geocode geocode = response.getGeocodes().get(0);
-    System.out.println("Longitude: " + geocode.getLocation().split(",")[0]);
-    System.out.println("Latitude: " + geocode.getLocation().split(",")[1]);
-    System.out.println("Formatted Address: " + geocode.getFormattedAddress());
+    System.out.println("经度：" + geocode.getLocation().split(",")[0]);
+    System.out.println("纬度：" + geocode.getLocation().split(",")[1]);
+    System.out.println("格式化地址：" + geocode.getFormattedAddress());
 }
 ```
 
-##### District Query
+##### 区域查询
 
-Query district information by keyword:
+根据关键字查询区域信息：
 
 ```java
-// Initialize district query
+// 初始化区域查询器
 AmapDistrictQuery districtQuery = new AmapDistrictQuery.Builder("your_api_key").build();
 
-// Execute district query
-DistrictResponse response = districtQuery.query("Beijing");
+// 执行区域查询
+DistrictResponse response = districtQuery.query("北京市");
 
-// Parse response result
+// 解析响应结果
 if (response.isSuccess() && response.getDistricts() != null && !response.getDistricts().isEmpty()) {
     for (DistrictResponse.District district : response.getDistricts()) {
-        System.out.println("District Name: " + district.getName());
-        System.out.println("District Code: " + district.getAdcode());
-        System.out.println("Center Point: " + district.getCenter());
+        System.out.println("区域名称：" + district.getName());
+        System.out.println("区域编码：" + district.getAdcode());
+        System.out.println("中心点：" + district.getCenter());
     }
 }
 ```
 
-##### Coordinate Conversion
+##### 坐标转换
 
-Coordinate conversion via API:
+通过API进行坐标转换：
 
 ```java
-// Initialize coordinate converter
+// 初始化坐标转换器
 AmapCoordinateConverter converter = new AmapCoordinateConverter.Builder("your_api_key").build();
 
-// Execute coordinate conversion (WGS84 to GCJ02)
+// 执行坐标转换 (WGS84转GCJ02)
 CoordinateConverterResponse response = converter.convert(116.397428, 39.90923, "wgs84", "gcj02");
 
-// Parse response result
+// 解析响应结果
 if (response.isSuccess()) {
-    System.out.println("Converted Longitude: " + response.getLocations().get(0).getLongitude());
-    System.out.println("Converted Latitude: " + response.getLocations().get(0).getLatitude());
+    System.out.println("转换后经度：" + response.getLocations().get(0).getLongitude());
+    System.out.println("转换后纬度：" + response.getLocations().get(0).getLatitude());
 }
 ```
 
-##### POI Search
+##### POI搜索
 
-Search for points of interest by keywords, categories, regions, and other conditions:
+根据关键字、分类、区域等条件搜索兴趣点信息：
 
 ```java
-// Initialize POI searcher
+// 初始化POI搜索器
 AmapPoiSearcher poiSearcher = new AmapPoiSearcher.Builder("your_api_key").build();
 
-// Build search parameters
+// 构建搜索参数
 AmapPoiSearcher.SearchParams params = new AmapPoiSearcher.SearchParams();
-params.setKeywords("restaurant");
-params.setCity("Beijing");
+params.setKeywords("餐饮");
+params.setCity("北京");
 params.setPageSize(20);
 params.setPageNum(1);
 
-// Execute POI search
+// 执行POI搜索
 AmapPoiResponse response = poiSearcher.search(params);
 
-// Parse response result
+// 解析响应结果
 if (response.isSuccess() && response.getPois() != null && !response.getPois().isEmpty()) {
     for (AmapPoiResponse.Poi poi : response.getPois()) {
-        System.out.println("Name: " + poi.getName());
-        System.out.println("Address: " + poi.getAddress());
-        System.out.println("Coordinates: " + poi.getLocation());
-        System.out.println("Phone: " + poi.getTel());
+        System.out.println("名称：" + poi.getName());
+        System.out.println("地址：" + poi.getAddress());
+        System.out.println("经纬度：" + poi.getLocation());
+        System.out.println("电话：" + poi.getTel());
     }
 }
 ```
 
-#### Tianditu Service
+#### 天地图服务
 
-##### Geocoding and Reverse Geocoding
+##### 地理编码与反地理编码
 
 ```java
-// Initialize Tianditu geocoder
+// 初始化天地图地理编码器
 TiandituGeocoder tiandituGeocoder = new TiandituGeocoder.Builder("your_api_key").build();
 
-// Execute reverse geocoding
+// 执行反地理编码
 TiandituResponse response = tiandituGeocoder.reverseGeocode(116.397428, 39.90923);
 
-// Parse response result
+// 解析响应结果
 if (response.isSuccess()) {
-    System.out.println("Address: " + response.getFormattedAddress());
-    System.out.println("Province: " + response.getProvince());
-    System.out.println("City: " + response.getCity());
-    System.out.println("District: " + response.getDistrict());
+    System.out.println("地址：" + response.getFormattedAddress());
+    System.out.println("省份：" + response.getProvince());
+    System.out.println("城市：" + response.getCity());
+    System.out.println("区县：" + response.getDistrict());
 }
 
-// Execute geocoding
-TiandituGeoResponse geoResponse = tiandituGeocoder.geoCode("Beijing");
+// 执行地理编码
+TiandituGeoResponse geoResponse = tiandituGeocoder.geoCode("北京市");
 
-// Parse response result
+// 解析响应结果
 if (geoResponse.isSuccess() && geoResponse.getLocations() != null && !geoResponse.getLocations().isEmpty()) {
     TiandituGeoResponse.Location location = geoResponse.getLocations().get(0);
-    System.out.println("Longitude: " + location.getLongitude());
-    System.out.println("Latitude: " + location.getLatitude());
+    System.out.println("经度：" + location.getLongitude());
+    System.out.println("纬度：" + location.getLatitude());
 }
 ```
 
-##### Administrative Region Query
+##### 行政区域查询
 
 ```java
-// Initialize administrative region query
+// 初始化行政区域查询器
 TiandituAdministrative administrative = new TiandituAdministrative.Builder("your_api_key").build();
 
-// Execute administrative region query
-TiandituAdministrativeResponse response = administrative.queryAdministrative("Beijing");
+// 执行行政区域查询
+TiandituAdministrativeResponse response = administrative.queryAdministrative("北京市");
 
-// Parse response result
+// 解析响应结果
 if (response.isSuccess() && response.getAdministratives() != null && !response.getAdministratives().isEmpty()) {
     for (TiandituAdministrativeResponse.Administrative admin : response.getAdministratives()) {
-        System.out.println("Name: " + admin.getName());
-        System.out.println("Level: " + admin.getLevel());
-        System.out.println("Code: " + admin.getCode());
+        System.out.println("名称：" + admin.getName());
+        System.out.println("级别：" + admin.getLevel());
+        System.out.println("编码：" + admin.getCode());
     }
 }
 ```
 
-### Coordinate Conversion Utility
+### 坐标转换工具
 
-Local coordinate conversion, supporting conversion between WGS-84, GCJ-02, and BD-09 coordinate systems:
+本地坐标转换，支持WGS-84、GCJ-02、BD-09坐标系之间的转换：
 
 ```java
-// Create coordinate point
-CoordinateConverter.Point wgs84Point = new CoordinateConverter.Point(116.397428, 39.90923); // Tiananmen, Beijing
+// 创建坐标点
+CoordinateConverter.Point wgs84Point = new CoordinateConverter.Point(116.397428, 39.90923); // 北京天安门
 
-// WGS-84 to GCJ-02
+// WGS-84转GCJ-02
 CoordinateConverter.Point gcj02Point = CoordinateConverter.wgs84ToGcj02(wgs84Point);
-System.out.println("GCJ-02 Coordinates: " + gcj02Point);
+System.out.println("GCJ-02坐标: " + gcj02Point);
 
-// GCJ-02 to BD-09
+// GCJ-02转BD-09
 CoordinateConverter.Point bd09Point = CoordinateConverter.gcj02ToBd09(gcj02Point);
-System.out.println("BD-09 Coordinates: " + bd09Point);
+System.out.println("BD-09坐标: " + bd09Point);
 
-// BD-09 to GCJ-02
+// BD-09转GCJ-02
 CoordinateConverter.Point backToGcj02 = CoordinateConverter.bd09ToGcj02(bd09Point);
-System.out.println("Back to GCJ-02: " + backToGcj02);
+System.out.println("转回GCJ-02: " + backToGcj02);
 
-// GCJ-02 to WGS-84
+// GCJ-02转WGS-84
 CoordinateConverter.Point backToWgs84 = CoordinateConverter.gcj02ToWgs84(backToGcj02);
-System.out.println("Back to WGS-84: " + backToWgs84);
+System.out.println("转回WGS-84: " + backToWgs84);
 ```
 
-### General Utilities
+### 通用工具类
 
-#### Excel Utility
+#### Excel工具
 
-##### Basic Export
+##### 基本导出
 
 ```java
-// Prepare data
+// 准备数据
 List<User> userList = new ArrayList<>();
-userList.add(new User(1, "Zhang San", 25, "zhangsan@example.com"));
-userList.add(new User(2, "Li Si", 30, "lisi@example.com"));
+userList.add(new User(1, "张三", 25, "zhangsan@example.com"));
+userList.add(new User(2, "李四", 30, "lisi@example.com"));
 
-// Define headers
+// 定义表头
 Map<String, String> headers = new HashMap<>();
 headers.put("id", "ID");
-headers.put("name", "Name");
-headers.put("age", "Age");
-headers.put("email", "Email");
+headers.put("name", "姓名");
+headers.put("age", "年龄");
+headers.put("email", "邮箱");
 
-// Export Excel
+// 导出Excel
 try (FileOutputStream fos = new FileOutputStream("users.xlsx")) {
-    ExcelUtils.export(userList, headers, "User List", fos);
-    System.out.println("Excel exported successfully");
+    ExcelUtils.export(userList, headers, "用户列表", fos);
+    System.out.println("Excel导出成功");
 } catch (Exception e) {
     e.printStackTrace();
 }
 ```
 
-##### Annotation Configuration Export
+##### 注解配置导出
 
-First, use the `@ExcelColumn` annotation on your entity class:
+首先，在实体类上使用 `@ExcelColumn` 注解：
 
 ```java
 public class User {
     @ExcelColumn(name = "ID", order = 1, width = 10)
     private Integer id;
     
-    @ExcelColumn(name = "Name", order = 2, width = 20)
+    @ExcelColumn(name = "姓名", order = 2, width = 20)
     private String name;
     
-    @ExcelColumn(name = "Age", order = 3, width = 10, alignment = ExcelAlignment.CENTER)
+    @ExcelColumn(name = "年龄", order = 3, width = 10, alignment = ExcelAlignment.CENTER)
     private Integer age;
     
-    @ExcelColumn(name = "Email", order = 4, width = 30)
+    @ExcelColumn(name = "邮箱", order = 4, width = 30)
     private String email;
     
-    // Constructor, getters and setters
+    // 构造方法、getter和setter
 }
 ```
 
-Then, export using annotations:
+然后，使用注解导出：
 
 ```java
-// Prepare data
+// 准备数据
 List<User> userList = new ArrayList<>();
-userList.add(new User(1, "Zhang San", 25, "zhangsan@example.com"));
-userList.add(new User(2, "Li Si", 30, "lisi@example.com"));
+userList.add(new User(1, "张三", 25, "zhangsan@example.com"));
+userList.add(new User(2, "李四", 30, "lisi@example.com"));
 
-// Export Excel
+// 导出Excel
 try (FileOutputStream fos = new FileOutputStream("users_annotation.xlsx")) {
-    ExcelUtils.exportWithAnnotation(userList, "User List", fos);
-    System.out.println("Excel exported successfully");
+    ExcelUtils.exportWithAnnotation(userList, "用户列表", fos);
+    System.out.println("Excel导出成功");
 } catch (Exception e) {
     e.printStackTrace();
 }
 ```
 
-##### Streaming Export
+##### 流式导出
 
-Suitable for processing large datasets to avoid memory overflow:
+适用于处理大型数据集，避免内存溢出：
 
 ```java
-// Prepare large dataset
+// 准备大数据集
 List<User> userList = new ArrayList<>();
 for (int i = 1; i <= 10000; i++) {
-    userList.add(new User(i, "User" + i, 20 + i % 30, "user" + i + "@example.com"));
+    userList.add(new User(i, "用户" + i, 20 + i % 30, "user" + i + "@example.com"));
 }
 
-// Streaming export Excel
+// 流式导出Excel
 try (FileOutputStream fos = new FileOutputStream("users_streaming.xlsx")) {
-    ExcelUtils.exportWithAnnotationStreaming(userList, "User List", fos);
-    System.out.println("Excel streaming export successful");
+    ExcelUtils.exportWithAnnotationStreaming(userList, "用户列表", fos);
+    System.out.println("Excel流式导出成功");
 } catch (Exception e) {
     e.printStackTrace();
 }
 ```
 
-##### Streaming Data Acquisition Export
+##### 流式数据获取导出
 
-Stream data acquisition and export via Supplier interface:
+通过Supplier接口流式获取数据并导出：
 
 ```java
-// Simulate data supplier
+// 模拟数据供应者
 AtomicInteger counter = new AtomicInteger(0);
 Supplier<User> dataSupplier = () -> {
     int id = counter.incrementAndGet();
     if (id > 10000) {
-        return null; // End of data
+        return null; // 数据结束
     }
-    return new User(id, "User" + id, 20 + id % 30, "user" + id + "@example.com");
+    return new User(id, "用户" + id, 20 + id % 30, "user" + id + "@example.com");
 };
 
-// Streaming data acquisition export
+// 流式数据获取导出
 try (FileOutputStream fos = new FileOutputStream("users_supplier.xlsx")) {
     ExcelUtils.exportWithStream(fos, dataSupplier);
-    System.out.println("Excel streaming data acquisition export successful");
+    System.out.println("Excel流式数据获取导出成功");
 } catch (Exception e) {
     e.printStackTrace();
 }
 ```
 
-##### Import Function
+##### 导入功能
 
 ```java
-// Import Excel
+// 导入Excel
 try (FileInputStream fis = new FileInputStream("users.xlsx")) {
     List<User> userList = ExcelUtils.importFromExcel(fis, User.class);
-    System.out.println("Excel imported successfully, total " + userList.size() + " records");
+    System.out.println("Excel导入成功，共导入" + userList.size() + "条数据");
     for (User user : userList) {
         System.out.println(user);
     }
@@ -351,352 +351,352 @@ try (FileInputStream fis = new FileInputStream("users.xlsx")) {
 }
 ```
 
-##### Streaming Import
+##### 流式导入
 
-Process Excel data via Consumer interface:
+通过Consumer接口流式处理Excel数据：
 
 ```java
-// Define data consumer
+// 定义数据消费者
 List<User> importedUsers = new ArrayList<>();
 Consumer<User> consumer = user -> {
     importedUsers.add(user);
-    System.out.println("Processing user: " + user);
+    System.out.println("处理用户：" + user);
 };
 
-// Streaming import Excel
+// 流式导入Excel
 try (FileInputStream fis = new FileInputStream("users.xlsx")) {
     ExcelUtils.importWithStream(fis, User.class, consumer);
-    System.out.println("Excel streaming import successful, total " + importedUsers.size() + " records processed");
+    System.out.println("Excel流式导入成功，共处理" + importedUsers.size() + "条数据");
 } catch (Exception e) {
     e.printStackTrace();
 }
 ```
 
-#### HTTP Utility
+#### HTTP工具
 
-##### GET Request
+##### GET请求
 
 ```java
-// Send GET request (no parameters)
+// 发送GET请求（无参数）
 String response = HttpUtil.get("https://api.example.com/users");
-System.out.println("Response content: " + response);
+System.out.println("响应内容：" + response);
 
-// Send GET request (with parameters)
+// 发送GET请求（带参数）
 Map<String, Object> params = new HashMap<>();
 params.put("page", 1);
 params.put("size", 10);
 String responseWithParams = HttpUtil.get("https://api.example.com/users", params);
-System.out.println("Response with parameters: " + responseWithParams);
+System.out.println("带参数响应内容：" + responseWithParams);
 
-// Send GET request (with parameters, custom charset)
+// 发送GET请求（带参数，自定义字符集）
 String responseWithCharset = HttpUtil.get("https://api.example.com/users", params, "GBK");
-System.out.println("Response with custom charset: " + responseWithCharset);
+System.out.println("自定义字符集响应内容：" + responseWithCharset);
 ```
 
-##### POST Request
+##### POST请求
 
 ```java
-// Send POST request (with parameters)
+// 发送POST请求（带参数）
 Map<String, Object> postParams = new HashMap<>();
-postParams.put("name", "Zhang San");
+postParams.put("name", "张三");
 postParams.put("age", 25);
 String postResponse = HttpUtil.post("https://api.example.com/users", postParams);
-System.out.println("POST response content: " + postResponse);
+System.out.println("POST响应内容：" + postResponse);
 ```
 
-##### POST JSON Request
+##### POST JSON请求
 
 ```java
-// Send POST JSON request
-String json = "{\"name\": \"Zhang San\", \"age\": 25}";
+// 发送POST JSON请求
+String json = "{\"name\": \"张三\", \"age\": 25}";
 String jsonResponse = HttpUtil.postJson("https://api.example.com/users", json);
-System.out.println("POST JSON response content: " + jsonResponse);
+System.out.println("POST JSON响应内容：" + jsonResponse);
 ```
 
-#### String Utility
+#### 字符串工具
 
 ```java
-// String null check
+// 字符串判空
 String str = "test";
 boolean isEmpty = StringUtils.isEmpty(str);
 boolean isBlank = StringUtils.isBlank(str);
 
-// String split
+// 字符串分割
 String[] parts = StringUtils.split("a,b,c", ",");
 
-// String join
+// 字符串连接
 String joined = StringUtils.join(Arrays.asList("a", "b", "c"), ",");
 
-// String replace
+// 字符串替换
 String replaced = StringUtils.replace("Hello World", "World", "Java");
 
-// String format
+// 字符串格式化
 String formatted = StringUtils.format("Hello, {}!", "World");
 ```
 
-#### Date and Time Utility
+#### 日期时间工具
 
 ```java
-// Get current time
+// 获取当前时间
 Date now = DateUtils.now();
 
-// Date formatting
+// 日期格式化
 String formattedDate = DateUtils.format(now, "yyyy-MM-dd HH:mm:ss");
 
-// String to date
+// 字符串转日期
 Date date = DateUtils.parse("2023-01-01 12:00:00", "yyyy-MM-dd HH:mm:ss");
 
-// Date calculation
+// 日期计算
 Date nextDay = DateUtils.addDays(now, 1);
 Date lastMonth = DateUtils.addMonths(now, -1);
 
-// Calculate time difference
+// 计算时间差
 long days = DateUtils.diffDays(now, nextDay);
 
-// Get internet standard time
+// 获取互联网标准时间
 Date internetTime = InternetTimeUtils.getInternetTime();
 ```
 
-#### File Utility
+#### 文件工具
 
 ```java
-// File operations
+// 文件操作
 File file = new File("test.txt");
 FileUtils.write(file, "Hello World");
 String content = FileUtils.read(file);
 
-// Directory operations
+// 目录操作
 File dir = new File("test");
 FileUtils.mkdirs(dir);
 List<File> files = FileUtils.listFiles(dir);
 
-// Download file
+// 下载文件
 String url = "https://example.com/file.zip";
 String savePath = "D:/downloads/file.zip";
 DownloadUtil.download(url, savePath);
 ```
 
-#### Annotation Utility
+#### 注解工具
 
-Provides annotation-related utilities for parsing and applying annotations:
+提供注解相关的工具类，用于处理注解的解析和应用：
 
 ```java
-// Scan all classes in specified package
+// 扫描指定包下的所有类
 Set<Class<?>> classes = AnnotationUtils.scanPackages("com.example");
-System.out.println("Number of classes scanned: " + classes.size());
+System.out.println("扫描到的类数量：" + classes.size());
 
-// Get specified annotation on class
+// 获取类上的指定注解
 MyAnnotation annotation = AnnotationUtils.getAnnotation(MyClass.class, MyAnnotation.class);
 if (annotation != null) {
-    System.out.println("Annotation value: " + annotation.value());
+    System.out.println("注解值：" + annotation.value());
 }
 
-// Get specified annotation on method
+// 获取方法上的指定注解
 Method method = MyClass.class.getMethod("method");
 MyAnnotation methodAnnotation = AnnotationUtils.getAnnotation(method, MyAnnotation.class);
 if (methodAnnotation != null) {
-    System.out.println("Method annotation value: " + methodAnnotation.value());
+    System.out.println("方法注解值：" + methodAnnotation.value());
 }
 ```
 
-#### Bean Conversion Utility
+#### Bean转换工具
 
-Provides conversion functionality between objects, supporting property mapping between different types of objects:
+提供对象之间的转换功能，支持不同类型对象之间的属性映射：
 
 ```java
-// Create source object
+// 创建源对象
 SourceBean source = new SourceBean();
 source.setId(1);
-source.setName("Zhang San");
+source.setName("张三");
 source.setAge(25);
 
-// Convert to target object
+// 转换为目标对象
 TargetBean target = BeanConverter.convert(source, TargetBean.class);
-System.out.println("Converted object: " + target);
+System.out.println("转换后的对象：" + target);
 
-// Conversion with mapping rules
+// 带映射规则的转换
 Map<String, String> mapping = new HashMap<>();
-mapping.put("name", "userName"); // Source property name -> Target property name
+mapping.put("name", "userName"); // 源属性名 -> 目标属性名
 TargetBean mappedTarget = BeanConverter.convert(source, TargetBean.class, mapping);
-System.out.println("Conversion result with mapping: " + mappedTarget);
+System.out.println("带映射规则的转换结果：" + mappedTarget);
 
-// Batch conversion
+// 批量转换
 List<SourceBean> sourceList = new ArrayList<>();
 sourceList.add(source);
 List<TargetBean> targetList = BeanConverter.convertList(sourceList, TargetBean.class);
-System.out.println("Number of batch conversion results: " + targetList.size());
+System.out.println("批量转换结果数量：" + targetList.size());
 ```
 
-#### Configuration File Processing
+#### 配置文件处理
 
-Provides configuration file reading and parsing functionality, supporting formats such as Properties, YAML, and JSON:
+提供配置文件的读取和解析功能，支持Properties、YAML和JSON等格式：
 
 ```java
-// Read Properties configuration file
+// 读取Properties配置文件
 Properties props = ConfigUtils.readProperties("config.properties");
 String value = props.getProperty("key");
-System.out.println("Properties configuration value: " + value);
+System.out.println("Properties配置值：" + value);
 
-// Read YAML configuration file
+// 读取YAML配置文件
 Map<String, Object> yamlConfig = ConfigUtils.readYaml("config.yaml");
 String yamlValue = (String) yamlConfig.get("key");
-System.out.println("YAML configuration value: " + yamlValue);
+System.out.println("YAML配置值：" + yamlValue);
 
-// Read JSON configuration file
+// 读取JSON配置文件
 Map<String, Object> jsonConfig = ConfigUtils.readJson("config.json");
 String jsonValue = (String) jsonConfig.get("key");
-System.out.println("JSON configuration value: " + jsonValue);
+System.out.println("JSON配置值：" + jsonValue);
 
-// Map configuration to object
+// 将配置映射到对象
 AppConfig appConfig = ConfigUtils.mapToObject(yamlConfig, AppConfig.class);
-System.out.println("Configuration object: " + appConfig);
+System.out.println("配置对象：" + appConfig);
 ```
 
-#### Freemarker Template
+#### Freemarker模板
 
-Provides Freemarker template rendering functionality for generating dynamic content:
+提供Freemarker模板的渲染功能，用于生成动态内容：
 
 ```java
-// Get default configuration
+// 获取默认配置
 Configuration defaultConfig = FreemarkerUtils.getDefaultConfiguration();
-System.out.println("Default encoding: " + defaultConfig.getDefaultEncoding());
+System.out.println("默认编码：" + defaultConfig.getDefaultEncoding());
 
-// Create custom configuration
+// 创建自定义配置
 Properties properties = new Properties();
 properties.setProperty("template_update_delay", "1000");
 properties.setProperty("default_encoding", "UTF-8");
 Configuration customConfig = FreemarkerUtils.createConfiguration(properties);
 
-// Create template data
+// 创建模板数据
 Map<String, Object> data = new HashMap<>();
-data.put("name", "Zhang San");
+data.put("name", "张三");
 data.put("age", 30);
-data.put("city", "Beijing");
+data.put("city", "北京");
 
-// Render string template
-String templateContent = "Hello, ${name}! You are ${age} years old and from ${city}.";
+// 渲染字符串模板
+String templateContent = "您好，${name}！您今年${age}岁，来自${city}。";
 String result = FreemarkerUtils.renderTemplate(templateContent, data);
-System.out.println("String template rendering result: " + result);
+System.out.println("字符串模板渲染结果：" + result);
 
-// Render string template with custom configuration
+// 使用自定义配置渲染字符串模板
 String customResult = FreemarkerUtils.renderTemplate(templateContent, data, customConfig);
-System.out.println("Custom configuration rendering result: " + customResult);
+System.out.println("使用自定义配置渲染结果：" + customResult);
 
-// Render file template
+// 渲染文件模板
 String templatePath = "path/to/template.ftl";
 String fileResult = FreemarkerUtils.renderFileTemplate(templatePath, data);
-System.out.println("File template rendering result: " + fileResult);
+System.out.println("文件模板渲染结果：" + fileResult);
 
-// Render file template with custom configuration
+// 使用自定义配置渲染文件模板
 String customFileResult = FreemarkerUtils.renderFileTemplate(templatePath, data, customConfig);
-System.out.println("Custom configuration file template rendering result: " + customFileResult);
+System.out.println("使用自定义配置渲染文件模板结果：" + customFileResult);
 
-// Render string template to file
+// 渲染字符串模板到文件
 String outputPath = "path/to/output.txt";
 FreemarkerUtils.renderTemplateToFile(templateContent, data, outputPath);
-System.out.println("String template rendered to file successfully");
+System.out.println("字符串模板渲染到文件成功");
 
-// Render file template to file
+// 渲染文件模板到文件
 FreemarkerUtils.renderFileTemplateToFile(templatePath, data, outputPath);
-System.out.println("File template rendered to file successfully");
+System.out.println("文件模板渲染到文件成功");
 
-// Render file template to output stream
+// 渲染文件模板到输出流
 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 FreemarkerUtils.renderFileTemplateToStream(templatePath, data, outputStream);
 String streamResult = outputStream.toString(FreemarkerUtils.DEFAULT_ENCODING);
-System.out.println("File template rendered to output stream result: " + streamResult);
+System.out.println("文件模板渲染到输出流结果：" + streamResult);
 ```
 
-#### ID Generation
+#### ID生成
 
-Provides various ID generation strategies, including UUID, Snowflake algorithm, timestamp, etc.:
+提供多种ID生成策略，包括UUID、雪花算法、时间戳等：
 
 ```java
-// Generate UUID
+// 生成UUID
 String uuid = IdGenerator.uuid();
-System.out.println("UUID: " + uuid);
+System.out.println("UUID：" + uuid);
 
-// Generate simplified UUID (without hyphens)
+// 生成简化版UUID（无连字符）
 String simpleUuid = IdGenerator.simpleUuid();
-System.out.println("Simplified UUID: " + simpleUuid);
+System.out.println("简化版UUID：" + simpleUuid);
 
-// Generate ID using Snowflake algorithm
+// 使用雪花算法生成ID
 long snowflakeId = IdGenerator.snowflake();
-System.out.println("Snowflake ID: " + snowflakeId);
+System.out.println("雪花算法ID：" + snowflakeId);
 
-// Generate timestamp-based ID
+// 生成基于时间戳的ID
 String timestampId = IdGenerator.timestamp();
-System.out.println("Timestamp ID: " + timestampId);
+System.out.println("时间戳ID：" + timestampId);
 
-// Generate prefixed ID
+// 生成带前缀的ID
 String prefixedId = IdGenerator.prefixed("USER");
-System.out.println("Prefixed ID: " + prefixedId);
+System.out.println("带前缀的ID：" + prefixedId);
 ```
 
-#### JWT Token
+#### JWT令牌
 
-Provides JWT (JSON Web Token) generation and parsing functionality:
+提供JWT（JSON Web Token）的生成和解析功能：
 
 ```java
-// Generate JWT token
+// 生成JWT令牌
 String secretKey = "your_secret_key";
 Map<String, Object> claims = new HashMap<>();
 claims.put("userId", 123);
-claims.put("username", "Zhang San");
+claims.put("username", "张三");
 claims.put("roles", Arrays.asList("admin", "user"));
 
-String token = JwtUtils.generateToken(claims, secretKey, 3600); // 1 hour validity
-System.out.println("Generated JWT token: " + token);
+String token = JwtUtils.generateToken(claims, secretKey, 3600); // 1小时有效期
+System.out.println("生成的JWT令牌：" + token);
 
-// Parse JWT token
+// 解析JWT令牌
 Map<String, Object> parsedClaims = JwtUtils.parseToken(token, secretKey);
-System.out.println("Parsed user ID: " + parsedClaims.get("userId"));
-System.out.println("Parsed username: " + parsedClaims.get("username"));
+System.out.println("解析的用户ID：" + parsedClaims.get("userId"));
+System.out.println("解析的用户名：" + parsedClaims.get("username"));
 
-// Validate JWT token
+// 验证JWT令牌
 boolean valid = JwtUtils.validateToken(token, secretKey);
-System.out.println("Is token valid: " + valid);
+System.out.println("令牌是否有效：" + valid);
 
-// Get token expiration time
+// 获取令牌过期时间
 Date expiration = JwtUtils.getExpiration(token, secretKey);
-System.out.println("Token expiration time: " + expiration);
+System.out.println("令牌过期时间：" + expiration);
 ```
 
-#### Logging Utility
+#### 日志工具
 
-Provides logging-related utilities to simplify logging usage:
+提供日志相关的工具类，简化日志的使用：
 
 ```java
-// Get logger
+// 获取日志记录器
 Logger logger = LogUtils.getLogger(MyClass.class);
 
-// Log different levels
-logger.debug("Debug information");
-logger.info("Information log");
-logger.warn("Warning log");
-logger.error("Error log");
+// 记录不同级别的日志
+logger.debug("调试信息");
+logger.info("信息日志");
+logger.warn("警告日志");
+logger.error("错误日志");
 
-// Log with parameters
-logger.info("User {} logged in successfully, IP address: {}", "Zhang San", "192.168.1.1");
+// 带参数的日志
+logger.info("用户{}登录成功，IP地址：{}", "张三", "192.168.1.1");
 
-// Log exception
+// 记录异常
 try {
-    // Business logic
+    // 业务逻辑
 } catch (Exception e) {
-    logger.error("Operation failed", e);
+    logger.error("操作失败", e);
 }
 
-// Use @Slf4j annotation (recommended)
-// After adding @Slf4j annotation to the class, you can directly use the log variable
-// log.info("Logging with @Slf4j annotation");
+// 使用@Slf4j注解（推荐）
+// 在类上添加@Slf4j注解后，可直接使用log变量
+// log.info("使用@Slf4j注解记录日志");
 ```
 
-#### Email Utility
+#### 邮件工具
 
-Provides email sending functionality, supporting simple emails, HTML emails, and emails with attachments:
+提供邮件发送功能，支持简单邮件、HTML邮件和带附件的邮件：
 
 ```java
-// Initialize email configuration
+// 初始化邮件配置
 MailConfig config = new MailConfig();
 config.setHost("smtp.example.com");
 config.setPort(587);
@@ -704,446 +704,445 @@ config.setUsername("your_email@example.com");
 config.setPassword("your_password");
 config.setFrom("your_email@example.com");
 
-// Create email sender
+// 创建邮件发送器
 MailSender sender = new MailSender(config);
 
-// Send simple email
+// 发送简单邮件
 MailMessage message = new MailMessage();
 message.setTo(Arrays.asList("recipient@example.com"));
-message.setSubject("Test Email");
-message.setText("This is a test email");
+message.setSubject("测试邮件");
+message.setText("这是一封测试邮件");
 sender.send(message);
-System.out.println("Simple email sent successfully");
+System.out.println("简单邮件发送成功");
 
-// Send HTML email
+// 发送HTML邮件
 MailMessage htmlMessage = new MailMessage();
 htmlMessage.setTo(Arrays.asList("recipient@example.com"));
-htmlMessage.setSubject("HTML Test Email");
-htmlMessage.setHtml("<h1>Test Email</h1><p>This is an HTML format test email</p>");
+htmlMessage.setSubject("HTML测试邮件");
+htmlMessage.setHtml("<h1>测试邮件</h1><p>这是一封HTML格式的测试邮件</p>");
 sender.send(htmlMessage);
-System.out.println("HTML email sent successfully");
+System.out.println("HTML邮件发送成功");
 
-// Send email with attachment
+// 发送带附件的邮件
 MailMessage attachmentMessage = new MailMessage();
 attachmentMessage.setTo(Arrays.asList("recipient@example.com"));
-attachmentMessage.setSubject("Test Email with Attachment");
-attachmentMessage.setText("This is a test email with an attachment");
+attachmentMessage.setSubject("带附件的测试邮件");
+attachmentMessage.setText("这是一封带附件的测试邮件");
 attachmentMessage.addAttachment("test.txt", new File("test.txt"));
 sender.send(attachmentMessage);
-System.out.println("Email with attachment sent successfully");
+System.out.println("带附件的邮件发送成功");
 ```
 
-#### URL Processing
+#### URL处理
 
-Provides URL-related utilities for URL parsing, construction, and processing:
+提供URL相关的工具类，用于URL的解析、构建和处理：
 
 ```java
-// URL encode
-String original = "https://example.com/path?name=Zhang San&age=25";
+// URL编码
+String original = "https://example.com/path?name=张三&age=25";
 String encoded = UrlUtils.encode(original);
-System.out.println("Encoded URL: " + encoded);
+System.out.println("编码后的URL：" + encoded);
 
-// URL decode
+// URL解码
 String decoded = UrlUtils.decode(encoded);
-System.out.println("Decoded URL: " + decoded);
+System.out.println("解码后的URL：" + decoded);
 
-// Build URL
+// 构建URL
 UrlBuilder builder = new UrlBuilder("https://example.com");
 builder.addPath("api")
        .addPath("users")
        .addParam("page", "1")
        .addParam("size", "10");
 String builtUrl = builder.build();
-System.out.println("Built URL: " + builtUrl);
+System.out.println("构建的URL：" + builtUrl);
 
-// Parse URL
+// 解析URL
 UrlParser parser = new UrlParser("https://example.com/api/users?page=1&size=10");
-System.out.println("Scheme: " + parser.getScheme());
-System.out.println("Host: " + parser.getHost());
-System.out.println("Path: " + parser.getPath());
-System.out.println("Page parameter: " + parser.getParam("page"));
+System.out.println("协议：" + parser.getScheme());
+System.out.println("主机：" + parser.getHost());
+System.out.println("路径：" + parser.getPath());
+System.out.println("页面参数：" + parser.getParam("page"));
 
-// Get file extension from URL
+// 获取URL中的文件扩展名
 String extension = UrlUtils.getFileExtension("https://example.com/image.jpg");
-System.out.println("File extension: " + extension);
+System.out.println("文件扩展名：" + extension);
 ```
 
-### Qiniu Cloud Object Storage Utility
+### 七牛云对象存储工具
 
-#### Initialize Configuration
+#### 初始化配置
 
 ```java
-// Initialize Qiniu Cloud configuration
+// 初始化七牛云配置
 QiniuConfig config = new QiniuConfig();
 config.setAccessKey("your_access_key");
 config.setSecretKey("your_secret_key");
 config.setBucket("your_bucket");
 config.setDomain("your_domain");
-config.setZone(QiniuConfig.Zone.HUADONG); // Set storage zone
+config.setZone(QiniuConfig.Zone.HUADONG); // 设置存储区域
 
-// Initialize Qiniu Cloud utility
+// 初始化七牛云工具
 QiniuUtils qiniuUtils = new QiniuUtils(config);
 ```
 
-#### File Upload
+#### 文件上传
 
 ```java
-// Upload from local file
+// 从本地文件上传
 String localFilePath = "D:/upload/test.jpg";
 String key = "test.jpg";
 String url = qiniuUtils.upload(localFilePath, key);
-System.out.println("Upload successful, access URL: " + url);
+System.out.println("上传成功，访问地址：" + url);
 
-// Upload from byte array
+// 从字节数组上传
 byte[] data = "Hello Qiniu".getBytes();
 String byteKey = "hello.txt";
 String byteUrl = qiniuUtils.upload(data, byteKey);
-System.out.println("Byte array upload successful, access URL: " + byteUrl);
+System.out.println("字节数组上传成功，访问地址：" + byteUrl);
 
-// Upload from input stream
+// 从输入流上传
 try (InputStream inputStream = new FileInputStream("D:/upload/test.jpg")) {
     String streamKey = "stream.jpg";
     String streamUrl = qiniuUtils.upload(inputStream, streamKey);
-    System.out.println("Input stream upload successful, access URL: " + streamUrl);
+    System.out.println("输入流上传成功，访问地址：" + streamUrl);
 } catch (Exception e) {
     e.printStackTrace();
 }
 ```
 
-#### File Download
+#### 文件下载
 
 ```java
-// Download file
+// 下载文件
 String key = "test.jpg";
 String savePath = "D:/downloads/test.jpg";
 qiniuUtils.download(key, savePath);
-System.out.println("File download successful");
+System.out.println("文件下载成功");
 ```
 
-#### File Delete
+#### 文件删除
 
 ```java
-// Delete file
+// 删除文件
 String key = "test.jpg";
 boolean success = qiniuUtils.delete(key);
-System.out.println("File deletion " + (success ? "successful" : "failed"));
+System.out.println("文件删除" + (success ? "成功" : "失败"));
 ```
 
-#### File Rename
+#### 文件重命名
 
 ```java
-// Rename file
+// 文件重命名
 String oldKey = "test.jpg";
 String newKey = "new_test.jpg";
 boolean success = qiniuUtils.rename(oldKey, newKey);
-System.out.println("File rename " + (success ? "successful" : "failed"));
+System.out.println("文件重命名" + (success ? "成功" : "失败"));
 ```
 
-### Encryption and Decryption Utilities
+### 加密解密工具
 
-#### AES Encryption and Decryption
+#### AES加解密
 
 ```java
-// Generate key
+// 生成密钥
 String key = AESUtil.generateKey();
-System.out.println("Generated key: " + key);
+System.out.println("生成的密钥：" + key);
 
-// Encrypt
+// 加密
 String plaintext = "Hello AES";
 String ciphertext = AESUtil.encrypt(plaintext, key);
-System.out.println("Encrypted: " + ciphertext);
+System.out.println("加密后：" + ciphertext);
 
-// Decrypt
+// 解密
 String decrypted = AESUtil.decrypt(ciphertext, key);
-System.out.println("Decrypted: " + decrypted);
+System.out.println("解密后：" + decrypted);
 ```
 
-#### RSA Encryption and Decryption
+#### RSA加解密
 
 ```java
-// Generate key pair
+// 生成密钥对
 RSAUtil.KeyPair keyPair = RSAUtil.generateKeyPair();
-System.out.println("Public key: " + keyPair.getPublicKey());
-System.out.println("Private key: " + keyPair.getPrivateKey());
+System.out.println("公钥：" + keyPair.getPublicKey());
+System.out.println("私钥：" + keyPair.getPrivateKey());
 
-// Encrypt
+// 加密
 String plaintext = "Hello RSA";
 String ciphertext = RSAUtil.encrypt(plaintext, keyPair.getPublicKey());
-System.out.println("Encrypted: " + ciphertext);
+System.out.println("加密后：" + ciphertext);
 
-// Decrypt
+// 解密
 String decrypted = RSAUtil.decrypt(ciphertext, keyPair.getPrivateKey());
-System.out.println("Decrypted: " + decrypted);
+System.out.println("解密后：" + decrypted);
 
-// Sign
+// 签名
 String signature = RSAUtil.sign(plaintext, keyPair.getPrivateKey());
-System.out.println("Signature: " + signature);
+System.out.println("签名：" + signature);
 
-// Verify signature
+// 验签
 boolean verified = RSAUtil.verify(plaintext, signature, keyPair.getPublicKey());
-System.out.println("Signature verification " + (verified ? "successful" : "failed"));
+System.out.println("验签" + (verified ? "成功" : "失败"));
 ```
 
-#### Digest Algorithm
+#### 摘要算法
 
 ```java
 // MD5
 String md5 = DigestUtil.md5("Hello MD5");
-System.out.println("MD5: " + md5);
+System.out.println("MD5：" + md5);
 
 // SHA-1
 String sha1 = DigestUtil.sha1("Hello SHA1");
-System.out.println("SHA-1: " + sha1);
+System.out.println("SHA-1：" + sha1);
 
 // SHA-256
 String sha256 = DigestUtil.sha256("Hello SHA256");
-System.out.println("SHA-256: " + sha256);
+System.out.println("SHA-256：" + sha256);
 
 // SHA-512
 String sha512 = DigestUtil.sha512("Hello SHA512");
-System.out.println("SHA-512: " + sha512);
+System.out.println("SHA-512：" + sha512);
 ```
 
-### System Utilities
+### 系统工具类
 
-#### Hosts File Management
+#### Hosts文件管理
 
 ```java
-// Read Hosts file
+// 读取Hosts文件
 List<String> hosts = HostsFileManager.readHosts();
-System.out.println("Hosts file content:");
+System.out.println("Hosts文件内容：");
 for (String line : hosts) {
     System.out.println(line);
 }
 
-// Add Hosts entry
+// 添加Hosts条目
 boolean added = HostsFileManager.addHost("127.0.0.1", "localhost");
-System.out.println("Hosts entry addition " + (added ? "successful" : "failed"));
+System.out.println("添加Hosts条目" + (added ? "成功" : "失败"));
 
-// Delete Hosts entry
+// 删除Hosts条目
 boolean removed = HostsFileManager.removeHost("127.0.0.1", "localhost");
-System.out.println("Hosts entry deletion " + (removed ? "successful" : "failed"));
+System.out.println("删除Hosts条目" + (removed ? "成功" : "失败"));
 
-// Backup Hosts file
+// 备份Hosts文件
 HostsFileManager.backupHosts();
-System.out.println("Hosts file backup successful");
+System.out.println("Hosts文件备份成功");
 ```
 
-#### DNS Resolution Utility
+#### DNS解析工具
 
 ```java
-// DNS resolution
+// DNS解析
 List<String> ips = DnsResolver.resolve("www.example.com");
-System.out.println("DNS resolution results:");
+System.out.println("DNS解析结果：");
 for (String ip : ips) {
     System.out.println(ip);
 }
 
-// DNS over HTTPS query
+// DNS over HTTPS查询
 List<String> dohIps = DoHQuery.query("www.example.com");
-System.out.println("DoH query results:");
+System.out.println("DoH查询结果：");
 for (String ip : dohIps) {
     System.out.println(ip);
 }
 ```
 
-
-#### Process Management
+#### 进程管理
 
 ```java
-// Get process manager
+// 获取进程管理器
 ProcessManager processManager = ProcessManagerFactory.getProcessManager();
 
-// Start process
+// 启动进程
 Process process = processManager.startProcess("notepad.exe");
-System.out.println("Process started successfully, PID: " + processManager.getProcessId(process));
+System.out.println("进程启动成功，PID：" + processManager.getProcessId(process));
 
-// Check if process is running
+// 检查进程是否运行
 boolean isRunning = processManager.isProcessRunning(process);
-System.out.println("Is process running: " + isRunning);
+System.out.println("进程是否运行：" + isRunning);
 
-// Terminate process
+// 终止进程
 processManager.stopProcess(process);
-System.out.println("Process terminated successfully");
+System.out.println("进程终止成功");
 ```
 
-### License Management
+### 许可证管理
 
-#### Hardware Information Acquisition
+#### 硬件信息获取
 
 ```java
-// Get hardware information
+// 获取硬件信息
 String hardwareId = HardwareUtils.getHardwareId();
-System.out.println("Hardware ID: " + hardwareId);
+System.out.println("硬件标识：" + hardwareId);
 
-// Get CPU ID
+// 获取CPU ID
 String cpuId = HardwareUtils.getCpuId();
-System.out.println("CPU ID: " + cpuId);
+System.out.println("CPU ID：" + cpuId);
 
-// Get disk ID
+// 获取硬盘ID
 String diskId = HardwareUtils.getDiskId();
-System.out.println("Disk ID: " + diskId);
+System.out.println("硬盘ID：" + diskId);
 
-// Get MAC address
+// 获取MAC地址
 String macAddress = HardwareUtils.getMacAddress();
-System.out.println("MAC address: " + macAddress);
+System.out.println("MAC地址：" + macAddress);
 ```
 
-#### License Generation and Verification
+#### 许可证生成与验证
 
 ```java
-// Generate license
+// 生成许可证
 String hardwareId = HardwareUtils.getHardwareId();
-String license = LicenseUtils.generateLicense(hardwareId, 365); // 365 days validity
-System.out.println("Generated license: " + license);
+String license = LicenseUtils.generateLicense(hardwareId, 365); // 365天有效期
+System.out.println("生成的许可证：" + license);
 
-// Verify license
+// 验证许可证
 LicenseInfo licenseInfo = LicenseUtils.verifyLicense(license, hardwareId);
 if (licenseInfo.isValid()) {
-    System.out.println("License is valid");
-    System.out.println("Valid until: " + licenseInfo.getExpiryDate());
+    System.out.println("许可证有效");
+    System.out.println("有效期至：" + licenseInfo.getExpiryDate());
 } else {
-    System.out.println("License is invalid: " + licenseInfo.getErrorMessage());
+    System.out.println("许可证无效：" + licenseInfo.getErrorMessage());
 }
 ```
 
-### API Response Wrapper
+### API响应封装
 
-#### Unified Response Result
+#### 统一响应结果
 
 ```java
-// Success response
-ApiResponse<String> successResponse = ApiResponse.success("Operation successful");
-System.out.println("Success response: " + successResponse);
+// 成功响应
+ApiResponse<String> successResponse = ApiResponse.success("操作成功");
+System.out.println("成功响应：" + successResponse);
 
-// Failure response
-ApiResponse<String> failResponse = ApiResponse.fail(ApiCode.INTERNAL_SERVER_ERROR, "Operation failed");
-System.out.println("Failure response: " + failResponse);
+// 失败响应
+ApiResponse<String> failResponse = ApiResponse.fail(ApiCode.INTERNAL_SERVER_ERROR, "操作失败");
+System.out.println("失败响应：" + failResponse);
 
-// Response with data
-User user = new User(1, "Zhang San", 25, "zhangsan@example.com");
+// 带数据的响应
+User user = new User(1, "张三", 25, "zhangsan@example.com");
 ApiResponse<User> dataResponse = ApiResponse.success(user);
-System.out.println("Response with data: " + dataResponse);
+System.out.println("带数据的响应：" + dataResponse);
 ```
 
-#### Pagination Response
+#### 分页响应
 
 ```java
-// Pagination response
+// 分页响应
 List<User> userList = new ArrayList<>();
-userList.add(new User(1, "Zhang San", 25, "zhangsan@example.com"));
-userList.add(new User(2, "Li Si", 30, "lisi@example.com"));
+userList.add(new User(1, "张三", 25, "zhangsan@example.com"));
+userList.add(new User(2, "李四", 30, "lisi@example.com"));
 
 PageResponse<User> pageResponse = PageResponse.success(userList, 1, 10, 2);
-System.out.println("Pagination response: " + pageResponse);
-System.out.println("Total records: " + pageResponse.getTotal());
-System.out.println("Records per page: " + pageResponse.getSize());
-System.out.println("Current page: " + pageResponse.getCurrent());
-System.out.println("Total pages: " + pageResponse.getPages());
-System.out.println("Data list: " + pageResponse.getRecords());
+System.out.println("分页响应：" + pageResponse);
+System.out.println("总记录数：" + pageResponse.getTotal());
+System.out.println("每页记录数：" + pageResponse.getSize());
+System.out.println("当前页码：" + pageResponse.getCurrent());
+System.out.println("总页数：" + pageResponse.getPages());
+System.out.println("数据列表：" + pageResponse.getRecords());
 ```
 
-## Project Structure
+## 项目结构
 
-### Core Modules
+### 核心模块
 
-- **Geocoding Service**: `src/main/java/io/github/jukejuke/map/`
-  - Amap: `amap/` directory
-  - Tianditu: `tianditu/` directory
-  - Coordinate conversion utility: `util/` directory
+- **地理编码服务**：`src/main/java/io/github/jukejuke/map/`
+  - 高德地图：`amap/` 目录
+  - 天地图：`tianditu/` 目录
+  - 坐标转换工具：`util/` 目录
 
-- **General Utilities**: `src/main/java/io/github/jukejuke/tool/`
-  - Annotation utility: `annotation/` directory
-  - Bean conversion utility: `bean/` directory
-  - Configuration file processing: `config/` directory
-  - Encryption and decryption utility: `crypto/` directory
-  - Date and time processing: `date/` directory
-  - DNS resolution utility: `dns/` directory
-  - Excel utility: `excel/` directory
-  - Process management: `exec/` directory
-  - File operations: `file/` directory
-  - Freemarker template: `freemarker/` directory
-  - HTTP request: `http/` directory
-  - ID generation: `id/` directory
-  - JWT token: `jwt/` directory
-  - License management: `license/` directory
-  - Logging utility: `log/` directory
-  - Email utility: `mail/` directory
-  - Response wrapper: `response/` directory
-  - String processing: `string/` directory
-  - URL processing: `url/` directory
-  - Image processing: `image/` directory
-  - Math calculation: `math/` directory
-  - ZIP compression: `zip/` directory
+- **通用工具类**：`src/main/java/io/github/jukejuke/tool/`
+  - 注解工具：`annotation/` 目录
+  - Bean转换工具：`bean/` 目录
+  - 配置文件处理：`config/` 目录
+  - 加密解密工具：`crypto/` 目录
+  - 日期时间处理：`date/` 目录
+  - DNS解析工具：`dns/` 目录
+  - Excel工具：`excel/` 目录
+  - 进程管理：`exec/` 目录
+  - 文件操作：`file/` 目录
+  - Freemarker模板：`freemarker/` 目录
+  - HTTP请求：`http/` 目录
+  - ID生成：`id/` 目录
+  - JWT令牌：`jwt/` 目录
+  - 许可证管理：`license/` 目录
+  - 日志工具：`log/` 目录
+  - 邮件工具：`mail/` 目录
+  - 响应封装：`response/` 目录
+  - 字符串处理：`string/` 目录
+  - URL处理：`url/` 目录
+  - 图片处理：`image/` 目录
+  - 数学计算：`math/` 目录
+  - ZIP压缩：`zip/` 目录
 
-- **Qiniu Cloud Object Storage**: `src/main/java/io/github/jukejuke/qiniu/`
+- **七牛云对象存储**：`src/main/java/io/github/jukejuke/qiniu/`
 
-- **API Response Wrapper**: `src/main/java/io/github/jukejuke/api/`
+- **API响应封装**：`src/main/java/io/github/jukejuke/api/`
 
-### Test Module
+### 测试模块
 
-- **Test Code**: `src/test/java/io/github/jukejuke/`
-  - Contains test cases and example code for each module
+- **测试代码**：`src/test/java/io/github/jukejuke/`
+  - 包含各个模块的测试用例和示例代码
 
-## FAQ and Solutions
+## 常见问题与解决方案
 
-### Geocoding Service
+### 地理编码服务
 
-**Problem**: Error message returned when calling geocoding service
+**问题**：调用地理编码服务时返回错误信息
 
-**Solution**:
-1. Check if API key is correct
-2. Check if network connection is normal
-3. Check if request parameters meet API requirements
-4. Refer to API documentation to understand error code meanings
+**解决方案**：
+1. 检查API密钥是否正确
+2. 检查网络连接是否正常
+3. 检查请求参数是否符合API要求
+4. 查看API文档，了解错误码含义
 
-### Excel Utility
+### Excel工具
 
-**Problem**: Memory overflow when exporting large amounts of data
+**问题**：导出大量数据时内存溢出
 
-**Solution**: Use streaming export methods `exportWithAnnotationStreaming` or `exportWithStream`. These methods use SXSSFWorkbook, which writes data to temporary files to avoid memory overflow.
+**解决方案**：使用流式导出方法 `exportWithAnnotationStreaming` 或 `exportWithStream`，这些方法使用SXSSFWorkbook，会将数据写入临时文件，避免内存溢出。
 
-### HTTP Utility
+### HTTP工具
 
-**Problem**: HTTP request timeout
+**问题**：HTTP请求超时
 
-**Solution**:
-1. Check if network connection is normal
-2. Check if target server is accessible
-3. Consider increasing timeout (currently default 15 seconds)
+**解决方案**：
+1. 检查网络连接是否正常
+2. 检查目标服务器是否可访问
+3. 考虑增加超时时间（目前默认15秒）
 
-### Qiniu Cloud Utility
+### 七牛云工具
 
-**Problem**: File upload failed
+**问题**：文件上传失败
 
-**Solution**:
-1. Check if Qiniu Cloud configuration is correct (Access Key, Secret Key, Bucket, etc.)
-2. Check if network connection is normal
-3. Check if file exists and is readable
-4. Refer to Qiniu Cloud documentation to understand error code meanings
+**解决方案**：
+1. 检查七牛云配置是否正确（Access Key、Secret Key、Bucket等）
+2. 检查网络连接是否正常
+3. 检查文件是否存在且可读取
+4. 查看七牛云文档，了解错误码含义
 
-## Summary
+## 总结
 
-JK Tool is a feature-rich Java utility library that provides geocoding services, coordinate conversion, general utilities, Qiniu Cloud object storage tools, encryption and decryption tools, system utilities, and API response wrappers. This project is designed to be simple and easy to use, suitable for various Java application scenarios.
+JK Tool 是一个功能丰富的 Java 工具库，提供了地理编码服务、坐标转换、通用工具类、七牛云对象存储工具、加密解密工具、系统工具类和API响应封装等功能。该项目设计简洁，使用方便，适用于各种 Java 应用场景。
 
-Through this documentation, you should have an understanding of JK Tool's main features and usage methods. If you encounter any problems during use, please refer to the FAQ and Solutions section, or check the project's test code and example code.
+通过本使用文档，您应该已经了解了 JK Tool 的主要功能和使用方法。如果您在使用过程中遇到任何问题，请参考常见问题与解决方案部分，或查看项目的测试代码和示例代码。
 
-Hope JK Tool can help with your Java project development!
+希望 JK Tool 能够为您的 Java 项目开发提供帮助！
 
-## License
+## 许可证
 
-This project follows the Apache 2.0 License. For details, please refer to the [LICENSE](LICENSE) file.
+本项目遵循 Apache 2.0 许可证。有关详细信息，请参阅 [LICENSE](LICENSE) 文件。
 
-## Contribution
+## 贡献
 
-Welcome to contribute code to this project. Please follow these steps:
+欢迎为本项目贡献代码。请遵循以下步骤：
 
-1. Fork this project
-2. Create a new branch
-3. Submit a Pull Request
+1. Fork 本项目
+2. 创建新分支
+3. 提交 Pull Request
 
-## Contact
+## 联系方式
 
-If you have any questions or suggestions, please contact us through:
+如果您有任何问题或建议，请通过以下方式联系我们：
 
-- GitHub: [https://github.com/jukejuke/jk-tool](https://github.com/jukejuke/jk-tool)
+- GitHub：[https://github.com/jukejuke/jk-tool](https://github.com/jukejuke/jk-tool)
