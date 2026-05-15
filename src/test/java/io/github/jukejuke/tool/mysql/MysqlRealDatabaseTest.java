@@ -171,6 +171,106 @@ public class MysqlRealDatabaseTest {
             }
             System.out.println();
 
+            // ========== 以下是新增的文件 SQL 测试 ==========
+
+            // 步骤13: 测试从 classpath 资源读取 SQL
+            System.out.println("【13】正在测试从资源文件读取 SQL...");
+            String sqlFromResource = MysqlUtils.readSqlFromResource("real_test_select_all.sql");
+            System.out.println("   ✓ 从资源文件读取 SQL 成功");
+            System.out.println("   - SQL 内容:");
+            System.out.println("     " + sqlFromResource.replace("\n", "\n     "));
+            System.out.println();
+
+            // 步骤14: 测试从资源文件读取 SQL 并执行查询
+            System.out.println("【14】正在测试从资源文件执行查询...");
+            List<Map<String, Object>> usersFromFile = MysqlUtils.selectListFromResource("real_test_select_all.sql");
+            System.out.println("   ✓ 从资源文件查询成功");
+            System.out.println("   - 查询到 " + usersFromFile.size() + " 条数据:");
+            for (Map<String, Object> u : usersFromFile) {
+                System.out.println("     - " + u.get("name") + " (年龄: " + u.get("age") + ")");
+            }
+            System.out.println();
+
+            // 步骤15: 测试从资源文件读取 SQL 并执行插入
+            System.out.println("【15】正在测试从资源文件执行插入...");
+            int insertFromFileResult = MysqlUtils.updateFromResource(
+                    "real_test_insert.sql",
+                    "赵六", 35, "zhaoliu@example.com"
+            );
+            System.out.println("   ✓ 从资源文件插入成功, 影响行数: " + insertFromFileResult);
+            
+            // 验证插入
+            Map<String, Object> newUser = MysqlUtils.selectOne(
+                    "SELECT * FROM test_users WHERE name = ?", 
+                    "赵六"
+            );
+            if (newUser != null) {
+                System.out.println("   - 新增用户: " + newUser.get("name") + ", 邮箱: " + newUser.get("email"));
+            }
+            System.out.println();
+
+            // 步骤16: 测试从资源文件读取 SQL 并执行更新
+            System.out.println("【16】正在测试从资源文件执行更新...");
+            int updateFromFileResult = MysqlUtils.updateFromResource(
+                    "real_test_update.sql",
+                    36, "zhaoliu_updated@example.com", "赵六"
+            );
+            System.out.println("   ✓ 从资源文件更新成功, 影响行数: " + updateFromFileResult);
+            
+            // 验证更新
+            Map<String, Object> updatedUserFromFile = MysqlUtils.selectOne(
+                    "SELECT * FROM test_users WHERE name = ?", 
+                    "赵六"
+            );
+            if (updatedUserFromFile != null) {
+                System.out.println("   - 更新后的用户: " + updatedUserFromFile.get("name"));
+                System.out.println("     年龄: " + updatedUserFromFile.get("age") + ", 邮箱: " + updatedUserFromFile.get("email"));
+            }
+            System.out.println();
+
+            // 步骤17: 测试从资源文件读取 SQL 并执行统计查询
+            System.out.println("【17】正在测试从资源文件执行统计查询...");
+            Map<String, Object> statsFromFile = MysqlUtils.selectOneFromResource("real_test_stats.sql");
+            if (statsFromFile != null) {
+                System.out.println("   ✓ 从资源文件统计查询成功:");
+                System.out.println("     - 总用户数: " + statsFromFile.get("total"));
+                System.out.println("     - 平均年龄: " + statsFromFile.get("avg_age"));
+                System.out.println("     - 最大年龄: " + statsFromFile.get("max_age"));
+                System.out.println("     - 最小年龄: " + statsFromFile.get("min_age"));
+            }
+            System.out.println();
+
+            // 步骤18: 测试写入 SQL 到临时文件并读取
+            System.out.println("【18】正在测试写入 SQL 到文件并读取...");
+            String customSql = "SELECT name, age FROM test_users WHERE age > 25 ORDER BY age DESC";
+            java.io.File tempSqlFile = java.io.File.createTempFile("custom_sql_", ".sql");
+            tempSqlFile.deleteOnExit();
+            
+            MysqlUtils.writeSqlToFile(customSql, tempSqlFile.getAbsolutePath());
+            System.out.println("   ✓ 写入 SQL 到临时文件成功");
+            
+            // 从临时文件读取并执行
+            List<Map<String, Object>> customQueryResult = MysqlUtils.selectListFromFile(tempSqlFile.getAbsolutePath());
+            System.out.println("   ✓ 从临时文件读取并执行查询成功");
+            System.out.println("   - 年龄大于25岁的用户:");
+            for (Map<String, Object> u : customQueryResult) {
+                System.out.println("     - " + u.get("name") + " (年龄: " + u.get("age") + ")");
+            }
+            System.out.println();
+
+            // 步骤19: 测试从资源文件读取 SQL 并执行删除
+            System.out.println("【19】正在测试从资源文件执行删除...");
+            int deleteFromFileResult = MysqlUtils.updateFromResource(
+                    "real_test_delete.sql",
+                    "赵六"
+            );
+            System.out.println("   ✓ 从资源文件删除成功, 影响行数: " + deleteFromFileResult);
+            
+            // 验证删除
+            List<Map<String, Object>> finalUsers = MysqlUtils.selectList("SELECT * FROM test_users");
+            System.out.println("   - 删除后剩余用户数: " + finalUsers.size());
+            System.out.println();
+
             // 完成
             System.out.println("========================================");
             System.out.println("   ✓ 所有测试通过！");
