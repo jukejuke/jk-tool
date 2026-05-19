@@ -5,8 +5,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.util.Map;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -16,6 +24,51 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class HttpUtil {
+    
+    /**
+     * 禁用SSL证书验证
+     */
+    private static void disableSslVerification() {
+        try {
+            // 创建一个信任所有证书的TrustManager
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                    }
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                    }
+                }
+            };
+
+            // 初始化SSLContext
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            
+            // 设置默认的SSLSocketFactory
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+            // 创建一个信任所有主机的HostnameVerifier
+            HostnameVerifier allHostsValid = new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            };
+            
+            // 设置默认的HostnameVerifier
+            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            log.error("禁用SSL证书验证失败", e);
+        }
+    }
     
     /**
      * 发送 GET 请求（无参数）
@@ -52,6 +105,9 @@ public class HttpUtil {
         StringBuilder result = new StringBuilder();
         
         try {
+            // 禁用SSL证书验证
+            disableSslVerification();
+            
             // 如果有参数，拼接到 URL 后面
             if (params != null && !params.isEmpty()) {
                 StringBuilder paramBuilder = new StringBuilder();
@@ -124,6 +180,9 @@ public class HttpUtil {
         StringBuilder result = new StringBuilder();
         
         try {
+            // 禁用SSL证书验证
+            disableSslVerification();
+            
             // 创建 URL 连接
             URL requestUrl = new URL(url);
             connection = (HttpURLConnection) requestUrl.openConnection();
@@ -203,6 +262,9 @@ public class HttpUtil {
         StringBuilder result = new StringBuilder();
         
         try {
+            // 禁用SSL证书验证
+            disableSslVerification();
+            
             // 创建 URL 连接
             URL requestUrl = new URL(url);
             connection = (HttpURLConnection) requestUrl.openConnection();
