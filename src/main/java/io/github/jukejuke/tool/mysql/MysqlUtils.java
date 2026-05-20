@@ -246,7 +246,7 @@ public class MysqlUtils {
             while (rs.next()) {
                 Map<String, Object> row = new HashMap<>();
                 for (int i = 1; i <= columnCount; i++) {
-                    String columnName = metaData.getColumnName(i);
+                    String columnName = metaData.getColumnLabel(i);
                     row.put(columnName, rs.getObject(i));
                 }
                 resultList.add(row);
